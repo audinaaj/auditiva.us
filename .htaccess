@@ -1,0 +1,33 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c> 
+  RewriteEngine on
+  
+  # Prevents all requests that are not directed at the 
+  # media and assets directories to be routed to /web/.
+  #RewriteCond %{REQUEST_URI} !/(media)
+  RewriteCond %{REQUEST_URI} !/(assets)
+  RewriteRule ^(.*)$ web/$1 [NC,L] 
+  
+  # Rewrites all requests to /media directory 
+  # to be routed to /web/media/.
+  #RewriteCond %{REQUEST_URI} /(media)
+  #RewriteRule media/(.*)$ web/media/$1 [NC,L]
+  
+  # Rewrites all requests to /assets directory 
+  # to be routed to /web/assets/.
+  RewriteCond %{REQUEST_URI} /(assets)
+  RewriteRule assets/(.*)$ web/assets/$1 [NC,L] 
+
+</IfModule>
+
+# Deny accessing extensions listed below
+<Files ~ "(.json|.lock|.git)">
+Order allow,deny
+Deny from all
+</Files>
+
+<IfModule mod_rewrite.c> 
+  # Deny accessing dot files
+  RewriteRule (^\.|/\.) - [F]
+</IfModule>
