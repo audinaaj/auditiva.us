@@ -16,6 +16,10 @@ $baseUrl = str_replace('/web', '', (new \yii\web\Request)->getBaseUrl());
 
 $config = [
     'id' => 'basic',
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm'   => '@vendor/npm-asset',
+    ],
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
@@ -69,7 +73,7 @@ $config = [
             ],
         ],
         'assetManager' => [
-            'linkAssets' => true,
+            //'linkAssets' => true,
         ],
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',  
