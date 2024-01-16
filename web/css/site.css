@@ -103,6 +103,15 @@ a.desc:after {
         width: 100%;
         padding: 10px 15px;
     }
+
+    .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover {
+        background-color: black;
+	color: white;
+    }
+
+    .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+        color: white !important;
+    }
 }
 
 .nav > li > form > button.logout:focus,
@@ -143,11 +152,14 @@ a.desc:after {
 }
 
 .navbar .nav > li > a, .navbar .nav > li > a:visited {
-    color: #fff;
+    color: white;
     text-decoration: none;
 }
 .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
-    color: black; /* #9d9d9d; */
+    color: black;
+}
+.dropdown-menu > .active > a {
+    color: white !important;
 }
 .navbar {
     border-radius: 0px; /* default 4px; */
