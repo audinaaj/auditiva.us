@@ -1,0 +1,28 @@
+# windows thumbnail cache
+Thumbs.db
+
+# Mac DS_Store Files
+.DS_Store
+
+# phpunit itself is not needed
+phpunit.phar
+
+# local phpunit config
+/phpunit.xml
+
+tests/_output/*
+tests/_support/_generated
+
+# dependency and runtime dirs
+vendor/
+/runtime/
+
+# composer itself is not needed
+composer.phar
+
+#init sql files
+data-init/
+
+#config files with secrets
+/config/*-local.php
+.env

@@ -1,0 +1,83 @@
+{
+    "name": "yiisoft/yii2-app-basic",
+    "description": "Yii 2 Basic Project Template",
+    "keywords": ["yii2", "framework", "basic", "project template"],
+    "homepage": "http://www.yiiframework.com/",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
+        "forum": "http://www.yiiframework.com/forum/",
+        "wiki": "http://www.yiiframework.com/wiki/",
+        "irc": "irc://irc.freenode.net/yii",
+        "source": "https://github.com/yiisoft/yii2"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.2.0",
+        "yiisoft/yii2": "~2.0.15",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "yiisoft/yii2-jui": "*",
+        "letyii/yii2-tinymce": "*",
+        "tinymce/tinymce": "~5",
+        "himiklab/yii2-recaptcha-widget": "*",
+        "bower-asset/jquery": ">=1.11.0",
+        "bower-asset/jquery-ui": ">=1.11.0",
+        "bower-asset/jquery.inputmask": "*",
+        "bower-asset/punycode": "*",
+        "bower-asset/yii2-pjax": "*"
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "~2.1.0"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset":{
+            "enabled": false
+        },
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        },
+        "audit": {
+            "ignore": [
+                "PKSA-kxv7-w7hg-zj9k",
+                "PKSA-g43k-cp2d-8zny",
+                "PKSA-s5r2-shvb-ydth",
+                "PKSA-hdg2-6rxt-d4qn",
+                "PKSA-mymm-sn83-mbb2",
+                "PKSA-m1dk-8wwc-991j",
+                "PKSA-49mb-wskm-8m9m",
+                "PKSA-t9cj-9h2r-fkgh",
+                "PKSA-s6b9-gg3t-crbs",
+                "PKSA-prcy-kppw-cnxf",
+                "PKSA-gy5q-j464-j41z"
+            ]
+        }
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::postCreateProject"
+        ]
+    },
+    "extra": {
+        "yii\\composer\\Installer::postCreateProject": {
+            "setPermission": [
+                {
+                    "runtime": "0777",
+                    "web/assets": "0777",
+                    "yii": "0755"
+                }
+            ],
+            "generateCookieValidationKey": [
+                "config/web.php"
+            ]
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}
