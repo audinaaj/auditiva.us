@@ -323,15 +323,13 @@ class SiteController extends \yii\web\Controller
     
     private function sendMessage($srcMail, $srcName, $dstEmail, $subject, $textBody)
     {
-        $success = Yii::$app->mailer->compose()
+        return Yii::$app->mailer->compose()
                 ->setFrom([$srcMail => $srcName])
                 ->setTo($dstEmail)
                 ->setBcc([Yii::$app->params['debugEmail'] => 'Debug Email'])
                 ->setSubject($subject)
                 ->setTextBody($textBody)
                 ->send();
-              
-        return $success;
     }
     
     /** 

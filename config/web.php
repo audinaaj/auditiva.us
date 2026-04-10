@@ -1,10 +1,6 @@
 <?php
 
-$params = array_merge(
-    require(__DIR__ . '/params.php'),
-    require(__DIR__ . '/params-local.php')
-);
- 
+$params = require(__DIR__ . '/params.php');
 $db =require(__DIR__ . '/db.php');
 
 // Set current location to be root directory, i.e. '/web' becomes '/'
@@ -21,7 +17,8 @@ $config = [
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+            'enableCookieValidation' => true,
+            'enableCsrfValidation' => true,
             'cookieValidationKey' => $params['cookieKey'] . $params['appId'],
             
             // Required if wanting to hide 'web' folder from url
@@ -46,13 +43,19 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'emailService' => [
-            'class' => 'app\components\EmailMicroservice',
-            'baseUrl' => $params['mail.apiAddress'],
-            'apiKey' => $params['mail.apikey'],
-        ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => \yii\symfonymailer\Mailer::class,
+            'transport' => [
+                // 'scheme' => 'smtps',
+                // 'require_tls' => true,
+                // 'host'       => 'smtp.office365.com',
+                // 'username'   => $params['mail.username'],
+                // 'password'   => $params['mail.password'],
+                // 'port' => 587,
+                'dsn' => 'smtp://'.$params['mail.username'].':'.$params['mail.password'].'@smtp.office365.com:587',
+                //'dsn' => 'microsoftgraph+api://CLIENT_APP_ID:CLIENT_APP_SECRET@default?tenantId=TENANT_ID',
+                //'dsn' => 'microsoftgraph+api://'.$params['mail.clientId'].':'.$params['mail.clientSecret'].'@default?tenantId='.$params['mail.tenantId'],
+            ],
 
             // Directory that contains the view files 
             // for composing mail messages. Defaults to '@app/mail'
@@ -60,21 +63,8 @@ $config = [
 
             // Send all mail messages to a file by default. 
             // The messages get stored locally under '@app/runtime/mail'
-            //'useFileTransport' => true,
-            //'fileTransportPath' => '@runtime/mail',
-
-            // Send all mail messages as real emails.
-            // Set 'useFileTransport' to false,
-            // and configure a transport for the mailer.
             'useFileTransport' => false,
-            'transport' => [
-                'class'      => 'Swift_SmtpTransport',
-                'host'       => 'smtp.office365.com',
-                'username'   => $params['mail.username'],
-                'password'   => $params['mail.password'],
-                'port'       => '587',
-                'encryption' => 'tls',
-            ],
+            //'fileTransportPath' => '@runtime/mail',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -141,6 +131,12 @@ $config = [
             ]
         ],
     ],
+    'container' => [
+        'definitions' => [
+            EsmtpTransportFactory::class => [
+                'class' => Symfony\Component\Mailer\Bridge\MicrosoftGraph\Transport\MicrosoftGraphTransportFactory::class,
+            ]
+        ],
     ],
     'params' => $params,
 ];
@@ -151,8 +147,8 @@ if (YII_DEBUG) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         'enableDebugLogs' => true,
-        //'allowedIPs' => $params['debug.allowedIPs'], // this doesn't work well with docker
-        'allowedIPs' => ['*'], // allow all IPs to access debug module, since we are using docker and IPs can be dynamic
+        'allowedIPs' => $params['debug.allowedIPs'], // this doesn't work well with docker
+        //'allowedIPs' => ['*'], // allow all IPs to access debug module, since we are using docker and IPs can be dynamic
     ];
 
     // $config['bootstrap'][] = 'gii';

@@ -232,17 +232,18 @@ class UserController extends Controller
 
                     $useHtmlTemplate = true;
                     if (!empty($useHtmlTemplate) && $useHtmlTemplate) {
-                        Yii::$app->mailer->compose('signupActivationApproved', ['user' => $model])  // html template
+                        $email = Yii::$app->mailer->compose('signupActivationApproved', ['user' => $model])  // html template
                             ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']])
                             ->setTo($model->email)
                             ->setBcc([
                                 Yii::$app->params['adminEmail'] =>  Yii::t('app', '{companyName} Support', ['companyName' => Yii::$app->params['companyNameShort']]), 
                                 Yii::$app->params['debugEmail'] => Yii::t('app', 'Debug Email')
                             ])
-                            ->setSubject(Yii::t('app', 'Website user was activated'))
-                            ->send();
+                            ->setSubject(Yii::t('app', 'Website user was activated'));
+                        //Yii::$app->emailService->sendMimeEmail(base64_encode($email->toString()));
+                        $email->send();
                     } else {
-                        Yii::$app->mailer->compose()    // plain text template
+                        $email = Yii::$app->mailer->compose()    // plain text template
                             ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']])
                             ->setTo($model->email)
                             ->setBcc([
@@ -250,8 +251,9 @@ class UserController extends Controller
                                 Yii::$app->params['debugEmail'] => Yii::t('app', 'Debug Email')
                             ])
                             ->setSubject(Yii::t('app', 'Website user was activated'))
-                            ->setTextBody($emailBody)
-                            ->send();
+                            ->setTextBody($emailBody);
+                        //Yii::$app->emailService->sendMimeEmail(base64_encode($email->toString()));
+                        $email->send();
                     }
                     Yii::$app->session->setFlash('success', Yii::t('app', "User <strong>{username}</strong> was activated successfully.", ['username' => $model->username]));
                 } else {
@@ -370,12 +372,13 @@ class UserController extends Controller
                         
                         $useHtmlTemplate = true;
                         if (!empty($useHtmlTemplate) && $useHtmlTemplate) {
-                            $isEmailSent = Yii::$app->mailer->compose('signupActivationRequest', ['user' => $user, 'token' => $activationToken])  // html template
+                            $email = Yii::$app->mailer->compose('signupActivationRequest', ['user' => $user, 'token' => $activationToken])  // html template
                                 ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']])
                                 ->setTo(Yii::$app->params['adminEmail'])
                                 ->setBcc([Yii::$app->params['debugEmail'] => 'Debug Email'])
-                                ->setSubject(Yii::t('app', 'New website user') . ' ('. Yii::t('app', 'approval request') . ')')
-                                ->send();
+                                ->setSubject(Yii::t('app', 'New website user') . ' ('. Yii::t('app', 'approval request') . ')');
+                            //$isEmailSent = Yii::$app->emailService->sendMimeEmail(base64_encode($email->toString()));
+                            $isEmailSent = $email->send();
                         } else {
                             $emailBody = Yii::t('app', "Details for New User") . ": \n"; // . print_r($user, true);
                             $emailBody .= Yii::t('app', "Username") . ": {$user->username}\n";
@@ -403,13 +406,14 @@ class UserController extends Controller
                                 Html::a(Yii::t('app', 'Deactivate'), $deactivateLink) . " ][ " . 
                                 Html::a(Yii::t('app', 'Ban'), $banLink) . " ]";
 
-                            $isEmailSent = Yii::$app->mailer->compose()    // plain text template
+                            $email = Yii::$app->mailer->compose()    // plain text template
                                 ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']])
                                 ->setTo(Yii::$app->params['adminEmail'])
                                 ->setBcc([Yii::$app->params['debugEmail'] => 'Debug Email'])
                                 ->setSubject(Yii::t('app', 'New website user') . ' ('. Yii::t('app', 'approval request') . ')')
-                                ->setTextBody($emailBody)
-                                ->send();
+                                ->setTextBody($emailBody);
+                            //$isEmailSent = Yii::$app->emailService->sendMimeEmail(base64_encode($email->toString()));
+                            $isEmailSent = $email->send();
                         }
                     }
                     
