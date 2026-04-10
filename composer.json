@@ -26,7 +26,8 @@
         "bower-asset/jquery-ui": ">=1.11.0",
         "bower-asset/jquery.inputmask": "*",
         "bower-asset/punycode": "*",
-        "bower-asset/yii2-pjax": "*"
+        "bower-asset/yii2-pjax": "*",
+        "tecnickcom/tcpdf": "~6.11.2",
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0"

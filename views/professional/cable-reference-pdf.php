@@ -59,46 +59,34 @@ $watermarkmaxchars = ($colsperpage == 3 ? 500 : 440);
 $headertitle    = 'Cable Reference';
 $headersubtitle = 'Comprehensive reference for cables, connectors, and programming box to use while fitting hearing aids.';
 
-// Load Component Yii2 TCPDF 
-\Yii::$app->get('tcpdf');
 
 // create new PDF document
 $pdf = new TCPDF('P' /* Page orientation (P=portrait, L=landscape) */, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-// set document information
-$pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor(Yii::$app->params['companyName']);
-$pdf->SetTitle($headertitle);
-$pdf->SetSubject($headersubtitle);
-$pdf->SetKeywords('');
 
 // set header and footer fonts
-$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+// $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+// $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 // set default header data
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
-$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $headertitle, $headersubtitle);
+//$pdf->SetHeaderData('', 0, $headertitle, $headersubtitle);
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Nano-coating Log Report', 'Acme | www.acme.com', array(0,64,255), array(0,64,128));
-$pdf->setFooterData(array(0,64,0), array(0,64,128));
-$pdf->setPrintHeader(false);  // do not print footer
-$pdf->setPrintFooter(false);  // do not print footer
+//$pdf->setFooterData(array(0,64,0), array(0,64,128));
+// $pdf->setPrintHeader(false);  // do not print footer
+// $pdf->setPrintFooter(false);  // do not print footer
 
 // set default monospaced font
-$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+//$pdf->SetDefaultMonospacedFont('courier');
 
 // set margins
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-//$pdf->SetMargins($leftmargin, $topmargin, $rightmargin);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 // set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-//$pdf->SetAutoPageBreak(FALSE, $bottommargin);
+$pdf->SetAutoPageBreak(TRUE, 25);
 
 // set image scale factor
-$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 // ---------------------------------------------------------
 // set default font subsetting mode
@@ -110,7 +98,7 @@ $pdf->setFontSubsetting(true);
 //$defaultfont = 'DejaVuSansMono'; //PDF_FONT_MONOSPACED; //'dejavusans';
 $defaultfont = 'dejavusans'; 
 //$pdf->SetFont($defaultfont, 'B', 18);
-$pdf->SetFont($defaultfont, '', 8, '', true);
+//$pdf->SetFont($defaultfont, '', 8, '', true);
 
 // ---------------------------------------------------------
 // Add Page
@@ -164,7 +152,7 @@ $pdf->writeHTML($tbl, true /* newline */, false /* fill */, false /* reset heigh
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
 //$pdf->Output('Order-'.str_pad($model->id, 6, "0", STR_PAD_LEFT).'-labels.pdf', 'I');
-$pdf->Output(Yii::$app->params['appNameShort']."-".Yii::$app->controller->action->id.".pdf" , 'I');
+$pdf->Output(Yii::$app->params['appNameShort']."-".Yii::$app->controller->action->id.".pdf", 'I');
 
 
 //============================================================+

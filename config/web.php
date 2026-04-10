@@ -112,10 +112,6 @@ $config = [
            'timeFormat'      => 'php:H:i:s', 
            'defaultTimeZone' => 'America/New_York'
         ],
-        // Yii2 TCPDF
-        'tcpdf' => [
-            'class' => 'cinghie\tcpdf\TCPDF',
-        ],
         'reCaptcha' => [
             'name'    => 'reCaptcha',
             'class'   => 'himiklab\yii2\recaptcha\ReCaptcha',
