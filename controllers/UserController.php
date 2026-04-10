@@ -154,6 +154,11 @@ class UserController extends Controller
             $model = $this->findModel($id);
 
             if ($model->load(Yii::$app->request->post())) {
+                if (!User::isCurrentUserAdmin() && ($model->role != $model->getOldAttribute('role'))) {
+                    // Non-admin users cannot update role, even through form post. Force to keep original role.
+                    $model->role = $model->getOldAttribute('role');
+                }
+
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', Yii::t('app', "User profile for <strong>{username}</strong> was updated successfully.", ['username' => $model->username]));
                 } else {

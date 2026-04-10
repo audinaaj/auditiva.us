@@ -162,7 +162,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public static function findIdentityByAccessToken($token, $type = null)
     {
         $user = self::find()->where(["access_token" => $token])->one();
-        if (!count($user)) {
+        if (!$user) {
             return null;
         }
         return new static($user);
