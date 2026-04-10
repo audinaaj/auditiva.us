@@ -14,9 +14,9 @@ $this->params['breadcrumbs'][] = ['label'=> 'Professionals', 'url' => Url::toRou
 $this->params['breadcrumbs'][] = Html::encode($this->title);
 ?>
 <div class="professional-prod-specs">
-       
+
     <h1><?= $this->title; ?></h1>
-    
+
     <script language="JavaScript" type="text/JavaScript">
         <!--
         function MM_jumpMenu(targ,selObj,restore) //v3.0
@@ -26,18 +26,15 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
         }
         //-->
     </script>
-    
-    <?php DisplayProductFilter($IsVisibleProductFilter); ?>
+
+    <?php DisplayProductFilter(); ?>
     <p>
-    
+
     <p>Select the appropriate button below to download a PDF of our latest product specification sheet:</p>
-    
+
     <?php
-    //$baseUrl = Yii::$app->request->baseUrl . '/media/catalog';
-    $baseUrl = Yii::$app->urlManager->createUrl('').'media/catalog';
-    
-    //echo '<pre>Files found: ' . print_r($files, true) . '</pre>';
-    GenFileListTable($dir, $files, $baseUrl, $ShowAllProducts /* show current & deprecated products? */, $FilterByStyle);
+    $files = getS3FileList();
+    GenFileListTable($files, $ShowAllProducts, $FilterByStyle);
     ?>
 
 </div>
@@ -89,34 +86,22 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
 //              $aFileList, $aTargetBaseURL, $ShowDeprecated
 // return     : void
 //-------------------------------------------------------------------------------------------------
-function genFileListTable($aBaseDir, $aFileList, $aTargetBaseURL, $ShowDeprecated, $FilterByStyle)
+function genFileListTable($aFileList, $ShowDeprecated, $FilterByStyle)
 {
-    $aBaseDir = rtrim($aBaseDir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;  // add trailing slash
     $lastprodNameAndStyles = "";
     
     echo '<table class="table table-striped">';
-    // Header
-    //echo '<tr><th>Product</th><th colspan="2">Specification Sheet</th></tr>';
-    //echo '<tr bgcolor="#dedeff"><th>&nbsp;</th><th colspan="2">&nbsp;</th><th colspan="10">Supported Styles</th><th colspan="3">Other</th></tr>';
-    //echo '<tr bgcolor="#dedeff"><th>Product</th><th colspan="2">Spec Sheet</th><th>IIC</th><th>CIC</th><th>Canal</th><th>1/2 Shell</th><th>FSS</th><th>Super 60</th><th>Super 70</th><th>BTE</th><th>Super BTE</th><th>Open</th><th>Stock</th><th>Family</th><th>Misc</th></tr>';
     echo '<tr bgcolor="#dedeff"><th>&nbsp;</th><th colspan="2">&nbsp;</th><th colspan="10">Supported Styles</th><th colspan="4">Other</th></tr>';
     echo '<tr bgcolor="#dedeff"><th>Product / Document Name</th><th colspan="2">Spec Sheet / Doc</th><th>IIC</th><th>CIC</th><th>Canal</th><th>1/2 Shell</th><th>FSS</th><th>Super 60</th><th>Super 70</th><th>BTE</th><th>Super BTE</th><th>Open</th><th>Stock</th><th>Family</th><th>Misc</th><th>Intro Docs</th></tr>';
     
     $totalfiles = count($aFileList);
     for($i=0, $row=0; $i < $totalfiles; $i++) {
-        
-        // Do not process 'blank.pdf' file
-        if ($aFileList[$i] == 'blank.pdf') {
-            continue;  // Skip.  
-        }
-        
         $curProdNameAndStyles = substr(pathinfo($aFileList[$i], PATHINFO_FILENAME), 0 /* start pos */, -3 /* remove lang code at end */);
         if ($curProdNameAndStyles != $lastprodNameAndStyles) {
             // get product hyperlinks
             $prodStyles  = array();
-            $fullpath    = $aBaseDir . $aFileList[$i];
-            $filelink_en = setLinkToFile($fullpath, $aTargetBaseURL, ENGLISH);
-            $filelink_es = setLinkToFile($fullpath, $aTargetBaseURL, SPANISH);
+            $filelink_en = setLinkToFile($aFileList, $aFileList[$i], ENGLISH);
+            $filelink_es = setLinkToFile($aFileList, $aFileList[$i], SPANISH);
             $prodStyles  = explode('-', $curProdNameAndStyles);
             
             // get filters
@@ -133,9 +118,7 @@ function genFileListTable($aBaseDir, $aFileList, $aTargetBaseURL, $ShowDeprecate
             }
             
             $prodName = ($IsDeprecated ? "<del><font color='gray'>" : "" ) . $prodStyles[0] . ($IsDeprecated ? " (Discountinued)</font></del>" : "" );
-            
-            $IsIntroDoc = in_array("intro", $prodStyles);
-            
+
             // generate row
             if ( ((!$IsDeprecated) || ($IsDeprecated && $ShowDeprecated)) && $IsStyleSupported) {
                 // get row color
@@ -166,60 +149,29 @@ function genFileListTable($aBaseDir, $aFileList, $aTargetBaseURL, $ShowDeprecate
 // parameters : $aFilePath (eg: "C:/www/catalog/flx-OTE-en.pdf"), $Language (eg: "ENGLISH", "SPANISH", etc.)
 // return     : $str (a string with the hyperlink)
 //-------------------------------------------------------------------------------------------------
-function setLinkToFile($aFilePath, $aTargetBaseURL, $Language)
+function setLinkToFile($aFileList, $aFilePath, $Language)
 {
     $DS = DIRECTORY_SEPARATOR;
-    $dirname  = pathinfo($aFilePath, PATHINFO_DIRNAME );   // native path with no filename. Eg: C:\wamp\www\site\web\media
-    $basename = pathinfo($aFilePath, PATHINFO_BASENAME );  // filename with extension. Eg: prod.pdf
     $filename = pathinfo($aFilePath, PATHINFO_FILENAME );  // filename without extension. Eg: prod
     $extname  = pathinfo($aFilePath, PATHINFO_EXTENSION ); // file extension name. Eg: pdf
     
     // Get filename without language code (eg: -en, -es, etc.)
     $prodName     = substr($filename, 0 /* start pos */, -3 /* remove lang code at end */);  // Eg: remove '-en' or '-es'
     $prodFileName = $prodName . '-' . GetLanguageSuffix($Language) . '.' . $extname;
-    $prodFullPath = $dirname  . $DS . $prodName . '-' . GetLanguageSuffix($Language) . '.' . $extname;
-    $prodFileURL  = $aTargetBaseURL . $DS. $prodFileName;
-    
+    $prodFileURL  = 'catalog'.$DS.$prodFileName;
+
     $LinkLabel = GetLanguageHTMLString($Language);
     
-    //echo '<br/><br/>dirname='.$dirname;
-    //echo '<br/>basename='.$basename;
-    //echo '<br/>filename='.$filename;
-    //echo '<br/>prodFullPath='.$prodFullPath;
-    //echo '<br/>prodFileName='.$prodFileName;
-    //echo '<br/>webroot='.Yii::getAlias('@webroot');
-    //echo '<br/>prodFileURL='.$prodFileURL;
-    
-    if (file_exists($prodFullPath)) {
-        $str = "<a href='$prodFileURL' class='btn btn-primary' target='_blank'>$LinkLabel</a>";
+    // check against file list to see if file exists.  If it does, generate hyperlink.  If not, generate disabled link.
+    if (in_array($prodFileName, $aFileList)) {
+         $s3 = Yii::$app->get('s3');
+         $prodFileURL = $s3->commands()->getPresignedUrl($prodFileURL)->execute();
+         $str = "<a href='$prodFileURL' class='btn btn-primary' target='_blank'>$LinkLabel</a>";
     } else {
         $str = "<a href='#' class='btn btn-default disabled'>$LinkLabel</a>";
     }
-    return $str;
-}
 
-//-------------------------------------------------------------------------------------------------
-// description: 
-// parameters : 
-// return     : 
-//-------------------------------------------------------------------------------------------------
-function getProductStylesList($aProdNameAndStyles)
-{
-    // Get Styles
-    $prodStyles = explode( '-', $aProdNameAndStyles); 
-    //echo print_r($prodStyles, true); // debug
-    
-    // Concatenate styles into string
-    $stylelist = "";
-    $totalStyles = count($prodStyles);
-    for($i=1; $i<$totalStyles; $i++) {
-        if ($prodStyles[$i] != 'deprecated') {
-            $stylelist .= $prodStyles[$i];  // add style
-            $stylelist .= ( (($i+1)<$totalStyles) && ($prodStyles[$i+1] != 'deprecated') ? ", " : "");  // add comma if not end (except when next is 'deprecated')
-        }
-    }
-    
-    return $stylelist;
+    return $str;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -293,11 +245,10 @@ function getProductStylesListInHTMLCells($aProdNameAndStyles, $rowcolor)
 // parameters : $IsVisible (true to display, false to hide).
 // return     : void
 //-------------------------------------------------------------------------------------------------
-function displayProductFilter($IsVisible=true)
+function displayProductFilter()
 {
     $curViewID = Yii::$app->view->context->action->id;  // For view 'professional/product-specs', the view ID = 'product-specs'
     
-    if ($IsVisible):
     ?>
         <form name="formFilterSelection" id="search">
           Display Filter 
@@ -317,11 +268,10 @@ function displayProductFilter($IsVisible=true)
             <option value="<?= $curViewID ?>?style=Open"     <?php echo ((isset($_GET['style']) && $_GET['style']=='Open')?     'selected' : ''); ?> >Open Ear</option>
             <option value="<?= $curViewID ?>?style=Family"   <?php echo ((isset($_GET['style']) && $_GET['style']=='Family')?   'selected' : ''); ?> >Product Family</option>
             <option value="<?= $curViewID ?>?style=Misc"     <?php echo ((isset($_GET['style']) && $_GET['style']=='Misc')?     'selected' : ''); ?> >Guides &amp; Miscellaneous</option>
-            <option value="<?= $curViewID ?>?style=Intro"    <?php echo ((isset($_GET['style']) && $_GET['style']=='Intro')?    'selected' : ''); ?> >Intro Documents</option>
+            <!-- <option value="<?= $curViewID ?>?style=Intro"    <?php echo ((isset($_GET['style']) && $_GET['style']=='Intro')?    'selected' : ''); ?> >Intro Documents</option> -->
           </select>
         </form>
     <?php 
-    endif;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -350,5 +300,39 @@ function getLanguageSuffix($Language)
     } elseif ($Language == ENGLISH) {
         return "en";
     }
+}
+
+function getS3FileList()
+{
+    // get catalog PDF list from s3 /catalog/ folder and generate table
+    $file_list = Yii::$app->get('s3')->commands()->list('catalog/')->execute();
+
+    // Ensure Contents exists
+    if (empty($file_list['Contents'])) {
+        return [];
+    }
+
+    // Filter to only PDF files directly in /catalog/ (not in subfolders)
+    $pdfFiles = array_filter(
+        $file_list['Contents'],
+        function($file) {
+            $key = $file['Key'];
+            // Not a directory (doesn't end with /)
+            if (substr($key, -1) === '/') {
+                return false;
+            }
+            // Get filename part (after 'catalog/')
+            $filename = substr($key, strlen('catalog/'));
+            // No subdirectories (no additional slashes)
+            if (strpos($filename, '/') !== false) {
+                return false;
+            }
+            // Is a PDF file
+            return strtolower(substr($key, -4)) === '.pdf';
+        }
+    );
+
+    // Extract just the filenames and reindex
+    return array_values(array_map(fn($f) => basename($f['Key']), $pdfFiles));
 }
 ?>

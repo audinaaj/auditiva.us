@@ -9,7 +9,7 @@ $this->title = 'Connectivity Reference';
 $this->params['breadcrumbs'][] = ['label'=> 'Professionals', 'url' => Url::toRoute(['professional/index'])];
 $this->params['breadcrumbs'][] = Html::encode($this->title);
 
-$docRootURL = Yii::$app->urlManager->createUrl('');
+$docRootURL = 'https://cdn.auditiva.us/';
 ?>
 <div class="professional-cable-reference">
     
@@ -36,7 +36,7 @@ $docRootURL = Yii::$app->urlManager->createUrl('');
         //foreach($dataCables as $row) {
         //    echo "<tr>";
         //    echo "<td><h3>".getCableLabel($row['name'])."</h3></td>";
-        //    echo "<td><img src='{$docRootURL}media/reference/{$row['image']}' class='img-responsive' align='center' width='200'></td>";
+        //    echo "<td><img src='{$docRootURL}/reference/{$row['image']}' class='img-responsive' align='center' width='200'></td>";
         //    echo "<td>{$row['compatible']}</td>";
         //    echo "<td>{$row['notes']}</td>";
         //    echo "</tr>";
@@ -74,8 +74,8 @@ $docRootURL = Yii::$app->urlManager->createUrl('');
                   <h4 class="list-group-item-heading">HiPro Classic</h4>
                   <p class="list-group-item-text">Serial connection with USB-Serial adapter</p>
                 </td>
-                <td><img src='<?= $docRootURL ?>media/reference/ProgBox-HiPro-Classic.jpg' class='img-responsive' align='center' width='225'></td>
-                <td><img src='<?= $docRootURL ?>media/reference/ProgBox-data-cable-serial-usbadapter.jpg' class='img-responsive' align='center' width='225'></td>
+                <td><img src='<?= $docRootURL ?>/reference/ProgBox-HiPro-Classic.jpg' class='img-responsive' align='center' width='225'></td>
+                <td><img src='<?= $docRootURL ?>/reference/ProgBox-data-cable-serial-usbadapter.jpg' class='img-responsive' align='center' width='225'></td>
                 </table>
               </a>
               <a href="#" class="list-group-item">
@@ -84,8 +84,8 @@ $docRootURL = Yii::$app->urlManager->createUrl('');
                   <h4 class="list-group-item-heading">HiPro USB</h4>
                   <p class="list-group-item-text">USB connection</p>
                 </td>  
-                <td><img src='<?= $docRootURL ?>media/reference/ProgBox-HiPro-USB-v1.jpg' class='img-responsive' align='center' width='225'></td>  
-                <td><img src='<?= $docRootURL ?>media/reference/ProgBox-data-cable-usb.jpg' class='img-responsive' align='center' width='225'></td>  
+                <td><img src='<?= $docRootURL ?>/reference/ProgBox-HiPro-USB-v1.jpg' class='img-responsive' align='center' width='225'></td>  
+                <td><img src='<?= $docRootURL ?>/reference/ProgBox-data-cable-usb.jpg' class='img-responsive' align='center' width='225'></td>  
                 </table>
               </a>
               <a href="#" class="list-group-item">
@@ -94,8 +94,8 @@ $docRootURL = Yii::$app->urlManager->createUrl('');
                   <h4 class="list-group-item-heading">HiPro 2</h4>
                   <p class="list-group-item-text">USB connection</p>
                 </td>  
-                <td><img src='<?= $docRootURL ?>media/reference/ProgBox-HiPro-USB-v2.jpg' class='img-responsive' align='center' width='225'></td>  
-                <td><img src='<?= $docRootURL ?>media/reference/ProgBox-data-cable-usb.jpg' class='img-responsive' align='center' width='225'></td>  
+                <td><img src='<?= $docRootURL ?>/reference/ProgBox-HiPro-USB-v2.jpg' class='img-responsive' align='center' width='225'></td>  
+                <td><img src='<?= $docRootURL ?>/reference/ProgBox-data-cable-usb.jpg' class='img-responsive' align='center' width='225'></td>  
                 </table>
               </a>
             </div>

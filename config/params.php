@@ -41,6 +41,8 @@ return [
     'mail.password'   => '',
     'mail.apikey' => '',
     'mail.apiAddress' => 'http://127.0.0.1:9090',
+    's3.key' => getenv('S3_KEY'),
+    's3.secret' => getenv('S3_SECRET'),
 
     'debug.allowedIPs' => [
         '127.0.0.1',     // localhost

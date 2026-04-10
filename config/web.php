@@ -91,13 +91,14 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName'  => false,
             'rules' => [
+                'GET api/backup-database' => 'site/backup-database',
             ],
         ],
         'assetManager' => [
-            //'linkAssets' => true,
+            'linkAssets' => true,
         ],
         'formatter' => [
-           'class'           => 'yii\i18n\Formatter',
+           'class'           => 'app\components\CdnFormatter',
            'dateFormat'      => 'php:M d, Y',
            'datetimeFormat'  => 'php:M d, Y H:i:s',
            'timeFormat'      => 'php:H:i:s', 
@@ -109,6 +110,37 @@ $config = [
             'siteKey' => $params['recaptchaSiteKeyv2'],
             'secret'  => $params['recaptchaSecretv2'],
         ],
+        's3' => [
+            'class' => 'bpsys\yii2\aws\s3\Service',
+            'credentials' => [ // Aws\Credentials\CredentialsInterface|array|callable
+                'key' => $params['s3.key'],
+                'secret' => $params['s3.secret'],
+            ],
+            'region' => 'us-east-1',
+            'defaultBucket' => 'auditiva',
+            'defaultAcl' => 'public-read',
+            'defaultPresignedExpiration' => '+1 hour',
+            'endpoint' => 'https://nyc3.digitaloceanspaces.com',
+        ],
+    ],
+    'modules' => [
+        's3manager' => [
+            'class' => 'skylineos\yii\s3manager\Module',
+            // All settings can be configured on the fly regardless of usage type (fileinput, standalone manager, tinymce plugin)
+            'configuration' => [ 
+                'bucket'   => 'auditiva',
+                'version'  => 'latest',
+                'region'   => 'us-east-1',
+                'prefix'   => '',
+                'scheme'   => 'http',
+                'endpoint' => 'https://nyc3.digitaloceanspaces.com',
+                'credentials' => [
+                    'key'    => $params['s3.key'],
+                    'secret' => $params['s3.secret'],
+                ],
+            ]
+        ],
+    ],
     ],
     'params' => $params,
 ];

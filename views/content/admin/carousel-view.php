@@ -1,6 +1,8 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\web\User;
 //use app\models\User;
@@ -27,91 +29,49 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i> '  . Yii::t('app', 'Add'),   ['carousel-create', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?php //echo Html::a('<i class="fa fa-plus" aria-hidden="true"></i> '  . Yii::t('app', 'Add'),   ['carousel-create', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('<i class="fa fa-clone" aria-hidden="true"></i> ' . Yii::t('app', 'Clone'), ['carousel-clone', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
     </p>
 
+    <?php
+        $carousel_content = Html::img(Yii::$app->formatter->asS3Url($model['intro_image']));
+        if (!empty($model['full_text'])) {
+            $carousel_content = Html::a($carousel_content, $model['full_text']);
+        }
+
+        echo yii\bootstrap\Carousel::widget([
+            'items' => [['content' => $carousel_content]],
+            'showIndicators' => true,
+            //'controls' => ['&lsaquo;', '&rsaquo;'],
+            'controls' => [
+                '<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>', 
+                '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'
+            ],
+        ]);
+    ?>
+    <br/>
+
     <?= DetailView::widget([
         'model' => $model,
-        'template' => '<tr><th width="150">{label}</th><td>{value}</td></tr>',  // row template
+        'template' => '<tr><th style="width: 150px">{label}</th><td>{value}</td></tr>',  // row template
         'attributes' => [
-            'id',
-            'title',
-            [
-                //'attribute' => 'category_id',
-                'label' => 'Category',
-                'value' => $model->category->title
-            ],
-            'tags',
-            'intro_text:html:Text', 
-            'intro_text:text:Text (Raw HTML)', 
-            //'full_text:html',
-            //'full_text:text:Full Text (Raw HTML)',
-            'intro_image:text:Image Filename',
-            [
-                'attribute' => 'intro_image',
-                'label'     => 'Image',
-                //--- No image size limit ---
-                //'format'  => 'image',
-                //'value'   => (!empty($model->intro_image) ? Yii::$app->urlManager->createUrl('').'media/'.$model->intro_image : ''),
-                //--- Add image size limit ---
-                'format'    => 'raw',
-                'value'     => '<img src="'.(!empty($model->intro_image) ? Yii::$app->urlManager->createUrl('').'media/'.$model->intro_image : '').'" style="width: 700px;"/>'
-            ],
-            'intro_image_float:text:Image Float',
-            //'main_image',
-            //[
-            //    'attribute' => 'main_image',
-            //    //'label' => 'Main Image',
-            //    //'value' => (!empty($model->main_image) ? Yii::$app->params['frontendUrl'].'/media/'.$model->main_image : ''),
-            //    //'value' => (!empty($model->main_image) ? Yii::$app->urlManager->createUrl('').'/media/'.$model->main_image : ''),
-            //    'value' => (!empty($model->main_image) ? Yii::$app->urlManager->createUrl('').'media/'.$model->main_image : ''),
-            //    'format' => 'image',
-            //],
-            //'main_image_float',
-            //'hits',
-            //'rating_sum',
-            //'rating_count',
-            [
-                'attribute' => 'show_title',
-                'label' => 'Show Title',
-                'value' => ($model->show_title > 0 ? 'Yes' : 'No')
-            ],
-            [
-                'attribute' => 'show_intro',
-                'label' => 'Show Intro',
-                'value' => ($model->show_intro > 0 ? 'Yes' : 'No')
-            ],
-            //[
-            //    'attribute' => 'show_image',
-            //    'label' => 'Show Image',
-            //    'value' => ($model->show_image > 0 ? 'Yes' : 'No')
-            //],
-            //[
-            //    'attribute' => 'show_hits',
-            //    'label' => 'Show Hits',
-            //    'value' => ($model->show_hits > 0 ? 'Yes' : 'No')
-            //],
-            //[
-            //    'attribute' => 'show_rating',
-            //    'label' => 'Show Rating',
-            //    'value' => ($model->show_rating > 0 ? 'Yes' : 'No')
-            //],
-            //[
-            //    //'attribute' => 'content_type_id',
-            //    'label' => 'Content Type',
-            //    'value' => $model->contentType->title
-            //],
-            'ordering',
-            'publish_up:date',
-            'publish_down:date',
+            // 'id',
+            //'title',
+            'intro_image:text:Image',
+            'full_text:url:Link Target',
+            // [
+            //     'attribute' => 'full_text',
+            //     'label' => 'Link Target',
+            //     'value' => $model->full_text//Url::toRoute($model->full_text)
+            // ],
+            //'ordering',
             [
                 'attribute' => 'status',
                 'label' => 'Status',
                 'value' => ($model->status > 0 ? 'Published' : 'Unpublished')
             ],
-            'created_at:datetime',
-            'updated_at:datetime',
+            'publish_up:date',
+            'publish_down:date',
             [
                 'attribute' => 'created_by',
                 'label' => 'Created by',
@@ -119,6 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'value' => print_r($model->createdByUser, true),
                 'value' => ($model->createdByUser !== null ? $model->createdByUser->username : 'N/A'),
             ],
+            'created_at:date',
             [
                 'attribute' => 'updated_by',
                 'label' => 'Updated by',
@@ -126,6 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'value' => print_r($model->updatedByUser, true),
                 'value' => ($model->updatedByUser !== null ? $model->updatedByUser->username : 'N/A'),
             ],
+            'updated_at:date',
         ],
     ]) ?>
 

@@ -7,19 +7,18 @@ $this->title = 'Marketing Materials';
 $this->params['breadcrumbs'][] = ['label'=> 'Professionals', 'url' => Url::toRoute(['professional/index'])];
 $this->params['breadcrumbs'][] = Html::encode($this->title);
 
-$docRootURL = Yii::$app->urlManager->createUrl('web');
 ?>
 <div class="site-software">
        
     <h1><?= $this->title; ?></h1>
-    <img src="<?= Yii::$app->homeUrl; ?>img/professionals/banner-marketing.jpg" class="img-responsive" align="center" width="1140">
+    <img src="https://cdn.auditiva.us/professionals/banner-marketing.jpg" class="img-responsive" align="center" width="1140">
     
     <p>&nbsp;</p>
     <div class="col-lg-6">
         <h3>Graphic Standards</h3>
         Download the following by right-click, "Save As":
         <ul>
-            <li><a href="<?= $docRootURL ?>/media/marketing/Auditiva-GraphicStandardsManual-v20160126.pdf" target="_blank">Graphic Standards Manual (2016-01-26)</a></li>
+            <li><a href="https://cdn.auditiva.us/marketing/Auditiva-GraphicStandardsManual-v20160126.pdf" target="_blank">Graphic Standards Manual (2016-01-26)</a></li>
         </ul>
     </div>
     
@@ -28,17 +27,18 @@ $docRootURL = Yii::$app->urlManager->createUrl('web');
         Click on a link below to download zip compressed archive of our product and company logos 
         (formats include: eps, jpg, tif for both b&w and color)
         <ul>
-        <?php
-            $files = array();
-            $folders = array();
-            $targeturl = $docRootURL."/media/marketing/product-logos";
-            getFileAndFolderList($targeturl, "zip", $files, $folders);
-            //echo "<br><pre>" . print_r($files, true) . "</pre><p>"; 
-            
-            foreach($files as $file) {
-                echo '<li><a href="' . $targeturl . '/' . $file . '">' . substr($file, 0, -4) . '</a></li>';
-            }
-        ?>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/Analog-Plus-Logo.zip">Analog-Plus-Logo</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/Arco-Logo.zip">Arco-Logo</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/Boost-Logo.zip">Boost-Logo</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/BTE 278-Logo.zip">BTE 278-Logo</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/D55-Logo.zip">D55-Logo</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/D60 DP60-Logo.zip">D60 DP60-Logo</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/D65-Logo.zip">D65-Logo</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/Intuir-Logo.zip">Intuir-Logo</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/Ligero-Logo.zip">Ligero-Logo</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/Opti2-Logo.zip">Opti2-Logo</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/Veloz-Logo.zip">Veloz-Logo</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-logos/Zirc-Logo.zip">Zirc-Logo</a></li>
         </ul>
     </div>
     
@@ -46,17 +46,11 @@ $docRootURL = Yii::$app->urlManager->createUrl('web');
         <h3>Product Brochures</h3>
         Click on a link below to download a pdf of our latest product brochure
         <ul>
-        <?php
-            $files = array();
-            $folders = array();
-            $targeturl = $docRootURL."/media/marketing/product-brochures";
-            getFileAndFolderList($targeturl, "pdf", $files, $folders);
-            //echo "<br><pre>" . print_r($files, true) . "</pre><p>"; 
-            
-            foreach($files as $file) {
-                echo '<li><a href="' . $targeturl . '/' . $file . '">' . ucwords(substr($file, 0, -4)) . '</a></li>';
-            }
-        ?>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-brochures/Boost Brochure-es.pdf">Boost Brochure-es</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-brochures/Fino RIC Brochure-es.pdf">Fino RIC Brochure-es</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-brochures/Intuir Brochure-es.pdf">Intuir Brochure-es</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-brochures/Ligero Brochure-es.pdf">Ligero Brochure-es</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-brochures/Veloz Brochure-es.pdf">Veloz Brochure-es</a></li>
         </ul>
     </div>
     
@@ -65,81 +59,14 @@ $docRootURL = Yii::$app->urlManager->createUrl('web');
         Click on a link below to download zip compressed archive of our product and company images
         (formats include: jpg)
         <ul>
-        <?php
-            $files = array();
-            $folders = array();
-            $targeturl = $docRootURL."/media/marketing/product-images";
-            getFileAndFolderList($targeturl, "zip", $files, $folders);
-            //echo "<br><pre>" . print_r($files, true) . "</pre><p>"; 
-            
-            foreach($files as $file) {
-                echo '<li><a href="' . $targeturl . '/' . $file . '">' . ucwords(substr($file, 0, -4)) . '</a></li>';
-            }
-        ?>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-images/Battery Photos.zip">Battery Photos</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-images/BTE Photos.zip">BTE Photos</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-images/CIC Photos.zip">CIC Photos</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-images/IIC Photos.zip">IIC Photos</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-images/ITC Photos.zip">ITC Photos</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-images/ITE Photos.zip">ITE Photos</a></li>
+            <li><a href="https://cdn.auditiva.us/en/marketing/product-images/Veloz Photos.zip">Veloz Photos</a></li>  
         </ul>
-    </div>
-    
-    <div class="col-lg-6">
-        <?php //echo Html::a('<i class="glyphicon glyphicon-picture d-icon"></i>' . ' Browse', 
-              //Yii::$app->params['companyWebsite'] ."/download/marketing-assets/filemanager/dialog.php?type=0&editor=mce_0", 
-              //['class'=>'btn btn-warning', 'target' => '_blank']) 
-        ?>
     </div>
 
 </div>
-
-<?php
-//-------------------------------------------------------------------------------------------------
-// description: Get file and folder list for the specified path (filtered by the specified extension).
-//              Eg: 
-//                $files = array();
-//                $folders = array();
-//                getFileAndFolderList("/catalog", "pdf", $files, $folders);
-//                echo "<br><pre>" . print_r($files, true) . "</pre><p>"; 
-// parameters : $atargeturl (no trailing slash), $aFileType (no leading dot), $Files_Result (output array), $Folders_Result (output array)
-// return     : void
-//-------------------------------------------------------------------------------------------------
-function getFileAndFolderList($atargeturl, $aFileType, &$Files_Result, &$Folders_Result)
-{
-    clearstatcache();
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-    
-    $Folders_Result = array();
-    $Files_Result   = array();
-    if (is_dir($_SERVER["DOCUMENT_ROOT"] . $atargeturl)) {
-        $dirhandle = opendir($_SERVER["DOCUMENT_ROOT"] . $atargeturl);
-        
-        for($i=0; (($file = readdir($dirhandle)) !== false); $i++) {
-            if ($file != "." and $file != "..") {
-                if (is_file($file)) {
-                    $ext = pathinfo($file, PATHINFO_EXTENSION);
-                    //$filename = pathinfo($file, PATHINFO_FILENAME); 
-                    if ($ext == $aFileType) {
-                        $Files_Result[] = $file;
-                    }
-                } else if (is_dir($file)) {
-                    $Folders_Result[] = $file;
-                } else if (is_link($file)) {
-                    $Folders_Result[] = $file;
-                } else {
-                    $ext = pathinfo($file, PATHINFO_EXTENSION);
-                    if ($ext == $aFileType) {
-                        $Files_Result[] = $file;
-                    }
-                }
-            }
-        }
-        closedir($dirhandle);
-        
-        // sort, just in case
-        if (defined('SORT_NATURAL')) { // supported in PHP 5.4.0 or newer only
-            if (isset($Files_Result))   { sort($Files_Result,   SORT_NATURAL | SORT_FLAG_CASE); }
-            if (isset($Folders_Result)) { sort($Folders_Result, SORT_NATURAL | SORT_FLAG_CASE); }
-        } else {
-            if (isset($Files_Result))   { sort($Files_Result,   SORT_STRING); }
-            if (isset($Folders_Result)) { sort($Folders_Result, SORT_STRING); }
-        }
-    }
-}
-?>

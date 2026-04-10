@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -10,30 +11,14 @@ $this->title = Yii::$app->params['companyNameShort'];
 <div class="site-index">
     <!-- Carousel -->
     <?php
-        // Carousel
-        //$images=[
-        //    '<img src="' . Yii::$app->homeUrl . 'img/frontpage/slide-1.jpg"/>', 
-        //    '<img src="' . Yii::$app->homeUrl . 'img/frontpage/slide-2.jpg"/>',
-        //    '<img src="' . Yii::$app->homeUrl . 'img/frontpage/slide-3.jpg"/>',
-        //    [   // Slide 4 with custom content
-        //        'content' => '<img src="' . Yii::$app->homeUrl . 'img/frontpage/slide-4.jpg"/>',
-        //        //'caption' => '<h1>This is title</h1><p>This is the caption text</p>',
-        //        //'caption' => '<a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Learn More...</a>',
-        //        'options' => [],
-        //    ]
-        //];
-        //echo yii\bootstrap\Carousel::widget(['items'=>$images]);
-        
-        $images=[];
-        foreach ($modelsCarousel as $model) {
-            $images[] = [   // Slide with custom content
-                'content' => '<img src="' . Yii::$app->homeUrl . 'media/' . $model['intro_image'] . '"/>',
-                //'caption' => '<h1>This is title</h1><p>This is the caption text</p>',
-                //'caption' => '<a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Learn More...</a>',
-                //'caption' => '<h1 style="color: black">'.$model['title'].'</h1><p style="color: black; background-color: pink;">'.$model['intro_text'].'</p>',
-                'options' => [],
+        $images = ArrayHelper::getColumn($modelsCarousel, function ($slide) {
+            return [
+                'content' => (!empty($slide['full_text']))
+                     ? Html::a(Html::img(Yii::$app->formatter->asS3Url($slide['intro_image'])), $slide['full_text'])
+                     : Html::img(Yii::$app->formatter->asS3Url($slide['intro_image'])),
             ];
-        }
+        });
+
         echo yii\bootstrap\Carousel::widget([
             'items'=>$images,
             'showIndicators' => true,
@@ -57,8 +42,9 @@ $this->title = Yii::$app->params['companyNameShort'];
                 if (!empty($model['intro_image'])) {
                     $imgData .= "<div class='col-lg-6 col-md-6 col-sm-6'>\n";
                     $imgData .= '<div class="media-' . $model['main_image_float'] . '">';
+
                     // Link intro image to article (if available)
-                    $imgThumb = Html::img(Yii::$app->homeUrl.'media/'.$model['intro_image'], [
+                    $imgThumb = Html::img(Yii::$app->formatter->asS3Url($model['intro_image']), [
                         //'align' => $model['intro_image_float'], 
                         'style' => "margin: 10px; width: 67%; float: " . $model['intro_image_float'],
                         //'class' => "img-thumbnail", // "img-rounded", "img-circle", or comment out for None
@@ -90,12 +76,6 @@ $this->title = Yii::$app->params['companyNameShort'];
                 }
                 echo "</div>\n";
                 
-                //if (!empty($model['intro_image'])) {
-                //    echo " <td>\n";
-                //    echo '  <img src="' . Yii::$app->homeUrl . 'media/' . $model['intro_image'] . '" class="img-thumbnail" width="500"/>';
-                //    echo " </td>\n";
-                //}
-                
                 // Image (Right)
                 if ($model['intro_image_float'] === 'right') {
                     echo $imgData;
@@ -114,7 +94,7 @@ $this->title = Yii::$app->params['companyNameShort'];
 
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <img class="img-circle" src="<?= Yii::$app->homeUrl; ?>img/frontpage/frontpage-consumers.png" alt="Generic placeholder image" style="width: 350px;">
+                <img class="img-circle" src="https://cdn.auditiva.us/frontpage/frontpage-consumers.png" alt="Hearing aid usrs getting coffee" style="width: 350px;">
                 <h2>For Consumers</h2>
 
                 <p>Available Treatment and Care</p>
@@ -122,7 +102,7 @@ $this->title = Yii::$app->params['companyNameShort'];
                 <p><a class="btn btn-success" href="<?= Url::to(['content/index', 'category' => 'consumers']); ?>">Learn More</a></p>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <img class="img-circle" src="<?= Yii::$app->homeUrl; ?>img/frontpage/frontpage-products.png" alt="Generic placeholder image" style="width: 350px;">
+                <img class="img-circle" src="https://cdn.auditiva.us/frontpage/frontpage-products.png" alt="Assorted hearing aids" style="width: 350px;">
                 <h2>Our Products</h2>
 
                 <p>From Custom to Open Fit</p>
@@ -130,7 +110,7 @@ $this->title = Yii::$app->params['companyNameShort'];
                 <p><a class="btn btn-success" href="<?= Url::to(['content/index', 'category' => 'products']); ?>">Learn More</a></p>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <img class="img-circle" src="<?= Yii::$app->homeUrl; ?>img/frontpage/frontpage-professionals.png" alt="Generic placeholder image" style="width: 350px;">
+                <img class="img-circle" src="https://cdn.auditiva.us/frontpage/frontpage-professionals.png" alt="Dispenser using computer" style="width: 350px;">
                 <h2>For Professionals</h2>
 
                 <p>Experience the <?= Yii::$app->params['companyNameShort'] ?> Difference</p>

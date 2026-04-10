@@ -57,8 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     // Image (Left/Right)
     if (!empty($model['main_image']) && $model['show_image']) {
-        //echo Html::img(Yii::$app->homeUrl.'media/'.$model['main_image'], [
-        echo Html::img(Yii::$app->urlManager->createUrl('').'media/'.$model['main_image'], [
+        echo Html::img(Yii::$app->formatter->asS3Url($model['main_image']), [
             'align' => $model['main_image_float'], 
             //'width' => '1100', 
             'style' => "margin: 20px; max-width: 1100px",

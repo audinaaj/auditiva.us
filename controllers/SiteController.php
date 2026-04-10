@@ -7,6 +7,8 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\auth\CompositeAuth;
 
 use app\models\ContactForm;
 use app\models\ContactUsForm;

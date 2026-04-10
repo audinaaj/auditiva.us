@@ -36,9 +36,11 @@ date_default_timezone_set('America/New_York');
             'id',
             [
                 'attribute' => 'title',
+                'label' => 'Content',
                 'format' => ['raw'],
                 'value' => function($data) {
-                    return Html::a(Html::encode($data['title']), Url::toRoute(['carousel-view', 'id' => $data['id']]));  // link to view record
+                    return Html::a(Html::encode($data['title']), Url::toRoute(['carousel-view', 'id' => $data['id']])) .
+                        Html::img(Yii::$app->formatter->asS3Url($data['intro_image']), ['style' => 'width: 240px;']);
                 },
                 'enableSorting' => true,
             ],

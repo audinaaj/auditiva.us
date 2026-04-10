@@ -50,7 +50,7 @@ class ProfessionalController extends Controller
                         'allow' => true,
                         'actions' => [
                             'marketing-materials', 'printable-forms', 'product-overview', 
-                            'product-specs-external', 'product-specs', 'technical-manual',
+                            'product-specs', 'technical-manual',
                         ],
                         'roles' => ['@'],  // @ = Authenticated users
                     ],
@@ -119,34 +119,16 @@ class ProfessionalController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    
-    public function actionProductSpecs($showall=0, $style='All', $IsVisibleProductFilter=1)
+
+    public function actionProductSpecs($showall=0, $style='All')
     {
-        $DS = DIRECTORY_SEPARATOR;
-        //$dir     = Yii::$app->basePath . $DS . 'web' . $DS . 'media' . $DS . 'catalog';
-        $dir     = str_replace('frontend', 'backend', Yii::$app->basePath) . $DS . 'web' . $DS . 'media' . $DS . 'catalog';
-        $files   = array();
-        $folders = array();
-        $this->GetFileAndFolderList($dir, "pdf", $files, $folders);
-        
-        //$FilterByStyle  = (isset($_GET['style']) ? $_GET['style'] : 'All');
         $FilterByStyle  = (isset($style) ? $style : 'All');
         $ShowAllProducts = (isset($showall) && ($showall == 1) ? true : false);
-        //$IsVisibleProductFilter = (isset($_GET['ShowProductFilter']) ? $_GET['ShowProductFilter'] : true);
-        //$this->GenFileListTable("/catalog", $files, $ShowAllProducts /* show current & deprecated products? */, $FilterByStyle);
     
         return $this->render('product-specs', [
-                'files'                  => $files,
-                'dir'                    => $dir,
                 'ShowAllProducts'        => $ShowAllProducts,
                 'FilterByStyle'          => $FilterByStyle,
-                'IsVisibleProductFilter' => $IsVisibleProductFilter,
             ]);
-    }
-    
-    public function actionProductSpecsExternal()
-    {
-        return $this->render('product-specs');
     }
     
     public function actionSoftware()
@@ -244,7 +226,7 @@ class ProfessionalController extends Controller
     public function actionCableReferenceAjax()
     {
         $output = '';
-        $docRootURL = Yii::$app->urlManager->createUrl('');
+        $docRootURL = 'https://cdn.auditiva.us'; //Yii::$app->urlManager->createUrl('');
 
         // Init AJAX data
         $found = [
@@ -286,9 +268,9 @@ class ProfessionalController extends Controller
             $output .= '<tr><td><b>Notes:      </b></td><td>' . $found['notes']      . '</td></tr>';
             //$output .= '<p>&nbsp;</p>';
             $output .= '</table>';
-            $output .= '<img src="' . $docRootURL . 'media/reference/' . $found['housing-image']    .'"  alt="Product Image"    class="img-thumbnail img-responsive" style="height: 150px">';
-            $output .= '<img src="' . $docRootURL . 'media/reference/' . $found['connection-image'] .'"  alt="Connection Image" class="img-thumbnail img-responsive" style="height: 150px">';
-            $output .= '<img src="' . $docRootURL . 'media/reference/' . $found['cable-image']      .'"  alt="Cable Image"      class="img-thumbnail img-responsive" style="height: 150px">';
+            $output .= '<img src="' . $docRootURL . '/reference/' . $found['housing-image']    .'"  alt="Product Image"    class="img-thumbnail img-responsive" style="height: 150px">';
+            $output .= '<img src="' . $docRootURL . '/reference/' . $found['connection-image'] .'"  alt="Connection Image" class="img-thumbnail img-responsive" style="height: 150px">';
+            $output .= '<img src="' . $docRootURL . '/reference/' . $found['cable-image']      .'"  alt="Cable Image"      class="img-thumbnail img-responsive" style="height: 150px">';
         }
         return $output;
     }

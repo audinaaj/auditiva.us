@@ -1,8 +1,6 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
-//use app\assets\AppAsset;
-//MyComponentAsset::register($this);  // $this represents the view object
 
 /* @var $this yii\web\View */
 $this->title = Yii::t('app', 'International');
@@ -12,14 +10,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-international">
 
 <h1><?= Html::encode($this->title) ?></h1>
-<!-- <img src="<?= Yii::$app->homeUrl; ?>img/aboutus/international.jpg" align="center" width="1140"> -->
 
 <div id="world-map" style="width: 1140px; height: 400px"></div>
 <?php 
-  //$jsBlock = '$(function(){
-  //    $("#world-map").vectorMap();
-  //});';
-  
   $jsBlock = '$("#world-map").vectorMap({
       map: "world_mill_en",
       backgroundColor: "#C8EEFF",

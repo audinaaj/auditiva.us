@@ -67,17 +67,9 @@ foreach ($models as $model) {
     $imgData = '';
     if (!empty($model['intro_image'])) {
         $imgData = '<div class="media-' . $model['main_image_float'] . ' col-lg-4 col-xs-12">';
-        // Link intro image to main article image
-        //if (!empty($model['main_image'])) {
-        //    $imgMain  = Yii::$app->homeUrl.'media/'.$model['main_image'];
-        //} else {
-        //    $imgMain  = '#';
-        //}
-        //$imgThumb = Html::img(Yii::$app->homeUrl.'media/'.$model['intro_image'], ['align' => $model['intro_image_float'], 'width' => '250']);
-        //$imgData .= Html::a($imgThumb, $imgMain);
 
         // Link intro image to article (if available)
-        $imgThumb = Html::img(Yii::$app->homeUrl.'media/'.$model['intro_image'], [
+        $imgThumb = Html::img(Yii::$app->formatter->asS3Url($model['intro_image']), [
             'align' => $model['intro_image_float'], 
             'style' => "margin: 10px; width: 100%",
             'class' => "img-responsive img-thumbnail" // "img-rounded", "img-circle"

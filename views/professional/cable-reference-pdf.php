@@ -204,7 +204,7 @@ function getCablesMatrixTable($arrData)
 //---------------------------------------------------------------------------------------------
 function getCablesTable($dataCables)
 {
-    $docRootURL = Yii::$app->urlManager->createUrl('');
+    $docRootURL = 'https://cdn.auditiva.us'; //Yii::$app->urlManager->createUrl('');
     
     $content  = '<h1>Cables</h1>';
     $content .= '<table cellspacing="0" cellpadding="5" border="1">';
@@ -218,7 +218,7 @@ function getCablesTable($dataCables)
     foreach($dataCables as $row) {
         $content .= "<tr>";
         $content .= "  <td><h3>".getCableLabel($row['name'])."</h3></td>";
-        $content .= "  <td><img src=\"".$docRootURL."media/reference/{$row['image']}\" class='img-responsive' align='center' width='150'></td>";
+        $content .= "  <td><img src=\"".$docRootURL."/reference/{$row['image']}\" class='img-responsive' align='center' width='150'></td>";
         $content .= "  <td>{$row['compatible']}</td>";
         $content .= "  <td>{$row['notes']}</td>";
         $content .= "</tr>";
@@ -235,7 +235,7 @@ function getCablesTable($dataCables)
 //---------------------------------------------------------------------------------------------
 function getConnectorsTable($dataConnectors)
 {
-    $docRootURL = Yii::$app->urlManager->createUrl('');
+    $docRootURL = 'https://cdn.auditiva.us'; //Yii::$app->urlManager->createUrl('');
     
     $content  = '<h1>Connectors</h1>';
     $content .= '<table cellspacing="0" cellpadding="5" border="1">';
@@ -248,7 +248,7 @@ function getConnectorsTable($dataConnectors)
     foreach($dataConnectors as $row) {
         $content .= "<tr>";
         $content .= "  <td>{$row['name']}</td>";
-        $content .= "  <td><img src=\"".$docRootURL."media/reference/{$row['image']}\" class='img-responsive' align='center' width='150'></td>";
+        $content .= "  <td><img src=\"".$docRootURL."/reference/{$row['image']}\" class='img-responsive' align='center' width='150'></td>";
         $content .= "  <td>{$row['notes']}</td>";
         $content .= "</tr>";
     }
@@ -264,7 +264,7 @@ function getConnectorsTable($dataConnectors)
 //---------------------------------------------------------------------------------------------
 function getProgrammingBoxTable($dataProgBox)
 {
-    $docRootURL = Yii::$app->urlManager->createUrl('');
+    $docRootURL = 'https://cdn.auditiva.us'; //Yii::$app->urlManager->createUrl('');
     
     $content  = '<h3>Programmers</h3>';
     $content .= '<table cellspacing="0" cellpadding="5" border="1">';
@@ -277,8 +277,8 @@ function getProgrammingBoxTable($dataProgBox)
     foreach($dataProgBox as $row) {
         $content .= "<tr>";
         $content .= "  <td>{$row['name']}</td>";
-        $content .= '  <td><img src="' . $docRootURL . 'media/reference/'.$row['prog-box-image']   . '" class="img-responsive" align="center" width="140"></td>';
-        $content .= '  <td><img src="' . $docRootURL . 'media/reference/'.$row['data-cable-image'] . '" class="img-responsive" align="center" width="140">'.$row['notes'].'</td>';
+        $content .= '  <td><img src="' . $docRootURL . '/reference/'.$row['prog-box-image']   . '" class="img-responsive" align="center" width="140"></td>';
+        $content .= '  <td><img src="' . $docRootURL . '/reference/'.$row['data-cable-image'] . '" class="img-responsive" align="center" width="140">'.$row['notes'].'</td>';
         $content .= '</tr>';
     }
     $content .= '</table>';
@@ -292,7 +292,7 @@ function getProgrammingBoxTable($dataProgBox)
 //---------------------------------------------------------------------------------------------
 function getHousingTable($dataHousings)
 {
-    $docRootURL = Yii::$app->urlManager->createUrl('');
+    $docRootURL = 'https://cdn.auditiva.us'; //Yii::$app->urlManager->createUrl('');
     
     $content  = '<h3>Housings</h3>';
     $content .= '<table cellspacing="0" cellpadding="5" border="1">';
@@ -310,8 +310,8 @@ function getHousingTable($dataHousings)
         $content .= "<tr>";
         $content .= "  <td>{$row['name']}</td>";
         $content .= "  <td>{$row['type']}</td>";
-        $content .= '  <td><img src="' . $docRootURL . 'media/reference/'.$row['image']            . '" class="img-responsive" align="center" width="120"></td>';
-        $content .= '  <td><img src="' . $docRootURL . 'media/reference/'.$row['connection-image'] . '" class="img-responsive" align="center" width="120"></td>';
+        $content .= '  <td><img src="' . $docRootURL . '/reference/'.$row['image']            . '" class="img-responsive" align="center" width="120"></td>';
+        $content .= '  <td><img src="' . $docRootURL . '/reference/'.$row['connection-image'] . '" class="img-responsive" align="center" width="120"></td>';
         $content .= "  <td>{$row['cable']}</td>";
         $content .= "  <td>{$row['connector']}</td>";
         $content .= "  <td>{$row['notes']}</td>";

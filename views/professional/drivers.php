@@ -7,6 +7,36 @@ use app\models\User;
 $this->title = 'Drivers';
 $this->params['breadcrumbs'][] = ['label'=> 'Professionals', 'url' => Url::toRoute(['professional/index'])];
 $this->params['breadcrumbs'][] = Html::encode($this->title);
+
+// get files from s3 drivers/
+$s3 = Yii::$app->get('s3');
+$file_list = $s3->commands()->list('drivers/')->execute();
+
+$files = [];
+if (!empty($file_list['Contents'])) {
+    // Filter to only files directly in /drivers/ (not in subfolders)
+    $filtered_files = array_filter(
+        $file_list['Contents'],
+        function($file) {
+            $key = $file['Key'];
+            // Not a directory (doesn't end with /)
+            if (substr($key, -1) === '/') {
+                return false;
+            }
+            // Get filename part (after 'drivers/')
+            $filename = substr($key, strlen('drivers/'));
+            // No subdirectories (no additional slashes)
+            if (strpos($filename, '/') !== false) {
+                return false;
+            }
+            return true;
+        }
+    );
+
+    // Extract just the filenames and reindex
+    $files = array_values(array_map(fn($f) => basename($f['Key']), $filtered_files));
+}
+
 ?>
 <div class="site-drivers">
        
@@ -14,24 +44,19 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
 
     <div class="row">
         <div class="col-md-12">
-            <ul>
-                <li><a href="https://cdn.auditiva.us/drivers/Belkin-USBSerialAdapter-Driver-F5U109-v2.05.120705-win7-win8-64bit.exe">Belkin-USBSerialAdapter-Driver-F5U109-v2.05.120705-win7-win8-64bit.exe</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/Cablemax-usb-serial-adapter-Win2K.XP.Vista.7-drv2.08.02.exe">Cablemax-usb-serial-adapter-Win2K.XP.Vista.7-drv2.08.02.exe</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/EMiniTec-Win7-Win8-Win10-drv-2.12.28.zip">EMiniTec-Win7-Win8-Win10-drv-2.12.28.zip</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/Gigaware-USB-A-SerialAdapter-Drivers-20080625-v2600949.exe">Gigaware-USB-A-SerialAdapter-Drivers-20080625-v2600949.exe</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/Gigaware-USB-A-SerialAdapter-Drivers-20080625-v2600949.exe">Gigaware-USB-A-SerialAdapter-Drivers-20080625-v2600949.exe</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/HI-PRO-4.0-Installation-2012-WinXP-WinVista-Win7.zip">HI-PRO-4.0-Installation-2012-WinXP-WinVista-Win7.zip</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/Keyspan-USA19HS-driver-3.7S-Win7.exe">Keyspan-USA19HS-driver-3.7S-Win7.exe</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/ProgBox-Drivers-setup-2014-0311.exe">ProgBox-Drivers-setup-2014-0311.exe</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/Prolific_PL2303_DriverInstaller_v1.5.0.exe">Prolific_PL2303_DriverInstaller_v1.5.0.exe</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/Prolific_Win8_x64_x86.zip">Prolific_Win8_x64_x86.zip</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/Sabrent-USB-Serial-FTDI-driver-CDM20814_Setup.zip">Sabrent-USB-Serial-FTDI-driver-CDM20814_Setup.zip</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/Sabrent-USB-Serial-Prolific-driver-Windows.zip">Sabrent-USB-Serial-Prolific-driver-Windows.zip</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/Staples-USB-Serial-Adapter-driver-18762_32bit-64bit_setup.exe">Staples-USB-Serial-Adapter-driver-18762_32bit-64bit_setup.exe</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/Staples-USB-Serial-Adapter-driver-18815_64bit_setup.exe">Staples-USB-Serial-Adapter-driver-18815_64bit_setup.exe</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/TRENDnet-TU-S9-driver-v1.33-winmac.zip">TRENDnet-TU-S9-driver-v1.33-winmac.zip</a></li>
-                <li><a href="https://cdn.auditiva.us/drivers/TRENDnet-TU-S9-driver-v2.0R-win7.zip">TRENDnet-TU-S9-driver-v2.0R-win7.zip</a></li>
-            </ul>
+            <?php
+                if (empty($files)) {
+                    echo '<p>No drivers available at this time.</p>';
+                } else {
+                    echo '<ul>';
+                    foreach ($files as $file) {
+                        // prevent hotlinking by generating a presigned URL that expires in 1 hour
+                        $signedUrl = $s3->commands()->getPresignedUrl('drivers/'.$file)->execute();
+                        echo '<li><a href="'.$signedUrl.'">'.Html::encode($file).'</a></li>';
+                    }
+                    echo '</ul>';
+                }
+            ?>
         </div>
     </div>
 </div>

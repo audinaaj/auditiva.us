@@ -48,21 +48,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'intro_image',
                 'label'     => 'Image',
-                //--- No image size limit ---
-                //'format'  => 'image',
-                //'value'   => (!empty($model->intro_image) ? Yii::$app->urlManager->createUrl('').'media/'.$model->intro_image : ''),
-                //--- Add image size limit ---
                 'format'    => 'raw',
-                'value'     => '<img src="'.(!empty($model->intro_image) ? Yii::$app->urlManager->createUrl('').'media/'.$model->intro_image : '').'" style="width: 700px;"/>'
+                'value'     => '<img src="'.(!empty($model->intro_image) ? Yii::$app->formatter->asS3Url($model->intro_image) : '').'" style="width: 700px;"/>'
             ],
             'intro_image_float',
             'main_image',
             [
                 'attribute' => 'main_image',
-                //'label' => 'Main Image',
-                //'value' => (!empty($model->main_image) ? Yii::$app->params['frontendUrl'].'/media/'.$model->main_image : ''),
-                //'value' => (!empty($model->main_image) ? Yii::$app->urlManager->createUrl('').'/media/'.$model->main_image : ''),
-                'value' => (!empty($model->main_image) ? Yii::$app->urlManager->createUrl('').'media/'.$model->main_image : ''),
+                'value' => (!empty($model->main_image) ? Yii::$app->formatter->asS3Url($model->main_image) : ''),
                 'format' => 'image',
             ],
             'main_image_float',
