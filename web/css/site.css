@@ -171,8 +171,31 @@ a.desc:after {
     text-decoration: none;
 }
 
-/* 
-.media-body {
-    width: 10000px;
+.auditiva-tooltip {
+    font-size: 14px;
+    opacity: 1 !important;
 }
-*/
+
+.auditiva-tooltip .tooltiptext {
+    visibility: hidden;
+    text-align: center;
+    min-width: 200px;
+    border-radius: 4px;
+    padding: 5px 10px;
+    background-color: #546351;
+    color: #fff;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    /*top: -5px;
+    left: 101%;*/
+}
+
+.auditiva-tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.panel-heading {
+    font-size: 24px;
+}

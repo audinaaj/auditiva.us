@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
 
 ?>
 
-<div class="site-ezfit-password">
+<div class="site-fitpro-password">
        
     <h1><?= $this->title; ?></h1>
     
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                 <div class="panel-body">
                     <div class="list-group">
                         <?php Pjax::begin(); ?>
-                        <?= $this->render('ezfit-password-table', ['days' => 30, 'version' => UtilsFitpro::EZFIT_5]); ?>
+                        <?= $this->render('fitpro-password-table', ['days' => 30, 'version' => UtilsFitpro::FITPRO_5]); ?>
                         <?php Pjax::end(); ?>
                     </div>
                     
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                 <div class="panel-body">
                     <div class="list-group">
                         <?php Pjax::begin(); ?>
-                        <?= $this->render('ezfit-password-table', ['days' => 30, 'version' => UtilsFitpro::EZFIT_4]); ?>
+                        <?= $this->render('fitpro-password-table', ['days' => 30, 'version' => UtilsFitpro::FITPRO_4]); ?>
                         <?php Pjax::end(); ?>
                     </div>
                 </div>

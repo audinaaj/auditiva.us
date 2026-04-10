@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\User;
+use app\models\UtilsFitpro;
 
 /* @var $this yii\web\View */
 $this->title = 'Software';
@@ -19,8 +20,8 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
     
         <div class="col-md-4">
             <div class="panel panel-default">
+                <div class="panel-heading">fitPRO 2022</div>
                 <div class="panel-body">
-                    <h3>fitPRO <?= '2022';//date('Y') ?></h3>
                     <p>For fitting and programming all the latest <?= Yii::$app->params['companyNameShort'] ?> products.<!-- It includes:
                       <ul>
                       <li>Stand-alone.</li>
@@ -77,8 +78,8 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
 
         <div class="col-md-4">
             <div class="panel panel-default">
+                <div class="panel-heading">fitPRO for Legacy Products</div>
                 <div class="panel-body">
-                    <h3>fitPRO for Legacy Products</h3>
                     <p>For programming older products (sold before 2011) that have been discontinued.<!-- It includes:
                       <ul>
                       <li>Stand-alone.</li>
@@ -99,8 +100,8 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
         
         <div class="col-md-4">
             <div class="panel panel-default">
+                <div class="panel-heading">Cable Reference</div>
                 <div class="panel-body">
-                    <h3>Cable Reference</h3>
                     <p>For programmable products using fitPRO, you must select the correct cable and connector for the product. </p> 
                     <?= Html::a('<i class="glyphicon glyphicon-info-sign d-icon"></i>' . ' View Cable Reference', 
                          ['cable-reference'], ['class'=>'btn btn-default btn-block']) 
@@ -108,10 +109,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                 </div>
             </div>
         </div>
-    
     </div>
-    
-    <hr/>
     
     <div class="row">
         <div class="col-md-6">

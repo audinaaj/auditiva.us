@@ -159,12 +159,12 @@ class ProfessionalController extends Controller
         return $this->render('drivers');
     }
 
-    public function actionFitpro($days = 14, $version = UtilsFitpro::EZFIT_5)
+    public function actionFitpro($days = 14, $version = UtilsFitpro::FITPRO_5)
     {
         if (Yii::$app->request->isAjax) {
-            return $this->renderPartial('ezfit-password-table', ['days' => $days, 'version' => $version]);
+            return $this->renderPartial('fitpro-password-table', ['days' => $days, 'version' => $version]);
         } else {
-            return $this->render('ezfit-password');
+            return $this->render('fitpro-password');
         }
     }
     

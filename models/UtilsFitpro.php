@@ -11,8 +11,8 @@ use yii\base\Model;         // parent for model classes not associated with data
  */
 class UtilsFitpro extends Model
 {
-    const EZFIT_4 = '4';
-    const EZFIT_5 = '5';
+    const FITPRO_4 = '4';
+    const FITPRO_5 = '5';
 
     /**
      * @inheritdoc
@@ -29,7 +29,7 @@ class UtilsFitpro extends Model
      * Example usage:
      *   echo "<tr><td>" . $calcDate->format("Y-m-d") . "</td><td>" . CalcTempUnlockCode($calcDate, 5). "</td></tr>";
      */
-    public static function CalcTempUnlockCode($date, $version = 5)
+    public static function CalcTempUnlockCode($date, $version = self::FITPRO_5)
     {
         $day_of_year = $date->format("z") + 1;
         $year = $date->format("Y");
@@ -38,7 +38,7 @@ class UtilsFitpro extends Model
         return strtoupper(substr(($version == 4) ? $temp_seed : $full_code, 0, 8));
     }
 
-    public static function GetPasswordTable($number_of_days, $version = 5) {
+    public static function GetPasswordTable($number_of_days, $version = self::FITPRO_5) {
         $timezone = new \DateTimeZone('America/New_York');
     
         echo '<table class="table table-striped table-hover" width="100%">';
