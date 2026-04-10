@@ -41,6 +41,19 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                         'success'
                     ) ?>
 
+                    <?php
+                        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role <= User::ROLE_ADMIN)
+                        {
+                            $code = UtilsFitpro::CalcTempUnlockCode(new \DateTimeImmutable("now"));
+                            $tooltip = $code.' <a class="btn btn-default btn-clip" data-clipboard-text="'.$code.'"><i class="glyphicon glyphicon-copy d-icon"></i></a>';
+
+                            echo '<div class="auditiva-tooltip">' .
+                                Html::a("Need a 'Today' code?", ['professional/fitpro']) .
+                                Html::tag('div', $tooltip, ['class' => 'tooltiptext']) .
+                                '</div>';
+                        }
+                    ?>
+
                     <!-- Modal -->
                     <div class="modal fade" id="modalSwReq" tabindex="-1" role="dialog" aria-labelledby="lblModalSwReq">
                       <div class="modal-dialog" role="document">
