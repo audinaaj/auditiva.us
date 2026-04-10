@@ -1,6 +1,10 @@
-FROM yiisoftware/yii2-php:8.3-apache
+FROM yiisoftware/yii2-php:8.4-apache
 
 LABEL org.opencontainers.image.authors="ajdavis@audina.net"
+LABEL org.opencontainers.image.version="0.5.0"
+LABEL org.opencontainers.image.title="Auditiva.us"
+LABEL org.opencontainers.image.url="https://auditiva.us"
+LABEL org.opencontainers.image.source="https://github.com/audinaaj/auditiva.us"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ='America/New_York'
@@ -18,12 +22,9 @@ RUN apt-get purge -y g++ \
 
 WORKDIR /app
 
-# Copy composer files and install dependencies first
-# This layer will be cached if composer.json/composer.lock haven't changed
-COPY composer.json composer.lock* ./
-#RUN composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction \
-#    && composer clear-cache
-RUN composer install --prefer-dist --optimize-autoloader --no-interaction \
+# Copy composer files and install dependencies
+COPY composer.json ./
+RUN composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction \
     && composer clear-cache
 
 # Copy application files

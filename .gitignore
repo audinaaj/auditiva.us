@@ -26,3 +26,4 @@ data-init/
 #config files with secrets
 /config/*-local.php
 .env
+.docker-init-hash
