@@ -37,7 +37,7 @@ class FindProfessionalForm extends ContactForm
             [['productInterests', 'helpType'], 'safe'],
             // email has to be a valid email address
             ['email', 'email'],
-            ['verifyCode', ReCaptchaValidator::className(), 'uncheckedMessage' => 'The verification code is incorrect.'],  // Google reCaptcha
+            ['verifyCode', ReCaptchaValidator::class, 'uncheckedMessage' => 'The verification code is incorrect.'],  // Google reCaptcha
         ];
     }
 

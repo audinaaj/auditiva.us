@@ -21,7 +21,7 @@ use yii\bootstrap\Tabs;
     
     <?= $form->field($model, 'tags')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'intro_text')->widget(letyii\tinymce\Tinymce::className(), [
+    <?= $form->field($model, 'intro_text')->widget(letyii\tinymce\Tinymce::class, [
         'options' => [
             'id' => 'testid',
         ],
@@ -62,7 +62,7 @@ use yii\bootstrap\Tabs;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'full_text')->widget(letyii\tinymce\Tinymce::className(), [
+    <?= $form->field($model, 'full_text')->widget(letyii\tinymce\Tinymce::class, [
             'options' => [
                 'id' => 'testid',
             ],
@@ -124,11 +124,11 @@ use yii\bootstrap\Tabs;
     <?php for($i=0, $order=array(); $i<=100; $i++) { $order[] = $i; } ?>
     <?= $form->field($model, 'ordering')->dropDownList($order) ?>
 
-    <?=  $form->field($model, 'publish_up')->widget(\yii\widgets\MaskedInput::className(), [
+    <?=  $form->field($model, 'publish_up')->widget(\yii\widgets\MaskedInput::class, [
         'mask' => '99/99/9999',
     ]); ?>
 
-    <?=  $form->field($model, 'publish_down')->widget(\yii\widgets\MaskedInput::className(), [
+    <?=  $form->field($model, 'publish_down')->widget(\yii\widgets\MaskedInput::class, [
         'mask' => '99/99/9999',
     ]); ?>
 

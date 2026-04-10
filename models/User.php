@@ -75,13 +75,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at', // OR 'create_time', to override default field name
                 'updatedAtAttribute' => 'updated_at', // OR 'update_time', to override default field name
                 'value' => new \yii\db\Expression('NOW()'),
             ],
             //[
-            //    'class' => BlameableBehavior::className(),
+            //    'class' => BlameableBehavior::class,
             //    'createdByAttribute' => 'created_by',  // OR 'author_id', to override default field name
             //    'updatedByAttribute' => 'updated_by',  // OR 'updater_id', to override default field name
             //],

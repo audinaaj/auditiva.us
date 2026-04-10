@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                 <?php 
                     // Regenerate new captcha after each refresh.
                     $this->context->createAction('captcha')->getVerifyCode(true); 
-                    echo $form->field($model, 'verifyCode')->widget(ReCaptcha::classname())->label(false);
+                    echo $form->field($model, 'verifyCode')->widget(ReCaptcha::class)->label(false);
                 ?>
 
                 <div class="form-group">

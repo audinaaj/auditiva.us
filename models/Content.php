@@ -80,22 +80,22 @@ class Content extends \yii\db\ActiveRecord
         $formattedCurDateTime = date('Y-m-d H:i:s'); // same format as NOW()
         
         return [
-            //TimestampBehavior::className(),  // By default, TimestampBehavior will fill the created_at and updated_at attributes with the current timestamp
-            //BlameableBehavior::className(),  // By default, BlameableBehavior will fill the created_by and updated_by attributes with the current user ID
+            //TimestampBehavior::class,  // By default, TimestampBehavior will fill the created_at and updated_at attributes with the current timestamp
+            //BlameableBehavior::class,  // By default, BlameableBehavior will fill the created_by and updated_by attributes with the current user ID
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at', // OR 'create_time', to override default field name
                 'updatedAtAttribute' => 'updated_at', // OR 'update_time', to override default field name
                 'value' => new \yii\db\Expression('NOW()'),
                 //'value' => new \yii\db\Expression($formattedCurDateTime),
             ],
             [
-                'class' => BlameableBehavior::className(),
+                'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'created_by',  // OR 'author_id', to override default field name
                 'updatedByAttribute' => 'updated_by',  // OR 'updater_id', to override default field name
             ],
             [
-                'class' => SluggableCloneBehavior::className(),//SluggableBehavior::className(),
+                'class' => SluggableCloneBehavior::class,
                 'attribute' => 'title',
                 'slugAttribute' => 'slug',
                 'immutable' => true,
@@ -146,7 +146,7 @@ class Content extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(ContentCategory::className(), ['id' => 'category_id']);
+        return $this->hasOne(ContentCategory::class, ['id' => 'category_id']);
     }
 
     /**
@@ -154,7 +154,7 @@ class Content extends \yii\db\ActiveRecord
      */
     public function getContentType()
     {
-        return $this->hasOne(ContentType::className(), ['id' => 'content_type_id']);
+        return $this->hasOne(ContentType::class, ['id' => 'content_type_id']);
     }
     
     public function getCategories()
@@ -169,7 +169,7 @@ class Content extends \yii\db\ActiveRecord
     
     public function getCreatedByUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
         
         // Alternatively
         //if (($model = User::findOne($this->created_by)) !== null) {
@@ -182,7 +182,7 @@ class Content extends \yii\db\ActiveRecord
     
     public function getUpdatedByUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
 
         // Alternatively
         /*

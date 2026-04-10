@@ -58,12 +58,12 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                 
                 <?php 
                     // Using default Yii2 captcha field
-                    //echo $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+                    //echo $form->field($model, 'verifyCode')->widget(Captcha::class, [
                     //    'captchaAction' => 'site/captcha',  // redirect to correct controller where captcha is defined
                     //    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                     //]) 
                 ?>
-                <?= $form->field($model, 'verifyCode')->widget(ReCaptcha::classname())->label(false); ?>
+                <?= $form->field($model, 'verifyCode')->widget(ReCaptcha::class)->label(false); ?>
 
                 <div class="form-group">
                     <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>

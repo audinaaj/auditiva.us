@@ -18,7 +18,7 @@ use yii\jui\DatePicker;
 
     <div class="col-md-8"><br />
 
-        <?= $form->field($model, 'intro_text')->label('Text')->widget(letyii\tinymce\Tinymce::className(), [
+        <?= $form->field($model, 'intro_text')->label('Text')->widget(letyii\tinymce\Tinymce::class, [
             'options' => [
                 'id' => 'idIntroText',
             ],
@@ -76,7 +76,7 @@ use yii\jui\DatePicker;
     
     <?= $form->field($model,'publish_up', [
             'template' => '{label}<div class="input-group"><span class="input-group-addon glyphicon glyphicon-calendar" aria-hidden="true" onclick="document.getElementById(\'content-publish_up\').select();"></span>{input}</div>'
-        ])->widget(\yii\jui\DatePicker::className(), [
+        ])->widget(\yii\jui\DatePicker::class, [
         'dateFormat' => 'php:Y-m-d',  // 'php:Y-m-d' is the only supported format
         'value' => ($model->isNewRecord ? date("Y-m-d") : $model->publish_up),
         'clientOptions' => [  // Options for JQuery UI widget
@@ -104,7 +104,7 @@ use yii\jui\DatePicker;
     
     <?= $form->field($model,'publish_down', [
             'template' => '{label}<div class="input-group"><span class="input-group-addon glyphicon glyphicon-calendar" aria-hidden="true" onclick="document.getElementById(\'content-publish_down\').select();"></span>{input}</div>'
-        ])->widget(\yii\jui\DatePicker::className(), [
+        ])->widget(\yii\jui\DatePicker::class, [
         'dateFormat' => 'php:Y-m-d',  // 'php:Y-m-d' is the only supported format
         'value' => ($model->isNewRecord ? date("Y-m-d") : $model->publish_down),
         'clientOptions' => [  // Options for JQuery UI widget

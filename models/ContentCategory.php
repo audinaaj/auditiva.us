@@ -57,8 +57,8 @@ class ContentCategory extends \yii\db\ActiveRecord
     public function behaviors()
     {
         //return [
-        //    TimestampBehavior::className(),  // By default, TimestampBehavior will fill the created_at and updated_at attributes with the current timestamp
-        //    BlameableBehavior::className(),  // By default, BlameableBehavior will fill the created_by and updated_by attributes with the current user ID
+        //    TimestampBehavior::class,  // By default, TimestampBehavior will fill the created_at and updated_at attributes with the current timestamp
+        //    BlameableBehavior::class,  // By default, BlameableBehavior will fill the created_by and updated_by attributes with the current user ID
         //];
         
         date_default_timezone_set( 
@@ -67,13 +67,13 @@ class ContentCategory extends \yii\db\ActiveRecord
      
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at', // OR 'create_time', to override default field name
                 'updatedAtAttribute' => 'updated_at', // OR 'update_time', to override default field name
                 'value' => new \yii\db\Expression('NOW()'),
             ],
             [
-                'class' => BlameableBehavior::className(),
+                'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'created_by',  // OR 'author_id', to override default field name
                 'updatedByAttribute' => 'updated_by',  // OR 'updater_id', to override default field name
             ],
@@ -120,16 +120,16 @@ class ContentCategory extends \yii\db\ActiveRecord
      */
     public function getContents()
     {
-        return $this->hasMany(Content::className(), ['category_id' => 'id']);
+        return $this->hasMany(Content::class, ['category_id' => 'id']);
     }
     
     public function getCreatedByUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
     
     public function getUpdatedByUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 }

@@ -123,7 +123,7 @@ use yii\jui\DatePicker;
     $tabPublishing = '<div class="col-md-12"><br />';
     $tabPublishing .= $form->field($model,'publish_up', [
             'template' => '{label}<div class="input-group"><span class="input-group-addon glyphicon glyphicon-calendar" aria-hidden="true" onclick="document.getElementById(\'content-publish_up\').select();"></span>{input}</div>'
-        ])->widget(\yii\jui\DatePicker::className(), [
+        ])->widget(\yii\jui\DatePicker::class, [
         'dateFormat' => 'php:Y-m-d',  // 'php:Y-m-d' is the only supported format
         'value' => ($model->isNewRecord ? date("Y-m-d") : $model->publish_up),
         'clientOptions' => [  // Options for JQuery UI widget
@@ -149,9 +149,9 @@ use yii\jui\DatePicker;
         ],
     ])->hint('Publishing Start Date: When to start publishing this content');
     
-    $tabPublishing .= $form->field($model,'publish_down', [
+    $tabImages .= $form->field($model,'publish_down', [
             'template' => '{label}<div class="input-group"><span class="input-group-addon glyphicon glyphicon-calendar" aria-hidden="true" onclick="document.getElementById(\'content-publish_down\').select();"></span>{input}</div>'
-        ])->widget(\yii\jui\DatePicker::className(), [
+        ])->widget(\yii\jui\DatePicker::class, [
         'dateFormat' => 'php:Y-m-d',  // 'php:Y-m-d' is the only supported format
         'value' => ($model->isNewRecord ? date("Y-m-d") : $model->publish_down),
         'clientOptions' => [  // Options for JQuery UI widget
