@@ -13,20 +13,6 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'App Settings'), 'url
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="app-setting-view">
-
-    <div class="col-lg-12">
-        <?php if(Yii::$app->session->hasFlash('success')): ?>
-            <div class="alert alert-success" role="alert">
-                <?= Yii::$app->session->getFlash('success'); ?>
-            </div>
-        <?php endif; ?>
-        <?php if(Yii::$app->session->hasFlash('error')): ?>
-            <div class="alert alert-danger" role="alert">
-                <?= Yii::$app->session->getFlash('error'); ?>
-            </div>
-        <?php endif; ?>
-    </div>
-    
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>

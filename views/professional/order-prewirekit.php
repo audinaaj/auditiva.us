@@ -22,9 +22,6 @@ for($i=0; $i<=300; $i++) {
 ?>
 
 <div class="professional-order-prewirekit">
-    
-    <?= \app\widgets\Alert::widget() ?>
-    
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>&nbsp;</p>

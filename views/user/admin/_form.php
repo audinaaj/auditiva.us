@@ -11,10 +11,7 @@ use app\models\UtilsProvider;
 ?>
 
 <div class="user-form">
-
     <?php $form = ActiveForm::begin(); ?>
-    
-    <?= app\widgets\Alert::widget() ?>
 
     <?= ($model->isNewRecord || (Yii::$app->user->identity->isAdmin())? $form->field($model, 'username')->textInput(['maxlength' => true]) : $form->field($model, 'username')->textInput(['readonly'=> true])) ?>
     

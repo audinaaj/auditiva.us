@@ -13,9 +13,6 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="distributor-index">
-
-    <?= \app\widgets\Alert::widget() ?>
-    
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

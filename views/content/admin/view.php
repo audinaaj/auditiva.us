@@ -14,9 +14,6 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Contents'), 'url' =>
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="content-view">
-
-    <?= \app\widgets\Alert::widget() ?>
-
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>

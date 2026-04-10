@@ -15,9 +15,6 @@ $this->params['breadcrumbs'][] = ['label' => $shortTitle, 'url' => ['motd-view',
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="content-update">
-
-    <?= \app\widgets\Alert::widget() ?>
-    
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('motd-form', [
