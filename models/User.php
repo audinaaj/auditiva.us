@@ -407,16 +407,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
     
     /**
-     * Requires https://www.yiiframework.com/doc/api/2.0/yii-rbac-managerinterface
-     * return yii\rbac\Role[]  All roles directly assigned to the user. The array is indexed by the role names. 
-     */
-    public function getRbacRole()
-    {
-        return Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());                        // requires authManager
-        //return Yii::$app->authManager->getRolesByUser(User::findByUsername($this->username)->getId());  // requires authManager
-    }
-    
-    /**
      * @return string Get role as label.
      */
     public static function getRoleLabel($aRole)

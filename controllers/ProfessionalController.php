@@ -59,7 +59,10 @@ class ProfessionalController extends Controller
                         'actions' => [ 
                             'create', 'update', 'delete', 'fitpro', 
                         ],
-                        'roles' => ['admin'],  // admin users
+                        'roles' => ['@'],  // admin users
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->identity->role <= \app\models\User::ROLE_ADMIN;
+                        }
                     ],
                 ],
             ],

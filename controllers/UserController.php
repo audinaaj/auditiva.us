@@ -155,21 +155,6 @@ class UserController extends Controller
 
             if ($model->load(Yii::$app->request->post())) {
                 if ($model->save()) {
-                    try {
-                        // Save updated role
-                        $auth = Yii::$app->authManager;
-                        $role = $auth->getRole(User::getRoleLabel($model->role));  // default role
-                        $auth->revokeAll($model->getId());                         // revoke all roles for this user
-                        $auth->assign($role, $model->getId());                     // only assign new role
-                    } catch (\Exception $ex) {
-                        if (!empty(substr($ex->getMessage(), 0, strlen('Authorization item')))) {
-                            // Ignore exception if this is "Authorization item 'rolename' has already been assigned to user 'userid'"
-                            // Eg: "Authorization item 'registered' has already been assigned to user '3'"
-                        } else {
-                            throw $ex;  // rethrow exception
-                        }
-                    }
-                    
                     Yii::$app->session->setFlash('success', Yii::t('app', "User profile for <strong>{username}</strong> was updated successfully.", ['username' => $model->username]));
                 } else {
                     Yii::$app->session->setFlash('error', Yii::t('app', "Failed to update profile for user ID {id}.", ['id' => $id]));

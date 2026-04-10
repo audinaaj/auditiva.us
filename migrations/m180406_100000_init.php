@@ -178,13 +178,6 @@ class m180406_100000_init extends Migration
                 'updated_at'    => date("Y-m-d H:i:s"),
                 //'last_login'    => $this->datetime(),
             ]);
-            
-            // Generate RBAC assignments.php file
-    $filecontent = "<?php
-return [
-];";  // empty file
-            $filename = Yii::getAlias('@app') ."/rbac/data/assignments.php";
-            file_put_contents($filename, $filecontent);
         }
     }
     

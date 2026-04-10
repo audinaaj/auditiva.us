@@ -96,15 +96,6 @@ $config = [
         'assetManager' => [
             //'linkAssets' => true,
         ],
-        'authManager' => [
-            'class' => 'yii\rbac\PhpManager',  
-            'defaultRoles'   => ['admin', 'manager', 'editor', 'author', 'poweruser', 'registered'],  // Default roles
-            // By default, yii\rbac\PhpManager stores RBAC data in files under @app/rbac/ directory.
-            // Make sure that directory is web writable.
-            'itemFile'       => '@app/rbac/data/items.php',                // Default path to items.php
-            'assignmentFile' => '@app/rbac/data/assignments.php',          // Default path to assignments.php
-            'ruleFile'       => '@app/rbac/data/rules.php',                // Default path to rules.php
-        ],
         'formatter' => [
            'class'           => 'yii\i18n\Formatter',
            'dateFormat'      => 'php:M d, Y',
