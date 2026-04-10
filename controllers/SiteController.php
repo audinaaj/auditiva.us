@@ -22,8 +22,15 @@ class SiteController extends \yii\web\Controller
     public function behaviors()
     {
         return [
+            'authenticator' => [
+                'class' => CompositeAuth::class,
+                'authMethods' => [
+                    HttpBearerAuth::class,
+                ],
+                'only' => ['backup-database'],
+            ],
             //'access' => [
-            //    'class' => AccessControl::className(),
+            //    'class' => AccessControl::class,
             //    'only' => ['logout'],
             //    'rules' => [
             //        [
@@ -39,7 +46,7 @@ class SiteController extends \yii\web\Controller
             //    ],
             //],
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => [
@@ -64,7 +71,7 @@ class SiteController extends \yii\web\Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['POST'],
                 ],
@@ -343,12 +350,14 @@ class SiteController extends \yii\web\Controller
     }
     
     /**
-     * Dumps the MySQL database that this controller's model is attached to.
-     * This action will serve the sql file as a download so that the user can save the backup to their local computer.
+     * Generate database backup SQL dump.
+     * Private helper method used by both UI and API backup actions.
      *
-     * @param string $tables Comma separated list of tables you want to download, or '*' if you want to download them all.
+     * @param string $tables Comma separated list of tables or '*' for all
+     * @return array Array with 'sql', 'databaseName', and 'timestamp' keys
+     * @throws \Exception
      */
-    function actionBackupDatabase($tables = '*') 
+    private function generateDatabaseBackup($tables = '*')
     {
         $output = '';
 
@@ -418,8 +427,25 @@ class SiteController extends \yii\web\Controller
 
         $output .= 'SET FOREIGN_KEY_CHECKS=1;' . "\n\n";
 
-        // Set the default file name
-        $filename = $databaseName . '-backup-' . date('Y-m-d_H-i-s') . '.sql';
-        Yii::$app->response->sendContentAsFile($output, $filename, ['mimeType' => 'text/x-sql']);
+        return [
+            'sql' => $output,
+            'databaseName' => $databaseName,
+            'timestamp' => date('Y-m-d H:i:s'),
+        ];
     }
+
+    /**
+     * Dumps the MySQL database that this controller's model is attached to.
+     * This action will serve the sql file as a download so that the user can save the backup to their local computer.
+     *
+     * @param string $tables Comma separated list of tables you want to download, or '*' if you want to download them all.
+     */
+    public function actionBackupDatabase($tables = '*')
+    {
+        $backup = $this->generateDatabaseBackup($tables);
+        $filename = $backup['databaseName'] . '-backup-' . date('Y-m-d_H-i-s') . '.sql';
+        Yii::$app->response->sendContentAsFile($backup['sql'], $filename, ['mimeType' => 'text/x-sql']);
+    }
+
+
 }
