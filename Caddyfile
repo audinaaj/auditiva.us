@@ -1,7 +1,8 @@
 {
   email {$CADDY_EMAIL}
+  acme_dns digitalocean {$DIGITALOCEAN_API_TOKEN}
 }
 
-{$CADDY_DOMAIN} {
+{$CADDY_DOMAIN:auditiva.us} {
   reverse_proxy php:80
 }

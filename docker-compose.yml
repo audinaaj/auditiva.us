@@ -1,14 +1,17 @@
 services:
-  db:
+  auditiva-db:
     image: mysql:8.0
-    command: --log_bin_trust_function_creators=1
+    command:
+      - --log_bin_trust_function_creators=1
+      - --default-time-zone=America/New_York
     environment:
+      TZ: America/New_York
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - '127.0.0.1:3306:3306'
+    #ports:
+    #  - '127.0.0.1:3306:3306'
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -17,11 +20,9 @@ services:
       retries: 10
 
   php:
-    build:
-      context: .
-      dockerfile: dockerfile
+    image: auditivaus-php:latest
     depends_on:
-      db:
+      auditiva-db:
         condition: service_healthy
     environment:
       DB_HOST: ${DB_HOST}
@@ -29,7 +30,15 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       YII_DEBUG: ${YII_DEBUG:-false}
-      INIT_DUMP_PATH: ${INIT_DUMP_PATH:-/data-init/init.sql}
+      COOKIE_KEY: ${COOKIE_KEY}
+      RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY}
+      RECAPTCHA_SECRET: ${RECAPTCHA_SECRET}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_SERVER: ${MAIL_SERVER}
+      DEBUG_IP: ${DEBUG_IP}
+      S3_KEY: ${S3_KEY}
+      S3_SECRET: ${S3_SECRET}
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       # Mount a local directory containing initialization dumps
@@ -39,7 +48,7 @@ services:
       - '8000:80'
 
   caddy:
-    image: caddy:latest
+    image: github.com/audinaaj/caddy-digital-ocean
     profiles:
       - prod
     depends_on:
@@ -47,6 +56,7 @@ services:
     environment:
       - CADDY_EMAIL=${CADDY_EMAIL}
       - CADDY_DOMAIN=${CADDY_DOMAIN}
+      - DIGITALOCEAN_API_TOKEN=${DIGITALOCEAN_API_TOKEN}
     ports:
       - '80:80'
       - '443:443'

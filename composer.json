@@ -17,7 +17,8 @@
         "php": ">=8.3.0",
         "yiisoft/yii2": "~2.0.15",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "yiisoft/yii2-symfonymailer": "~3.0.0",
+        "symfony/microsoft-graph-mailer": "~8.0.0",
         "yiisoft/yii2-jui": "*",
         "letyii/yii2-tinymce": "*",
         "tinymce/tinymce": "~5",
@@ -30,9 +31,9 @@
         "tecnickcom/tcpdf": "~6.11.2",
         "skylineos/yii2-s3manager": "~1.0",
         "bp-sys/yii2-aws-s3": "~2.0",
+        "yiisoft/yii2-debug": "~2.1.0"
     },
     "require-dev": {
-        "yiisoft/yii2-debug": "~2.1.0"
     },
     "config": {
         "process-timeout": 1800,
