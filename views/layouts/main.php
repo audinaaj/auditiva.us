@@ -139,17 +139,17 @@ switch(Yii::$app->params['siteLayout']) {
                     ]],
                 ['label' => 'Products', 'url' => ['/product/index'],
                     'items' => [
-                            ['label' => 'Hearing Aid Styles',   'url' => Url::to(['content/index', 'category'=>'product-styles'])],
+                            ['label' => 'Hearing Aid Styles',   'url' => Url::to(['/content/index', 'category'=>'product-styles'])],
                             //['label' => 'Water Resistance',     'url' => ['content/index', 'category'=>'product-water-resistance']],
-                            ['label' => 'Water Resistance',     'url' => ['content/view', 'id'=>18]],
+                            ['label' => 'Water Resistance',     'url' => ['/content/view', 'id'=>18]],
                             '<li role="presentation" class="divider"></li>',     // divider
-                            ['label' => 'Custom',               'url' => ['content/index', 'category'=>'products', 'tags'=>'Custom']],
-                            ['label' => 'Open Fit',             'url' => ['content/index', 'category'=>'products', 'tags'=>'Open Fit']],
-                            ['label' => 'Behind-The-Ear (BTE)', 'url' => ['content/index', 'category'=>'products', 'tags'=>'BTE']],
-                            ['label' => 'Super Power',          'url' => ['content/index', 'category'=>'products', 'tags'=>'Super Power']],
-                            ['label' => 'Stock ITC',            'url' => ['content/index', 'category'=>'products', 'tags'=>'Stock ITC']],
-                            ['label' => 'Linear Custom',        'url' => ['content/index', 'category'=>'products', 'tags'=>'Linear']],
-                            ['label' => 'Pre-Wire Kits',        'url' => ['content/index', 'category'=>'products', 'tags'=>'Pre-wire Kit']],
+                            ['label' => 'Custom',               'url' => ['/content/index', 'category'=>'products', 'tags'=>'Custom']],
+                            ['label' => 'Open Fit',             'url' => ['/content/index', 'category'=>'products', 'tags'=>'Open Fit']],
+                            ['label' => 'Behind-The-Ear (BTE)', 'url' => ['/content/index', 'category'=>'products', 'tags'=>'BTE']],
+                            ['label' => 'Super Power',          'url' => ['/content/index', 'category'=>'products', 'tags'=>'Super Power']],
+                            ['label' => 'Stock ITC',            'url' => ['/content/index', 'category'=>'products', 'tags'=>'Stock ITC']],
+                            ['label' => 'Linear Custom',        'url' => ['/content/index', 'category'=>'products', 'tags'=>'Linear']],
+                            ['label' => 'Pre-Wire Kits',        'url' => ['/content/index', 'category'=>'products', 'tags'=>'Pre-wire Kit']],
                             //['label' => 'Wireless',             'url' => ['content/index', 'category'=>'products', 'tags'=>'Wireless']],
                             //'<li role="presentation" class="divider"></li>',     // divider
                             //['label' => 'In-ear Monitors',      'url' => ['content/index', 'category'=>'products', 'tags'=>'In-ear Monitors']],
@@ -168,10 +168,10 @@ switch(Yii::$app->params['siteLayout']) {
                     ]],
                 ['label' => 'Hearing & You', 'url' => ['/consumer/index'],
                     'items' => [
-                            ['label' => 'Hearing Loss',                   'url' => ['content/index', 'category'=>'consumers']],
-                            ['label' => 'Hearing Associations',           'url' => ['consumer/hearing-associations']],
-                            ['label' => 'Product Brochures & Manuals',    'url' => ['consumer/product-brochures']],
-                            ['label' => 'Find a Professional in my Area', 'url' => ['consumer/find-professional']],
+                            ['label' => 'Hearing Loss',                   'url' => ['/content/index', 'category'=>'consumers']],
+                            ['label' => 'Hearing Associations',           'url' => ['/consumer/hearing-associations']],
+                            ['label' => 'Product Brochures & Manuals',    'url' => ['/consumer/product-brochures']],
+                            ['label' => 'Find a Professional in my Area', 'url' => ['/consumer/find-professional']],
                     ]],
                 ['label' => 'Contact Us', 'url' => ['/site/contact-us']],
             ];
@@ -179,16 +179,16 @@ switch(Yii::$app->params['siteLayout']) {
             if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
                 $menuItems[] = ['label' => 'Admin', 'url' => '',
                     'items' => [
-                        ['label' => 'Dashboard', 'url' => ['site/admin-dashboard']],
+                        ['label' => 'Dashboard', 'url' => ['/site/admin-dashboard']],
                         (Yii::$app->getModule('gii') && ArrayHelper::isIn(Yii::$app->request->userIP, Yii::$app->getModule('gii')->allowedIPs)) ?
                             ['label' => 'Gii', 'url' => ['/gii']] : '',
-                        ['label' => 'Users', 'url' => ['user/index']],
+                        ['label' => 'Users', 'url' => ['/user/index']],
                         '<li role="presentation" class="divider"></li>',
                         
-                        ['label' => 'Articles', 'url' => ['content/admin-index']],
-                        ['label' => 'Carousel', 'url' => ['content/carousel-index']],
+                        ['label' => 'Articles', 'url' => ['/content/admin-index']],
+                        ['label' => 'Carousel', 'url' => ['/content/carousel-index']],
                         //['label' => 'Galleries', 'url' => ['/gallery']],
-                        ['label' => 'MOTD', 'url' => ['content/motd-index']],
+                        ['label' => 'MOTD', 'url' => ['/content/motd-index']],
                     ]
                 ];
             }
@@ -201,7 +201,7 @@ switch(Yii::$app->params['siteLayout']) {
             } else {
                 $menuItems[] = ['label' => 'User (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/login'],
                     'items' => [
-                        ['label' => 'User Profile', 'url' => ['user/view', 'id'=>Yii::$app->user->getId()]],
+                        ['label' => 'User Profile', 'url' => ['/user/view', 'id'=>Yii::$app->user->getId()]],
                         '<li role="presentation" class="divider"></li>',     // divider
                         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
                     ]
