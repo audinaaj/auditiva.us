@@ -7,6 +7,8 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\auth\CompositeAuth;
 
 use app\models\ContactForm;
 use app\models\ContactUsForm;
@@ -22,8 +24,15 @@ class SiteController extends \yii\web\Controller
     public function behaviors()
     {
         return [
+            'authenticator' => [
+                'class' => CompositeAuth::class,
+                'authMethods' => [
+                    HttpBearerAuth::class,
+                ],
+                'only' => ['backup-database'],
+            ],
             //'access' => [
-            //    'class' => AccessControl::className(),
+            //    'class' => AccessControl::class,
             //    'only' => ['logout'],
             //    'rules' => [
             //        [
@@ -39,12 +48,12 @@ class SiteController extends \yii\web\Controller
             //    ],
             //],
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => [
                             'admin-dashboard', 'media-gallery', 'backup-database',
-                            'error', 'about', 'careers', 
+                            'error', 'about',
                         ],
                         'allow' => true,
                         'matchCallback' => function ($rule, $action) {
@@ -58,13 +67,13 @@ class SiteController extends \yii\web\Controller
                     ],
                     [
                         // any user (authenticated or not)
-                        'actions' => ['index', 'login', 'error', 'about', 'careers', 'contact-us', 'message', 'privacy', 'captcha'],
+                        'actions' => ['index', 'login', 'error', 'about', 'contact-us', 'message', 'privacy', 'captcha'],
                         'allow' => true,
                     ],
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['POST'],
                 ],
@@ -114,25 +123,6 @@ class SiteController extends \yii\web\Controller
             case 'publish_up': $sortField = 'publish_up'; break;
             default:           $sortField = 'created_at'; break;
         }
-        
-        // Message of the Day (MOTD)
-        // to retrieve all *active* content, and order them by their ID:
-        $queryMOTD = Content::find()
-            ->joinWith(['category', 'contentType'])
-            ->where(['status' => Content::STATUS_ACTIVE])
-            ->andWhere(['content_type.alias' => 'motd'])
-            ->andWhere(
-                //['or', ['publish_up'=> null], ['<=', 'publish_up', date("Y-m-d H:i:s")]]      // handle date & time
-                ['or', ['publish_up'=> null], ['<=', 'publish_up', date("Y-m-d 23:59:00")]]     // handle date only
-            )
-            ->andWhere(
-                //['or', ['publish_down'=> null], ['>=', 'publish_down', date("Y-m-d H:i:s")]]   // handle date & time
-                ['or', ['publish_down'=> null], ['>=', 'publish_down', date("Y-m-d 23:59:00")]]  // handle date only
-            )
-            //->andFilterWhere(['like', 'tags', $tags])
-            //->orderBy(['content.'.$sortField => $sortOrder]) 
-            ->all();
-            
         // Carousel
         // to retrieve all *active* content, and order them by their ID:
         $queryCarousel = Content::find()
@@ -152,7 +142,6 @@ class SiteController extends \yii\web\Controller
             //->andFilterWhere(['like', 'tags', $tags])
             ->orderBy(['content.'.$sortField => $sortOrder]) 
             ->all();
-            
         // Featured Articles
         // to retrieve all *active* content, and order them by their ID:
         $queryFeatured = Content::find()
@@ -173,7 +162,6 @@ class SiteController extends \yii\web\Controller
             ->all();
             
         return $this->render('index', [
-             'modelsMOTD'     => $queryMOTD,
              'modelsCarousel' => $queryCarousel,
              'modelsFeatured' => $queryFeatured,
         ]);
@@ -289,11 +277,6 @@ class SiteController extends \yii\web\Controller
         return $this->render('international');
     }
     
-    public function actionCareers()
-    {
-        return $this->render('careers');
-    }
-    
     public function actionOffline()
     {
         return $this->render('offline');
@@ -338,15 +321,13 @@ class SiteController extends \yii\web\Controller
     
     private function sendMessage($srcMail, $srcName, $dstEmail, $subject, $textBody)
     {
-        $success = Yii::$app->mailer->compose()
+        return Yii::$app->mailer->compose()
                 ->setFrom([$srcMail => $srcName])
                 ->setTo($dstEmail)
                 ->setBcc([Yii::$app->params['debugEmail'] => 'Debug Email'])
                 ->setSubject($subject)
                 ->setTextBody($textBody)
                 ->send();
-              
-        return $success;
     }
     
     /** 
@@ -367,21 +348,25 @@ class SiteController extends \yii\web\Controller
     }
     
     /**
-     * Dumps the MySQL database that this controller's model is attached to.
-     * This action will serve the sql file as a download so that the user can save the backup to their local computer.
+     * Generate database backup SQL dump.
+     * Private helper method used by both UI and API backup actions.
      *
-     * @param string $tables Comma separated list of tables you want to download, or '*' if you want to download them all.
+     * @param string $tables Comma separated list of tables or '*' for all
+     * @return array Array with 'sql', 'databaseName', and 'timestamp' keys
+     * @throws \Exception
      */
-    function actionBackupDatabase($tables = '*') 
+    private function generateDatabaseBackup($tables = '*')
     {
         $output = '';
 
         $db = Yii::$app->getDb();
         $databaseName = $this->getDsnAttribute('dbname', $db->dsn);
 
-        // Do a short header
+        // Do a short header with charset declaration
         $output .= '-- Database: `' . $databaseName . '`' . "\n";
         $output .= '-- Generation time: ' . date('D jS M Y H:i:s') . "\n\n\n";
+        $output .= "/*!40101 SET NAMES utf8mb4 */;\n";
+        $output .= 'SET FOREIGN_KEY_CHECKS=0;' . "\n\n";
 
         if ($tables == '*') {
             $tables = array();
@@ -409,6 +394,9 @@ class SiteController extends \yii\web\Controller
                 foreach($tableDataDetails as $dataKey => $dataValue) {
                     if(is_null($dataValue)) {
                         $escapedDataValue = 'NULL';
+                    } elseif (in_array($dataValue, ['0000-00-00 00:00:00', '0000-00-00'])) {
+                        // Convert zero dates to NULL to comply with strict mode
+                        $escapedDataValue = 'NULL';
                     } else {
                         // Convert the encoding
                         //$escapedDataValue = mb_convert_encoding( $dataValue, "UTF-8", "ISO-8859-1" );
@@ -435,8 +423,27 @@ class SiteController extends \yii\web\Controller
             $output .= "\n\n\n";
         }
 
-        // Set the default file name
-        $filename = $databaseName . '-backup-' . date('Y-m-d_H-i-s') . '.sql';
-        Yii::$app->response->sendContentAsFile($output, $filename, ['mimeType' => 'text/x-sql']);
+        $output .= 'SET FOREIGN_KEY_CHECKS=1;' . "\n\n";
+
+        return [
+            'sql' => $output,
+            'databaseName' => $databaseName,
+            'timestamp' => date('Y-m-d H:i:s'),
+        ];
     }
+
+    /**
+     * Dumps the MySQL database that this controller's model is attached to.
+     * This action will serve the sql file as a download so that the user can save the backup to their local computer.
+     *
+     * @param string $tables Comma separated list of tables you want to download, or '*' if you want to download them all.
+     */
+    public function actionBackupDatabase($tables = '*')
+    {
+        $backup = $this->generateDatabaseBackup($tables);
+        $filename = $backup['databaseName'] . '-backup-' . date('Y-m-d_H-i-s') . '.sql';
+        Yii::$app->response->sendContentAsFile($backup['sql'], $filename, ['mimeType' => 'text/x-sql']);
+    }
+
+
 }

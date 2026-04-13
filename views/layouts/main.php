@@ -15,6 +15,8 @@ use app\models\UtilsProvider;
 
 AppAsset::register($this);
 
+$this->registerJs("var clipboard = new ClipboardJS('.btn-clip');");
+
 // Theme Layout 
 switch(Yii::$app->params['siteLayout']) {
     case 'full':
@@ -106,7 +108,7 @@ switch(Yii::$app->params['siteLayout']) {
     
     <!-- Logo -->
     <div class="container" style="<?= $logoBannerStyle ?>">
-      <img src="<?= Yii::$app->homeUrl; ?>img/frontpage/logo.png" style="margin: 10px" valign="left">
+      <img src="http://cdn.auditiva.us/frontpage/logo.png" style="margin: 10px" valign="left">
       <p class="pull-right" style="margin-top: 5px; margin-right: 20px;">
             <?php UtilsProvider::getGoogleTranslateDropdown(); ?>&nbsp;&nbsp;  
       </p>
@@ -118,10 +120,6 @@ switch(Yii::$app->params['siteLayout']) {
             $iconUnlocked = (isset(Yii::$app->user->identity) ? '' : '<span class="glyphicon glyphicon-ok-circle d-icon"></span> ' );
             
             NavBar::begin([
-                //'brandLabel' => 'Acme, Inc.',
-                //'brandLabel' => Yii::$app->params['companyNameShort'],
-                //'brandLabel' => '<img src="'.Yii::$app->homeUrl.'img/frontpage/logo.png" style="margin: -10px; height: 40px;" valign="left">',
-                //'brandUrl'   => Yii::$app->homeUrl,
                 'options' => [
                     //'class' => 'navbar navbar-inverse navbar-fixed-top',  // dark theme
                     //'class' => 'navbar navbar-default',                   // light theme
@@ -134,14 +132,10 @@ switch(Yii::$app->params['siteLayout']) {
                 ['label' => 'About Us', 'url' => ['/site/about'],
                     'items' => [
                             ['label' => 'Who We Are & Our Mission', 'url' => ['/site/about']],
-                            //['label' => 'International',  'url' => ['site/international']],
                             ['label' => 'International',    'url' => ['distributor/index']],
-                            //['label' => 'News',           'url' => ['/content/index', 'category'=>'news', 'id'=>'10']],
-                            //['label' => 'News',           'url' => Url::to(['/content/index', 'category'=>'news', 'linkOptions' => ['data-method' => 'post']])],
                             ['label' => 'News',             'url' => ['/content/index', 
                                 'category'=>'news', 'section'=>'site/about', 'ord'=>'desc', 'by'=>'created_at'
                             ]],
-                            ['label' => 'Careers',          'url' => ['/site/careers']],
                     ]],
                 ['label' => 'Products', 'url' => ['/product/index'],
                     'items' => [
@@ -165,56 +159,28 @@ switch(Yii::$app->params['siteLayout']) {
                     'items' => [
                             ['label' => $iconUnlocked . 'Overview',                'url' => ['/professional/index']],
                             ['label' => $iconUnlocked . 'Testimonials ',           'url' => ['/professional/testimonials']],
-                            //['label' => $iconLocked . 'Product Overview',          'url' => ['/professional/product-overview']],
-                            //['label' => $iconLocked . 'Product Specifications',  'url' => Yii::$app->params['companyWebsite'].'/catalog'],
                             ['label' => $iconLocked . 'Product Specifications',    'url' => ['/professional/product-specs']],
                             ['label' => $iconUnlocked . 'Cable Reference',         'url' => ['/professional/cable-reference']],
-                            //['label' => $iconUnlocked . 'Connectivity',         'url' => ['/professional/connectivity']],
                             ['label' => $iconUnlocked . 'Software',                'url' => ['/professional/software']],
-                            //['label' => $iconLocked . 'OASIS Software',          'url' => ['/professional/software-oasis']],
-                            //['label' => $iconLocked . 'Technical Manual',        'url' => Yii::$app->params['companyWebsite'].'/techman'],
                             ['label' => $iconLocked . 'Technical Manual',          'url' => ['/professional/technical-manual']],
                             ['label' => $iconLocked . 'Printable Forms',           'url' => ['/professional/printable-forms']],
                             ['label' => $iconLocked . 'Marketing Materials',       'url' => ['/professional/marketing-materials']],
-                            //'<li role="presentation" class="divider"></li>',     // divider
-                            
-                            //['label' => 'Order Stock/BTE/Pre-Wire Kits',        'url' => ['/professional/order-prewirekit']],
-                            //'<li role="presentation" class="divider"></li>',     // divider
-                            
-                            //$isModuleDealersInstalled ? ['label' => $iconUnlocked . 'Dealer Application', 'url' => ['/dealers/dealer/create']] : '',
-                            //$isModuleDealersInstalled ? '<li role="presentation" class="divider"></li>' : '',  // divider
-                            
-                            //['label' => 'Order Custom',                         'url' => ['/professional/order-custom']],
-                            //'<li role="presentation" class="divider"></li>',     // divider
-                            
-                            //['label' => $iconUnlocked . 'Workshops & Conventions', 'url' => Yii::$app->params['companyWebsite'].'/workshopmgr/workshops',
-                            //    'linkOptions' => ['target' => '_blank']
-                            //],
-                            //['label' => $iconUnlocked . 'Workshop Registration',   'url' => Yii::$app->params['companyWebsite'] . '/workshopmgr/registrations/add', 
-                            //    'linkOptions' => ['target' => '_blank']
-                            //],
                     ]],
                 ['label' => 'Hearing & You', 'url' => ['/consumer/index'],
                     'items' => [
                             ['label' => 'Hearing Loss',                   'url' => ['content/index', 'category'=>'consumers']],
-                            //['label' => 'Testimonials',                   'url' => ['consumer/testimonials']],
                             ['label' => 'Hearing Associations',           'url' => ['consumer/hearing-associations']],
                             ['label' => 'Product Brochures & Manuals',    'url' => ['consumer/product-brochures']],
                             ['label' => 'Find a Professional in my Area', 'url' => ['consumer/find-professional']],
                     ]],
-                //['label' => 'Contact Us', 'url' => ['/site/contact']],
                 ['label' => 'Contact Us', 'url' => ['/site/contact-us']],
             ];
-            
-            //if (isset(Yii::$app->user->identity) && (!Yii::$app->user->identity->isAdmin())) {
-            //    $menuItems[] = ['label' => 'User Profile', 'url' => ['user/view', 'id'=>Yii::$app->user->getId()]];
-            //}
             
             if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
                 $menuItems[] = ['label' => 'Admin', 'url' => '',
                     'items' => [
                         ['label' => 'Dashboard', 'url' => ['site/admin-dashboard']],
-                        (ArrayHelper::isIn(Yii::$app->request->userIP, Yii::$app->getModule('gii')->allowedIPs)) ?
+                        (Yii::$app->getModule('gii') && ArrayHelper::isIn(Yii::$app->request->userIP, Yii::$app->getModule('gii')->allowedIPs)) ?
                             ['label' => 'Gii', 'url' => ['/gii']] : '',
                         ['label' => 'Users', 'url' => ['user/index']],
                         '<li role="presentation" class="divider"></li>',
@@ -233,16 +199,9 @@ switch(Yii::$app->params['siteLayout']) {
                 }
                 $menuItems[] = ['label' => 'Login',  'url' => ['/site/login']];
             } else {
-                //$menuItems[] = [
-                //    'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                //    'url' => ['/site/logout'],
-                //    'linkOptions' => ['data-method' => 'post']
-                //];
                 $menuItems[] = ['label' => 'User (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/login'],
                     'items' => [
                         ['label' => 'User Profile', 'url' => ['user/view', 'id'=>Yii::$app->user->getId()]],
-                        //['label' => 'Account Balance', 'url' => ['/account-aging/view']],
-                        //['label' => 'Payment', 'url' => ['/payment/create']],
                         '<li role="presentation" class="divider"></li>',     // divider
                         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
                     ]
@@ -260,20 +219,11 @@ switch(Yii::$app->params['siteLayout']) {
         <?php //echo '<pre>'.print_r(Yii::$app->user->identity, true).'</pre>'; ?>
         
         <div class="container" style="<?= $contentStyle ?>">
+        <?= \app\widgets\MotdAlert::widget() ?>
+
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-
-        <?php 
-            $isAfterStartDate = ( !empty(Yii::$app->params['appMOTDStartDate']) ? DateTime::createFromFormat('Y-m-d', Yii::$app->params['appMOTDStartDate'])->format('Y-m-d') <= date('Y-m-d') : date('Y-m-d'));
-            $isBeforeStopDate = ( !empty(Yii::$app->params['appMOTDStopDate'])  ? DateTime::createFromFormat('Y-m-d', Yii::$app->params['appMOTDStopDate'])->format('Y-m-d')  >= date('Y-m-d') : date('Y-m-d'));
-            $isActivateDate   = ($isAfterStartDate && $isBeforeStopDate);
-        ?>
-        <?php if (!empty(Yii::$app->params['appMOTD']) && $isActivateDate) : ?>
-            <div class="alert alert-danger col-lg-12" role="alert">
-                <?= Yii::$app->params['appMOTD']; ?>
-            </div>
-        <?php endif; ?>
     
         <?= \app\widgets\Alert::widget() ?>
         <?= $content ?>
@@ -287,35 +237,13 @@ switch(Yii::$app->params['siteLayout']) {
             <?= Yii::$app->params['companyName'] ?>
             | <?= Html::a('Privacy Policy', urldecode(Url::toRoute(['site/privacy'])) ) ?>
             <?= (!empty(Yii::$app->params['urlWebmail'])        ? "| <a href='". Yii::$app->params['urlWebmail']."' target='_blank'>WebMail</a>" : '') ?> </small>
-            <?= (!empty(Yii::$app->params['urlSocialFacebook']) ? "| &nbsp;&nbsp;<a class='facebook' href='". Yii::$app->params['urlSocialFacebook']."' target='_blank'><img src='". Yii::$app->homeUrl."img/frontpage/social-facebook.png'></a>": '' ) ?>
-            <?= (!empty(Yii::$app->params['urlSocialYoutube'])  ? "<a class='youtube' href='". Yii::$app->params['urlSocialYoutube']."' target='_blank'><img src='".Yii::$app->homeUrl."img/frontpage/social-youtube.png'></a>": '' ) ?>
-        </p>
-        
-        <p class="pull-right" style="margin-top: 5px; margin-right: 20px;">
-            <?php //UtilsProvider::getGoogleTranslateDropdown(); ?>&nbsp;&nbsp;  
+            <?= (!empty(Yii::$app->params['urlSocialFacebook']) ? "| &nbsp;&nbsp;<a class='facebook' href='". Yii::$app->params['urlSocialFacebook']."' target='_blank'><img src='https://cdn.auditiva.us/frontpage/social-facebook.png'></a>": '' ) ?>
+            <?= (!empty(Yii::$app->params['urlSocialYoutube'])  ? "<a class='youtube' href='". Yii::$app->params['urlSocialYoutube']."' target='_blank'><img src='https://cdn.auditiva.us/frontpage/social-youtube.png'></a>": '' ) ?>
         </p>
         </div>
     </footer>
-    
-    <?php if (Yii::$app->params['enableWebAnalytics']): ?>
-        <!-- Piwik: Web Analytics --> 
-        <script type="text/javascript">
-            var pkBaseURL = (("https:" == document.location.protocol) ? "<?= Yii::$app->params['companyWebsiteSecure'] ?>/webanalytics/" : "<?= Yii::$app->params['companyWebsite'] ?>/webanalytics/");
-            document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-        </script>
-        <script type="text/javascript">
-            try {
-                var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
-                piwikTracker.trackPageView();
-                piwikTracker.enableLinkTracking();
-            } catch( err ) {}
-        </script>
-        <noscript><p><img src="<?= Yii::$app->params['companyWebsiteSecure'] ?>/webanalytics/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
-        <!-- End Piwik Tracking Code -->
-    <?php endif; ?>
 
 <?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>
-

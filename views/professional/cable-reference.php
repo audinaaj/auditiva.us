@@ -10,7 +10,7 @@ $this->title = 'Cable Reference';
 $this->params['breadcrumbs'][] = ['label'=> 'Professionals', 'url' => Url::toRoute(['professional/index'])];
 $this->params['breadcrumbs'][] = Html::encode($this->title);
 
-$docRootURL = Yii::$app->urlManager->createUrl('');
+$docRootURL = 'https://cdn.auditiva.us'; //Yii::$app->urlManager->createUrl('');
 ?>
 <div class="professional-cable-reference">
     
@@ -118,7 +118,7 @@ $docRootURL = Yii::$app->urlManager->createUrl('');
         foreach($dataCables as $row) {
             echo "<tr>";
             echo "<td><h3>".getCableLabel($row['name'])."</h3></td>";
-            echo "<td><img src='{$docRootURL}media/reference/{$row['image']}' class='img-responsive' align='center' width='200'></td>";
+            echo "<td><img src='{$docRootURL}/reference/{$row['image']}' class='img-responsive' align='center' width='200'></td>";
             echo "<td>{$row['compatible']}</td>";
             echo "<td>{$row['notes']}</td>";
             echo "</tr>";
@@ -138,7 +138,7 @@ $docRootURL = Yii::$app->urlManager->createUrl('');
         foreach($dataConnectors as $row) {
             echo "<tr>";
             echo "<td style='width: 250px'>{$row['name']}</td>";
-            echo "<td style='width: 225px'><img src='{$docRootURL}media/reference/{$row['image']}' class='img-responsive' align='center' width='225'></td>";
+            echo "<td style='width: 225px'><img src='{$docRootURL}/reference/{$row['image']}' class='img-responsive' align='center' width='225'></td>";
             echo "<td>{$row['notes']}</td>";
             echo "</tr>";
         }
@@ -157,8 +157,8 @@ $docRootURL = Yii::$app->urlManager->createUrl('');
         foreach($dataProgBox as $row) {
             echo "<tr>";
             echo "<td>{$row['name']}</td>";
-            echo "<td><img src='{$docRootURL}media/reference/{$row['prog-box-image']}' class='img-responsive' align='center' width='200'></td>";
-            echo "<td><img src='{$docRootURL}media/reference/{$row['data-cable-image']}' class='img-responsive' align='center' width='200'>{$row['notes']}</td>";
+            echo "<td><img src='{$docRootURL}/reference/{$row['prog-box-image']}' class='img-responsive' align='center' width='200'></td>";
+            echo "<td><img src='{$docRootURL}/reference/{$row['data-cable-image']}' class='img-responsive' align='center' width='200'>{$row['notes']}</td>";
             echo "</tr>";
         }
     ?>
@@ -177,8 +177,8 @@ $docRootURL = Yii::$app->urlManager->createUrl('');
             echo "<tr>";
             echo "<td style='width: 100px'>{$row['name']}</td>";
             echo "<td style='width: 100px'>{$row['type']}</td>";
-            echo "<td style='width: 150px'><img src='{$docRootURL}media/reference/{$row['image']}' class='img-responsive' align='center' width='150'></td>";
-            echo "<td style='width: 225px'><img src='{$docRootURL}media/reference/{$row['connection-image']}' class='img-responsive' align='center' width='225'></td>";
+            echo "<td style='width: 150px'><img src='{$docRootURL}/reference/{$row['image']}' class='img-responsive' align='center' width='150'></td>";
+            echo "<td style='width: 225px'><img src='{$docRootURL}/reference/{$row['connection-image']}' class='img-responsive' align='center' width='225'></td>";
             echo "<td style='width: 100px'>".getCableLabel($row['cable'])."</td>";
             echo "<td>{$row['connector']}</td>";
             echo "<td>{$row['notes']}</td>";

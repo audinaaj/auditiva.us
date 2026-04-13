@@ -99,7 +99,7 @@ Codes
 95	NG	Nigeria
 96	NZ	New Zealand
 97	NP	Nepal
-98	CI	Côte d'Ivoire
+98	CI	Cï¿½te d'Ivoire
 99	CH	Switzerland
 100	CO	Colombia
 101	CN	China

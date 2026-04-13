@@ -75,13 +75,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at', // OR 'create_time', to override default field name
                 'updatedAtAttribute' => 'updated_at', // OR 'update_time', to override default field name
                 'value' => new \yii\db\Expression('NOW()'),
             ],
             //[
-            //    'class' => BlameableBehavior::className(),
+            //    'class' => BlameableBehavior::class,
             //    'createdByAttribute' => 'created_by',  // OR 'author_id', to override default field name
             //    'updatedByAttribute' => 'updated_by',  // OR 'updater_id', to override default field name
             //],
@@ -162,7 +162,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public static function findIdentityByAccessToken($token, $type = null)
     {
         $user = self::find()->where(["access_token" => $token])->one();
-        if (!count($user)) {
+        if (!$user) {
             return null;
         }
         return new static($user);
@@ -404,16 +404,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function getRole()
     {
         return $this->role;
-    }
-    
-    /**
-     * Requires https://www.yiiframework.com/doc/api/2.0/yii-rbac-managerinterface
-     * return yii\rbac\Role[]  All roles directly assigned to the user. The array is indexed by the role names. 
-     */
-    public function getRbacRole()
-    {
-        return Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());                        // requires authManager
-        //return Yii::$app->authManager->getRolesByUser(User::findByUsername($this->username)->getId());  // requires authManager
     }
     
     /**

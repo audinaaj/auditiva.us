@@ -59,46 +59,34 @@ $watermarkmaxchars = ($colsperpage == 3 ? 500 : 440);
 $headertitle    = 'Cable Reference';
 $headersubtitle = 'Comprehensive reference for cables, connectors, and programming box to use while fitting hearing aids.';
 
-// Load Component Yii2 TCPDF 
-\Yii::$app->get('tcpdf');
 
 // create new PDF document
 $pdf = new TCPDF('P' /* Page orientation (P=portrait, L=landscape) */, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-// set document information
-$pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor(Yii::$app->params['companyName']);
-$pdf->SetTitle($headertitle);
-$pdf->SetSubject($headersubtitle);
-$pdf->SetKeywords('');
 
 // set header and footer fonts
-$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+// $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+// $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 // set default header data
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
-$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $headertitle, $headersubtitle);
+//$pdf->SetHeaderData('', 0, $headertitle, $headersubtitle);
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Nano-coating Log Report', 'Acme | www.acme.com', array(0,64,255), array(0,64,128));
-$pdf->setFooterData(array(0,64,0), array(0,64,128));
-$pdf->setPrintHeader(false);  // do not print footer
-$pdf->setPrintFooter(false);  // do not print footer
+//$pdf->setFooterData(array(0,64,0), array(0,64,128));
+// $pdf->setPrintHeader(false);  // do not print footer
+// $pdf->setPrintFooter(false);  // do not print footer
 
 // set default monospaced font
-$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+//$pdf->SetDefaultMonospacedFont('courier');
 
 // set margins
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-//$pdf->SetMargins($leftmargin, $topmargin, $rightmargin);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 // set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-//$pdf->SetAutoPageBreak(FALSE, $bottommargin);
+$pdf->SetAutoPageBreak(TRUE, 25);
 
 // set image scale factor
-$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 // ---------------------------------------------------------
 // set default font subsetting mode
@@ -110,7 +98,7 @@ $pdf->setFontSubsetting(true);
 //$defaultfont = 'DejaVuSansMono'; //PDF_FONT_MONOSPACED; //'dejavusans';
 $defaultfont = 'dejavusans'; 
 //$pdf->SetFont($defaultfont, 'B', 18);
-$pdf->SetFont($defaultfont, '', 8, '', true);
+//$pdf->SetFont($defaultfont, '', 8, '', true);
 
 // ---------------------------------------------------------
 // Add Page
@@ -164,7 +152,7 @@ $pdf->writeHTML($tbl, true /* newline */, false /* fill */, false /* reset heigh
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
 //$pdf->Output('Order-'.str_pad($model->id, 6, "0", STR_PAD_LEFT).'-labels.pdf', 'I');
-$pdf->Output(Yii::$app->params['appNameShort']."-".Yii::$app->controller->action->id.".pdf" , 'I');
+$pdf->Output(Yii::$app->params['appNameShort']."-".Yii::$app->controller->action->id.".pdf", 'I');
 
 
 //============================================================+
@@ -216,7 +204,7 @@ function getCablesMatrixTable($arrData)
 //---------------------------------------------------------------------------------------------
 function getCablesTable($dataCables)
 {
-    $docRootURL = Yii::$app->urlManager->createUrl('');
+    $docRootURL = 'https://cdn.auditiva.us'; //Yii::$app->urlManager->createUrl('');
     
     $content  = '<h1>Cables</h1>';
     $content .= '<table cellspacing="0" cellpadding="5" border="1">';
@@ -230,7 +218,7 @@ function getCablesTable($dataCables)
     foreach($dataCables as $row) {
         $content .= "<tr>";
         $content .= "  <td><h3>".getCableLabel($row['name'])."</h3></td>";
-        $content .= "  <td><img src=\"".$docRootURL."media/reference/{$row['image']}\" class='img-responsive' align='center' width='150'></td>";
+        $content .= "  <td><img src=\"".$docRootURL."/reference/{$row['image']}\" class='img-responsive' align='center' width='150'></td>";
         $content .= "  <td>{$row['compatible']}</td>";
         $content .= "  <td>{$row['notes']}</td>";
         $content .= "</tr>";
@@ -247,7 +235,7 @@ function getCablesTable($dataCables)
 //---------------------------------------------------------------------------------------------
 function getConnectorsTable($dataConnectors)
 {
-    $docRootURL = Yii::$app->urlManager->createUrl('');
+    $docRootURL = 'https://cdn.auditiva.us'; //Yii::$app->urlManager->createUrl('');
     
     $content  = '<h1>Connectors</h1>';
     $content .= '<table cellspacing="0" cellpadding="5" border="1">';
@@ -260,7 +248,7 @@ function getConnectorsTable($dataConnectors)
     foreach($dataConnectors as $row) {
         $content .= "<tr>";
         $content .= "  <td>{$row['name']}</td>";
-        $content .= "  <td><img src=\"".$docRootURL."media/reference/{$row['image']}\" class='img-responsive' align='center' width='150'></td>";
+        $content .= "  <td><img src=\"".$docRootURL."/reference/{$row['image']}\" class='img-responsive' align='center' width='150'></td>";
         $content .= "  <td>{$row['notes']}</td>";
         $content .= "</tr>";
     }
@@ -276,7 +264,7 @@ function getConnectorsTable($dataConnectors)
 //---------------------------------------------------------------------------------------------
 function getProgrammingBoxTable($dataProgBox)
 {
-    $docRootURL = Yii::$app->urlManager->createUrl('');
+    $docRootURL = 'https://cdn.auditiva.us'; //Yii::$app->urlManager->createUrl('');
     
     $content  = '<h3>Programmers</h3>';
     $content .= '<table cellspacing="0" cellpadding="5" border="1">';
@@ -289,8 +277,8 @@ function getProgrammingBoxTable($dataProgBox)
     foreach($dataProgBox as $row) {
         $content .= "<tr>";
         $content .= "  <td>{$row['name']}</td>";
-        $content .= '  <td><img src="' . $docRootURL . 'media/reference/'.$row['prog-box-image']   . '" class="img-responsive" align="center" width="140"></td>';
-        $content .= '  <td><img src="' . $docRootURL . 'media/reference/'.$row['data-cable-image'] . '" class="img-responsive" align="center" width="140">'.$row['notes'].'</td>';
+        $content .= '  <td><img src="' . $docRootURL . '/reference/'.$row['prog-box-image']   . '" class="img-responsive" align="center" width="140"></td>';
+        $content .= '  <td><img src="' . $docRootURL . '/reference/'.$row['data-cable-image'] . '" class="img-responsive" align="center" width="140">'.$row['notes'].'</td>';
         $content .= '</tr>';
     }
     $content .= '</table>';
@@ -304,7 +292,7 @@ function getProgrammingBoxTable($dataProgBox)
 //---------------------------------------------------------------------------------------------
 function getHousingTable($dataHousings)
 {
-    $docRootURL = Yii::$app->urlManager->createUrl('');
+    $docRootURL = 'https://cdn.auditiva.us'; //Yii::$app->urlManager->createUrl('');
     
     $content  = '<h3>Housings</h3>';
     $content .= '<table cellspacing="0" cellpadding="5" border="1">';
@@ -322,8 +310,8 @@ function getHousingTable($dataHousings)
         $content .= "<tr>";
         $content .= "  <td>{$row['name']}</td>";
         $content .= "  <td>{$row['type']}</td>";
-        $content .= '  <td><img src="' . $docRootURL . 'media/reference/'.$row['image']            . '" class="img-responsive" align="center" width="120"></td>';
-        $content .= '  <td><img src="' . $docRootURL . 'media/reference/'.$row['connection-image'] . '" class="img-responsive" align="center" width="120"></td>';
+        $content .= '  <td><img src="' . $docRootURL . '/reference/'.$row['image']            . '" class="img-responsive" align="center" width="120"></td>';
+        $content .= '  <td><img src="' . $docRootURL . '/reference/'.$row['connection-image'] . '" class="img-responsive" align="center" width="120"></td>';
         $content .= "  <td>{$row['cable']}</td>";
         $content .= "  <td>{$row['connector']}</td>";
         $content .= "  <td>{$row['notes']}</td>";

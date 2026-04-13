@@ -13,19 +13,6 @@ use app\models\UtilsProvider;
 <div class="user-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    
-    <div class="col-lg-12">
-        <?php if(Yii::$app->session->hasFlash('success')): ?>
-            <div class="alert alert-success" role="alert">
-                <?= Yii::$app->session->getFlash('success'); ?>
-            </div>
-        <?php endif; ?>
-        <?php if(Yii::$app->session->hasFlash('error')): ?>
-            <div class="alert alert-danger" role="alert">
-                <?= Yii::$app->session->getFlash('error'); ?>
-            </div>
-        <?php endif; ?>
-    </div>
 
     <?= ($model->isNewRecord || (Yii::$app->user->identity->isAdmin())? $form->field($model, 'username')->textInput(['maxlength' => true]) : $form->field($model, 'username')->textInput(['readonly'=> true])) ?>
     

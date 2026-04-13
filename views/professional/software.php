@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\User;
+use app\models\UtilsFitpro;
 
 /* @var $this yii\web\View */
 $this->title = 'Software';
@@ -11,7 +12,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
 <div class="site-software">
        
     <h1><?= $this->title; ?></h1>
-    <img src="<?= Yii::$app->homeUrl; ?>img/professionals/banner-programing-software.jpg" class="img-responsive" align="center" width="1140">
+    <img src="https://cdn.auditiva.us/professionals/banner-programing-software.jpg" class="img-responsive" align="center" width="1140">
     
     <p>&nbsp;</p>
     
@@ -19,8 +20,8 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
     
         <div class="col-md-4">
             <div class="panel panel-default">
+                <div class="panel-heading">fitPRO 2022</div>
                 <div class="panel-body">
-                    <h3>fitPRO <?= '2018';//date('Y') ?></h3>
                     <p>For fitting and programming all the latest <?= Yii::$app->params['companyNameShort'] ?> products.<!-- It includes:
                       <ul>
                       <li>Stand-alone.</li>
@@ -36,11 +37,23 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                     ?>
                     <?= getSoftwareDownloadButton(
                         //'Download fitPRO ' . date('Y'), 
-                        'Download fitPRO 2018', 
-                        Yii::$app->params['companyWebsite'].'/downloads/fitpro/fitpro-Auditiva-2018-latest.exe',
-                        //Yii::$app->params['companyWebsite'].'/downloads/fitpro/fitpro-Auditiva-' . date('Y') . '-latest.exe',
+                        'Download fitPRO 2022', 
+                        'https://cdn.auditiva.us/fitpro-Auditiva-2022-latest.exe',
                         'success'
                     ) ?>
+
+                    <?php
+                        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role <= User::ROLE_ADMIN)
+                        {
+                            $code = UtilsFitpro::CalcTempUnlockCode(new \DateTimeImmutable("now"));
+                            $tooltip = $code.' <a class="btn btn-default btn-clip" data-clipboard-text="'.$code.'"><i class="glyphicon glyphicon-copy d-icon"></i></a>';
+
+                            echo '<div class="auditiva-tooltip">' .
+                                Html::a("Need a 'Today' code?", ['professional/fitpro']) .
+                                Html::tag('div', $tooltip, ['class' => 'tooltiptext']) .
+                                '</div>';
+                        }
+                    ?>
 
                     <!-- Modal -->
                     <div class="modal fade" id="modalSwReq" tabindex="-1" role="dialog" aria-labelledby="lblModalSwReq">
@@ -65,8 +78,8 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
 
         <div class="col-md-4">
             <div class="panel panel-default">
+                <div class="panel-heading">fitPRO for Legacy Products</div>
                 <div class="panel-body">
-                    <h3>fitPRO for Legacy Products</h3>
                     <p>For programming older products (sold before 2011) that have been discontinued.<!-- It includes:
                       <ul>
                       <li>Stand-alone.</li>
@@ -79,7 +92,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                     </button>
                     <?= getSoftwareDownloadButton(
                         'Download fitPRO 4.30', 
-                        Yii::$app->params['companyWebsite'].'/downloads/fitpro430-auditiva-intl.exe'
+                        'https://cdn.auditiva.us/fitpro430-auditiva-intl.exe'
                     ) ?>
                 </div>
             </div>
@@ -87,19 +100,8 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
         
         <div class="col-md-4">
             <div class="panel panel-default">
+                <div class="panel-heading">Cable Reference</div>
                 <div class="panel-body">
-                    <h3>Remote Support</h3>
-                    <p>If calling for support and advised to do so, download this remote support utility. </p> 
-                    <?= Html::a('<i class="glyphicon glyphicon-download-alt d-icon"></i>' . ' Remote Support', 
-                         Yii::$app->params['companyWebsite'].'/downloads/remote-support/AnyDesk.exe',
-                         ['class'=>'btn btn-warning btn-block', 'target' => '_blank']) 
-                    ?>
-                    <?= Html::a('<i class="glyphicon glyphicon-download-alt d-icon"></i>' . ' Remote Support 2', 
-                         'https://get.teamviewer.com/auditiva',
-                         ['class'=>'btn btn-default btn-block', 'target' => '_self']) 
-                    ?>
-                    
-                    <h3>Cable Reference</h3>
                     <p>For programmable products using fitPRO, you must select the correct cable and connector for the product. </p> 
                     <?= Html::a('<i class="glyphicon glyphicon-info-sign d-icon"></i>' . ' View Cable Reference', 
                          ['cable-reference'], ['class'=>'btn btn-default btn-block']) 
@@ -107,95 +109,25 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                 </div>
             </div>
         </div>
-    
     </div>
     
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    
     <div class="row">
-    
         <div class="col-md-6">
-        
             <h3>Other</h3>
             <p>Only required for local network installations when sharing a single patient database among several workstations.</p>
             <ul>
-                <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/FBserver-setup.exe">Firebird Webinstaller</a> (0.5 MB) - Autodetects 32/64-bit requirements</li>
-                <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/Firebird-2.5.2.26540_0_Win32.exe">Firebird Database Server (32-bit)</a></li>
-                <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/Firebird-2.5.2.26540_0_x64.exe">Firebird Database Server (64-bit)</a></li>
+                <li><a href="https://cdn.auditiva.us/Firebird-2.5.9.27139_0_x64.exe">Firebird Database Server</a> (9.6 MB)</li>
             </ul>
-
+        </div>
+        <div class="col-md-6">
             <h3>Drivers</h3>
             <p>For specific drivers when using USB-Serial Adapters and Programming Interfaces:</p>
             <ul>
-                <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/drivers/">Drivers</a></li>
+                <li><a href="drivers">Drivers</a></li>
                 <li><a href="http://www.himsa.com/Download/NOAHlinkUpdatesandPatches/NOAHlinkUpdate/tabid/485/language/en-US/Default.aspx">NOAHlink</a></li>
             </ul>
-            
-        </div>
-
-        <div class="col-md-6">
-        
-            <h3>Requirements</h3>
-            <p>.NET 4.0 Framework</p>
-            <ul>
-                <li><a href="http://www.microsoft.com/en-us/download/details.aspx?id=17718">Standalone Installer (Microsoft)</a> (49 MB)</li>
-                <?php if (isset(Yii::$app->user->identity) && (Yii::$app->user->identity->role == User::ROLE_ADMIN)) : ?>
-                  <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/requirements/dotNetFx40_Full_x86_x64.exe">Standalone Installer (Mirror)</a> (49 MB)</li>
-                <?php endif; ?>
-                <li><a href="https://www.microsoft.com/en-us/download/details.aspx?id=29053">32-bit/64-bit: Update 4.0.3 for Microsoft .NET Framework 4 (KB2600211) (Microsoft)</a> (43 MB)</li>
-                <?php if (isset(Yii::$app->user->identity) && (Yii::$app->user->identity->role == User::ROLE_ADMIN)) : ?>
-                  <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/requirements/NDP40-KB2600211-x86.exe">32-bit: Update 4.0.3 for Microsoft .NET Framework 4 (KB2600211) (Mirror)</a> (43 MB)</li>
-                  <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/requirements/NDP40-KB2600211-x86-x64.exe">64-bit: Update 4.0.3 for Microsoft .NET Framework 4 (KB2600211) (Mirror)</a> (69 MB)</li>
-                <?php endif; ?>
-                <li><a href="https://www.microsoft.com/en-us/download/details.aspx?id=3556">32-bit/64-bit: Update for Microsoft .NET Framework 4 (KB2468871) (Microsoft)</a> (19/27 MB)</li>
-                <?php if (isset(Yii::$app->user->identity) && (Yii::$app->user->identity->role == User::ROLE_ADMIN)) : ?>
-                  <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/requirements/NDP40-KB2468871-v2-x86.exe">32-bit: Update for Microsoft .NET Framework 4 (KB2468871) (Mirror)</a> (43 MB)</li>
-                  <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/requirements/NDP40-KB2468871-v2-x64.exe">64-bit: Update for Microsoft .NET Framework 4 (KB2468871) (Mirror)</a> (69 MB)</li>
-                <?php endif; ?>
-            </ul>
-            
-            <p>.NET Fixes</p>
-            <ul>
-                <li><a href="http://www.microsoft.com/en-us/download/details.aspx?id=53344">32-bit/64-bit: Update for Windows 8.1 (KB3063843) (Microsoft)</a> (60 MB)</li>
-                <li><a href="http://www.microsoft.com/en-us/download/details.aspx?id=53344">32-bit/64-bit: Update for Microsoft .NET Framework 4.6.2 (KB3151800) (Microsoft)</a> (60 MB)</li>
-                <?php if (isset(Yii::$app->user->identity) && (Yii::$app->user->identity->role == User::ROLE_ADMIN)) : ?>
-                  <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/requirements/NDP462-KB3151800-x86-x64-AllOS-ENU.exe">32-bit/64-bit: Update for Microsoft .NET Framework 4.6.2 (KB3151800) (Mirror)</a> (60 MB)</li>
-                <?php endif; ?>
-                <li><a href="https://www.microsoft.com/en-us/download/confirmation.aspx?id=44928">32-bit/64-bit: Update for Microsoft .NET Framework 4.6 Preview (KB2969353) (Microsoft)</a> (1.2 MB)</li>
-                <?php if (isset(Yii::$app->user->identity) && (Yii::$app->user->identity->role == User::ROLE_ADMIN)) : ?>
-                  <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/requirements/NDP453-KB2969353-Web.exe">32-bit/64-bit: Update for Microsoft .NET Framework 4.6.2 (KB3151800) (Mirror)</a> (60 MB)</li>
-                <?php endif; ?>
-            </ul>
-            <?php if (isset(Yii::$app->user->identity) && (Yii::$app->user->identity->role == User::ROLE_ADMIN)) : ?>
-                <p>Windows XP Service Pack 3 - Only for WinXP users</p>
-                <ul>
-                  <!-- <li><a href="http://www.microsoft.com/en-us/download/details.aspx?id=24">English (Microsoft)</a> (316 MB)</li> -->
-                  <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/requirements/WindowsXP-KB936929-SP3-x86-ENU.exe">English (Mirror)</a> (316 MB)</li>
-                  <!-- <li><a href="http://www.microsoft.com/es-es/download/details.aspx?id=24">Español (Microsoft)</a> (316 MB)</li> -->
-                  <li><a href="<?= Yii::$app->params['companyWebsite'] ?>/downloads/requirements/WindowsXP-KB936929-SP3-x86-ESN.exe">Español (Mirror)</a> (316 MB)</li>
-                </ul>
-            <?php endif; ?>
-
         </div>
     </div>
-    
-    <!-- <div class="col-lg-12">
-        <h3>User Documentation</h3>
-        <div class="contentpane">
-        <iframe 	id="blockrandom"
-            name="iframe"
-            src="<?= Yii::$app->params['companyWebsite'] ?>/fitprodoc/"
-            width="100%"
-            height="800"
-            scrolling="auto"
-            frameborder="1"
-            class="wrapper">
-            This option will not work correctly. Unfortunately, your browser does not support inline frames.</iframe>
-        </div>
-    </div> -->
-
 </div>
 
 <?php
@@ -235,6 +167,13 @@ function getSoftwareDownloadButton($buttonLabel, $fileToDownload, $color='defaul
         $modalName = str_replace("(", "_", $modalName);              // replace parenthesis with underscores
         $modalName = str_replace(")", "_", $modalName);              // replace parenthesis with underscores
         
+        // Button definition
+        $str .= '<!-- Button trigger modal -->';
+        $str .= '<button type="button" class="btn btn-'.$color.' btn-md btn-block" data-toggle="modal" data-target="#'. $modalName . '">';
+        $str .= '  <i class="glyphicon glyphicon-download-alt d-icon"></i> ' . $buttonLabel;
+        $str .= '</button>';
+        $str .= "";
+
         // Modal window definition
         $str .= '<!-- Modal -->';
         $str .= '<div class="modal fade" id="'. $modalName . '" tabindex="-1" role="dialog" aria-labelledby="'. $modalName . 'Label">';
@@ -254,13 +193,6 @@ function getSoftwareDownloadButton($buttonLabel, $fileToDownload, $color='defaul
         $str .= '    </div>';
         $str .= '  </div>';
         $str .= '</div>';
-        
-        // Button definition
-        $str .= '<!-- Button trigger modal -->';
-        $str .= '<button type="button" class="btn btn-'.$color.' btn-md btn-block" data-toggle="modal" data-target="#'. $modalName . '">';
-        $str .= '  <i class="glyphicon glyphicon-download-alt d-icon"></i> ' . $buttonLabel;
-        $str .= '</button>';
-        $str .= "";
     }
     
     return $str;

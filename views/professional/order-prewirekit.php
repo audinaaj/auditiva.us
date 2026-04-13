@@ -22,9 +22,6 @@ for($i=0; $i<=300; $i++) {
 ?>
 
 <div class="professional-order-prewirekit">
-    
-    <?= \app\widgets\Alert::widget() ?>
-    
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>&nbsp;</p>
@@ -65,7 +62,7 @@ for($i=0; $i<=300; $i++) {
                     <span class="input-group-addon glyphicon glyphicon-calendar" aria-hidden="true" 
                        onclick="document.getElementById(\'orderprewirekitform-shipdate\').select();">
                     </span>{input}</div><div>{error}</div>'
-                ])->widget(\yii\jui\DatePicker::className(), [
+                ])->widget(\yii\jui\DatePicker::class, [
                     'dateFormat' => 'php:Y-m-d',  // 'php:Y-m-d' is the only supported format
                     //'value' => date("Y-m-d"),
                     //'value' => date('Y-m-d', strtotime(date('Y-m-d')." +3 Days")),
@@ -120,7 +117,7 @@ for($i=0; $i<=300; $i++) {
         </div>
         
         <div class="col-lg-12">
-            <?php //echo $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+            <?php //echo $form->field($model, 'verifyCode')->widget(Captcha::class, [
                   //   'template' => '<div class="row"><div class="col-lg-2">{input}</div><div class="col-lg-4">{image}</div></div>',
                   //]) 
             ?>

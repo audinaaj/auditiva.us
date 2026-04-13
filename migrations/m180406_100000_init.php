@@ -178,29 +178,6 @@ class m180406_100000_init extends Migration
                 'updated_at'    => date("Y-m-d H:i:s"),
                 //'last_login'    => $this->datetime(),
             ]);
-            $this->insert('{{%user}}', [
-                'username'      => 'demo',
-                'password_hash' => Yii::$app->security->generatePasswordHash('demo'),
-                'auth_key'      => Yii::$app->security->generateRandomString(),
-                //'access_token'  => md5('101-token'),
-                'access_token'  => '101-token',  // no md5 so we can perform unit testing
-                'first_name'    => 'System',  
-                'last_name'     => 'Demo', 
-                'email'         => 'demo@example.com',
-                'phone'         => '',
-                'role'          => \app\models\User::ROLE_REGISTERED,
-                'status'        => \app\models\User::STATUS_ACTIVE,
-                'created_at'    => date("Y-m-d H:i:s"),
-                'updated_at'    => date("Y-m-d H:i:s"),
-                //'last_login'    => $this->datetime()
-            ]);
-            
-            // Generate RBAC assignments.php file
-    $filecontent = "<?php
-return [
-];";  // empty file
-            $filename = Yii::getAlias('@app') ."/rbac/data/assignments.php";
-            file_put_contents($filename, $filecontent);
         }
     }
     

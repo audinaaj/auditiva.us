@@ -54,16 +54,16 @@ class ContentType extends \yii\db\ActiveRecord
      */
     public function getContents()
     {
-        return $this->hasMany(Content::className(), ['content_type_id' => 'id']);
+        return $this->hasMany(Content::class, ['content_type_id' => 'id']);
     }
     
     public function getCreatedByUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
     
     public function getUpdatedByUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 }

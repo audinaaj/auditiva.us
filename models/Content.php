@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
+use yii\behaviors\SluggableBehavior;
 
 /**
  * This is the model class for table "content".
@@ -13,6 +14,7 @@ use yii\behaviors\BlameableBehavior;
  * @property string $title
  * @property integer $category_id
  * @property string $tags
+ * @property string $slug
  * @property string $intro_text
  * @property string $full_text
  * @property string $intro_image
@@ -78,19 +80,26 @@ class Content extends \yii\db\ActiveRecord
         $formattedCurDateTime = date('Y-m-d H:i:s'); // same format as NOW()
         
         return [
-            //TimestampBehavior::className(),  // By default, TimestampBehavior will fill the created_at and updated_at attributes with the current timestamp
-            //BlameableBehavior::className(),  // By default, BlameableBehavior will fill the created_by and updated_by attributes with the current user ID
+            //TimestampBehavior::class,  // By default, TimestampBehavior will fill the created_at and updated_at attributes with the current timestamp
+            //BlameableBehavior::class,  // By default, BlameableBehavior will fill the created_by and updated_by attributes with the current user ID
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at', // OR 'create_time', to override default field name
                 'updatedAtAttribute' => 'updated_at', // OR 'update_time', to override default field name
                 'value' => new \yii\db\Expression('NOW()'),
                 //'value' => new \yii\db\Expression($formattedCurDateTime),
             ],
             [
-                'class' => BlameableBehavior::className(),
+                'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'created_by',  // OR 'author_id', to override default field name
                 'updatedByAttribute' => 'updated_by',  // OR 'updater_id', to override default field name
+            ],
+            [
+                'class' => SluggableCloneBehavior::class,
+                'attribute' => 'title',
+                'slugAttribute' => 'slug',
+                'immutable' => true,
+                'ensureUnique' => true,
             ],
         ];
     }
@@ -137,7 +146,7 @@ class Content extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(ContentCategory::className(), ['id' => 'category_id']);
+        return $this->hasOne(ContentCategory::class, ['id' => 'category_id']);
     }
 
     /**
@@ -145,7 +154,7 @@ class Content extends \yii\db\ActiveRecord
      */
     public function getContentType()
     {
-        return $this->hasOne(ContentType::className(), ['id' => 'content_type_id']);
+        return $this->hasOne(ContentType::class, ['id' => 'content_type_id']);
     }
     
     public function getCategories()
@@ -160,7 +169,7 @@ class Content extends \yii\db\ActiveRecord
     
     public function getCreatedByUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
         
         // Alternatively
         //if (($model = User::findOne($this->created_by)) !== null) {
@@ -173,7 +182,7 @@ class Content extends \yii\db\ActiveRecord
     
     public function getUpdatedByUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
 
         // Alternatively
         /*
@@ -186,4 +195,42 @@ class Content extends \yii\db\ActiveRecord
         } */
     }
 
+    public function getMotdStyle()
+    {
+        $alert_style = 'alert alert-danger';
+
+        // make sure content type is motd
+        if ($this->content_type_id != 8) {
+            return $alert_style;
+        }
+
+        switch ($this->tags) {
+            case 'danger':
+            case 'warning':
+            case 'success':
+            case 'info':
+                $alert_style = "alert alert-$this->tags";
+                break;
+        }
+
+        return $alert_style;
+    }
+
+}
+
+class SluggableCloneBehavior extends SluggableBehavior 
+{
+    protected function isNewSlugNeeded()
+    {
+        // check for clone based on title and ignore slug until title is changed.
+        if (is_scalar($this->attribute) &&
+            $this->attribute == 'title' &&
+            strpos($this->owner->{$this->attribute}, '(Copy)') !== false)
+        {
+            $this->immutable = false;
+            return false;
+        }
+
+        return parent::isNewSlugNeeded();
+    }
 }

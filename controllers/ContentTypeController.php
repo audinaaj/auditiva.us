@@ -20,7 +20,7 @@ class ContentTypeController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['index', 'create', 'view', 'update', 'clone', 'delete', 'admin-index'],
@@ -42,7 +42,7 @@ class ContentTypeController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['post'],
                 ],

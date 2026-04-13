@@ -11,10 +11,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\data\ArrayDataProvider;
 
-use app\models\OrderPrewirekitForm;
-use app\models\ModuleProduct;
-use app\models\StockProduct;
-use app\models\ProductPart;
+use app\models\UtilsFitpro;
 
 /**
  * Professional controller
@@ -37,31 +34,35 @@ class ProfessionalController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => [ 
-                            'index', 'create', 'view', 'update', 'delete', 'testimonials', 'marketing-materials', 'printable-forms', 'product-overview', 
-                            'product-specs-external', 'product-specs', 'software', 'cable-reference', 'cable-reference-pdf', 'cable-reference-ajax', 
-                            'connectivity', 'technical-manual', 'order-prewirekit', 'software-oasis', 
+                        'actions' => [
+                            'index', 'view', 'testimonials', 'software', 
+                            'cable-reference', 'cable-reference-pdf', 'cable-reference-ajax', 
+                            'connectivity', 'drivers',
                         ],
-                        'roles' => ['admin'],  // admin users
+                        // any user
+                        //'roles' => ['?'],  // ? = Guest user
                     ],
                     [
                         'allow' => true,
                         'actions' => [
-                            'index', 'view', 'testimonials', 'marketing-materials', 'printable-forms', 'product-overview', 
-                            'product-specs-external', 'product-specs', 'software', 'cable-reference', 'cable-reference-pdf', 'cable-reference-ajax',  
-                            'connectivity', 'technical-manual', 'order-prewirekit', 'software-oasis', 
+                            'marketing-materials', 'printable-forms', 'product-overview', 
+                            'product-specs', 'technical-manual',
                         ],
                         'roles' => ['@'],  // @ = Authenticated users
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'testimonials', 'software', 'cable-reference', 'cable-reference-pdf', 'cable-reference-ajax', 
-                            'connectivity', 'order-prewirekit'],
-                        'roles' => ['?'],  // ? = Guest user
+                        'actions' => [ 
+                            'create', 'update', 'delete', 'fitpro', 
+                        ],
+                        'roles' => ['@'],  // admin users
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->identity->role <= \app\models\User::ROLE_ADMIN;
+                        }
                     ],
                 ],
             ],
@@ -118,44 +119,35 @@ class ProfessionalController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    
-    public function actionProductSpecs($showall=0, $style='All', $IsVisibleProductFilter=1)
+
+    public function actionProductSpecs($showall=0, $style='All')
     {
-        $DS = DIRECTORY_SEPARATOR;
-        //$dir     = Yii::$app->basePath . $DS . 'web' . $DS . 'media' . $DS . 'catalog';
-        $dir     = str_replace('frontend', 'backend', Yii::$app->basePath) . $DS . 'web' . $DS . 'media' . $DS . 'catalog';
-        $files   = array();
-        $folders = array();
-        $this->GetFileAndFolderList($dir, "pdf", $files, $folders);
-        
-        //$FilterByStyle  = (isset($_GET['style']) ? $_GET['style'] : 'All');
         $FilterByStyle  = (isset($style) ? $style : 'All');
         $ShowAllProducts = (isset($showall) && ($showall == 1) ? true : false);
-        //$IsVisibleProductFilter = (isset($_GET['ShowProductFilter']) ? $_GET['ShowProductFilter'] : true);
-        //$this->GenFileListTable("/catalog", $files, $ShowAllProducts /* show current & deprecated products? */, $FilterByStyle);
     
         return $this->render('product-specs', [
-                'files'                  => $files,
-                'dir'                    => $dir,
                 'ShowAllProducts'        => $ShowAllProducts,
                 'FilterByStyle'          => $FilterByStyle,
-                'IsVisibleProductFilter' => $IsVisibleProductFilter,
             ]);
-    }
-    
-    public function actionProductSpecsExternal()
-    {
-        return $this->render('product-specs');
     }
     
     public function actionSoftware()
     {
         return $this->render('software');
     }
-    
-    public function actionSoftwareOasis()
+
+    public function actionDrivers()
     {
-        return $this->render('software-oasis');
+        return $this->render('drivers');
+    }
+
+    public function actionFitpro($days = 14, $version = UtilsFitpro::FITPRO_5)
+    {
+        if (Yii::$app->request->isAjax) {
+            return $this->renderPartial('fitpro-password-table', ['days' => $days, 'version' => $version]);
+        } else {
+            return $this->render('fitpro-password');
+        }
     }
     
     public function actionSoftwareRequirements()
@@ -234,7 +226,7 @@ class ProfessionalController extends Controller
     public function actionCableReferenceAjax()
     {
         $output = '';
-        $docRootURL = Yii::$app->urlManager->createUrl('');
+        $docRootURL = 'https://cdn.auditiva.us'; //Yii::$app->urlManager->createUrl('');
 
         // Init AJAX data
         $found = [
@@ -276,9 +268,9 @@ class ProfessionalController extends Controller
             $output .= '<tr><td><b>Notes:      </b></td><td>' . $found['notes']      . '</td></tr>';
             //$output .= '<p>&nbsp;</p>';
             $output .= '</table>';
-            $output .= '<img src="' . $docRootURL . 'media/reference/' . $found['housing-image']    .'"  alt="Product Image"    class="img-thumbnail img-responsive" style="height: 150px">';
-            $output .= '<img src="' . $docRootURL . 'media/reference/' . $found['connection-image'] .'"  alt="Connection Image" class="img-thumbnail img-responsive" style="height: 150px">';
-            $output .= '<img src="' . $docRootURL . 'media/reference/' . $found['cable-image']      .'"  alt="Cable Image"      class="img-thumbnail img-responsive" style="height: 150px">';
+            $output .= '<img src="' . $docRootURL . '/reference/' . $found['housing-image']    .'"  alt="Product Image"    class="img-thumbnail img-responsive" style="height: 150px">';
+            $output .= '<img src="' . $docRootURL . '/reference/' . $found['connection-image'] .'"  alt="Connection Image" class="img-thumbnail img-responsive" style="height: 150px">';
+            $output .= '<img src="' . $docRootURL . '/reference/' . $found['cable-image']      .'"  alt="Cable Image"      class="img-thumbnail img-responsive" style="height: 150px">';
         }
         return $output;
     }
@@ -591,279 +583,6 @@ class ProfessionalController extends Controller
                 if (isset($Folders_Result)) { sort($Folders_Result, SORT_STRING); }
             }
         } 
-    }
-    
-    //-------------------------------------------------------------------------------------------------
-    // description: Action to generate Order form for Pre-wire Kit.
-    // parameters : $category='module', $addRow=-1, $delRow=-1
-    // return     : void
-    //-------------------------------------------------------------------------------------------------
-    //public function actionOrderPrewirekit($category='module', $addRow=-1, $delRow=-1)
-    public function actionOrderPrewirekit()
-    {
-        //return $this->render('order-prewirekit');
-        
-        //Yii::trace('actionOrderPrewirekit(): Start.' . 
-        //    print_r([
-        //        Yii::$app->request->post('category'), 
-        //        Yii::$app->request->post('addRow', 'N/A'), 
-        //        Yii::$app->request->post('delRow', 'N/A'),
-        //        Yii::$app->request->post(),
-        //    ], true), __METHOD__
-        //);
-        
-        $model = new OrderPrewirekitForm();
-        $updatedOrderItems = false;
-        
-        // Modules
-        $countModules = count(Yii::$app->request->post('ModuleProduct', []));
-        $orderItemsModule = [new ModuleProduct()];
-        for($i = 1; $i < $countModules; $i++) {
-            $orderItemsModule[] = new ModuleProduct();
-        }
-        
-        // BTE/Stock
-        $countStock = count(Yii::$app->request->post('StockProduct', []));
-        $orderItemsStock = [new StockProduct()];
-        for($i = 1; $i < $countStock; $i++) {
-            $orderItemsStock[] = new StockProduct();
-        }
-        
-        // Spare Parts
-        $countParts = count(Yii::$app->request->post('ProductPart', []));
-        $orderItemsParts = [new ProductPart()];
-        for($i = 1; $i < $countParts; $i++) {
-            $orderItemsParts[] = new ProductPart();
-        }
-        
-        if ($model->load(Yii::$app->request->post())) {
-            // Preset some data
-            //$model->accountContact = Yii::$app->request->post('accountContact');
-            
-            // Modules
-            if (Model::loadMultiple($orderItemsModule, Yii::$app->request->post())) {
-                
-                // Let's store clean copy of array
-                $model->itemsModule = $orderItemsModule;
-                
-                if (Yii::$app->request->post('category') == "module") {
-                    if (Yii::$app->request->post('addRow', -1) > 0) {
-                        $orderItemsModule[] = new ModuleProduct();  // add item
-                        
-                        //Yii::$app->session->setFlash('success', 'Added item to order');
-                        $updatedOrderItems = true;
-                        
-                        // Remove empty items (except last empty one)
-                        foreach($orderItemsModule as $k => $v) {
-                           if (empty($v['model']) && (($k) < $countModules)) {
-                               unset($orderItemsModule[$k]);                         // delete empty item
-                               $orderItemsModule = array_values($orderItemsModule);  // reindex array
-                           }
-                        }
-                    }
-                    
-                    if (Yii::$app->request->post('delRow', -1) > -1) {
-                        unset($orderItemsModule[Yii::$app->request->post('delRow')]);  // delete item
-                        $orderItemsModule = array_values($orderItemsModule);
-                        
-                        //Yii::$app->session->setFlash('success', 'Deleted item from order');
-                        $updatedOrderItems = true;
-                    }
-                }
-                
-                //if (Model::validateMultiple($orderItemsModule)) {
-                //    //Yii::$app->session->setFlash('success', 'Order items validated correctly.');
-                //} else {
-                //    Yii::$app->session->setFlash('error', 'There was an error validating order items.  Make sure there is at least 1 order item.'); 
-                //    return $this->render('order-prewirekit', [
-                //        'model'            => $model,
-                //        'orderItemsModule' => $orderItemsModule,
-                //        'orderItemsStock'  => $orderItemsStock,
-                //        'orderItemsParts'  => $orderItemsParts,
-                //    ]);
-                //}
-            }
-            
-            // BTE/Stock
-            if (Model::loadMultiple($orderItemsStock, Yii::$app->request->post())) {
-                
-                // Let's store clean copy of array
-                $model->itemsStock  = $orderItemsStock;
-                
-                if (Yii::$app->request->post('category') == "stock") {
-                    if (Yii::$app->request->post('addRow', -1) > 0) {
-                        $orderItemsStock[] = new StockProduct();  // add item
-                        
-                        //Yii::$app->session->setFlash('success', 'Added item to order');
-                        $updatedOrderItems = true;
-                        
-                        // Remove empty items (except last empty one)
-                        foreach($orderItemsStock as $k => $v) {
-                           if (empty($v['model']) && (($k) < $countStock)) {
-                               unset($orderItemsStock[$k]);                        // delete empty item
-                               $orderItemsStock = array_values($orderItemsStock);  // reindex array
-                           }
-                        }
-                    }
-                    
-                    if (Yii::$app->request->post('delRow', -1) > -1) {
-                        unset($orderItemsStock[Yii::$app->request->post('delRow')]);  // delete item
-                        $orderItemsStock = array_values($orderItemsStock);
-                        
-                        //Yii::$app->session->setFlash('success', 'Deleted item from order');
-                        $updatedOrderItems = true;
-                    }
-                }
-                
-                //if (Model::validateMultiple($orderItemsStock)) {
-                //    //Yii::$app->session->setFlash('success', 'Order items validated correctly.');
-                //} else {
-                //    Yii::$app->session->setFlash('error', 'There was an error validating order items.  Make sure there is at least 1 order item.'); 
-                //    return $this->render('order-prewirekit', [
-                //        'model'            => $model,
-                //        'orderItemsModule' => $orderItemsModule,
-                //        'orderItemsStock'  => $orderItemsStock,
-                //        'orderItemsParts'  => $orderItemsParts,
-                //    ]);
-                //}
-            }
-            
-            // Parts
-            if (Model::loadMultiple($orderItemsParts, Yii::$app->request->post())) {
-                
-                // Let's store clean copy of array
-                $model->itemsParts  = $orderItemsParts;
-                
-                if (Yii::$app->request->post('category') == "parts") {
-                    if (Yii::$app->request->post('addRow', -1) > 0) {
-                        $orderItemsParts[] = new ProductPart();  // add item
-                        
-                        //Yii::$app->session->setFlash('success', 'Added item to order');
-                        $updatedOrderItems = true;
-                        
-                        // Remove empty items (except last empty one)
-                        foreach($orderItemsParts as $k => $v) {
-                           if (empty($v['name']) && (($k) < $countParts)) {
-                               unset($orderItemsParts[$k]);                        // delete empty item
-                               $orderItemsParts = array_values($orderItemsParts);  // reindex array
-                           }
-                        }
-                    }
-                    
-                    if (Yii::$app->request->post('delRow', -1) > -1) {
-                        unset($orderItemsParts[Yii::$app->request->post('delRow')]);  // delete item
-                        $orderItemsParts = array_values($orderItemsParts);
-                        
-                        //Yii::$app->session->setFlash('success', 'Deleted item from order');
-                        $updatedOrderItems = true;
-                    }
-                }
-                
-                //if (Model::validateMultiple($orderItemsParts)) {
-                //    //Yii::$app->session->setFlash('success', 'Order items validated correctly.');
-                //} else {
-                //    Yii::$app->session->setFlash('error', 'There was an error validating order items.  Make sure there is at least 1 order item.'); 
-                //    return $this->render('order-prewirekit', [
-                //        'model'            => $model,
-                //        'orderItemsModule' => $orderItemsModule,
-                //        'orderItemsStock'  => $orderItemsStock,
-                //        'orderItemsParts'  => $orderItemsParts,
-                //    ]);
-                //}
-            }
-            
-            if ($updatedOrderItems) {
-                //Yii::$app->session->setFlash('success', 'Updated items in Order. ');
-                Yii::trace('actionOrderPrewirekit(): updatedOrderItems: <pre>' . 
-                    print_r([
-                        Yii::$app->request->post('category'), 
-                        Yii::$app->request->post('addRow', 'N/A'), 
-                        Yii::$app->request->post('delRow', 'N/A'),
-                        Yii::$app->request->post(),
-                    ], true) . 
-                    '</pre>', __METHOD__
-                );
-                return $this->render('order-prewirekit', [
-                    'model'            => $model,
-                    'orderItemsModule' => $orderItemsModule,
-                    'orderItemsStock'  => $orderItemsStock,
-                    'orderItemsParts'  => $orderItemsParts,
-                    //'delRow'           => -1,
-                ]);
-            }
-            
-            // Validate
-            if ($model->validate()) {
-                if ($model->sendEmail($model->email)) {
-                    //Yii::$app->session->setFlash('success', 'Thank you for ordering with us. We will contact you with a confirmation.');
-                    Yii::trace('actionOrderPrewirekit(): Sent email successfully. ' . 
-                        print_r([
-                            Yii::$app->request->post('category'), 
-                            Yii::$app->request->post('addRow', 'N/A'), 
-                            Yii::$app->request->post('delRow', 'N/A'),
-                            Yii::$app->request->post(),
-                        ], true), __METHOD__
-                    );
-                    //return $this->render('/site/message', [
-                    return $this->redirect(['site/message', 
-                        'type'        => 'info', 
-                        'title'       => 'Thank You', 
-                        'message'     => 'Order successfully submitted. Thank you for ordering with us. We will contact you with a confirmation.',
-                        'button_name' => 'Place New Order', 
-                        'button_url'  => 'professional/order-prewirekit', 
-                    ]);
-                } else {
-                    Yii::$app->session->setFlash('error', 'There was an error sending order by email.');
-                    Yii::trace('actionOrderPrewirekit(): Failed to send email. ' . 
-                        print_r([
-                            Yii::$app->request->post('category'), 
-                            Yii::$app->request->post('addRow', 'N/A'), 
-                            Yii::$app->request->post('delRow', 'N/A'),
-                            Yii::$app->request->post(),
-                        ], true), __METHOD__
-                    );
-                    return $this->refresh();
-                }
-            } else {
-                Yii::$app->session->setFlash('error', 'Order did not validate.  Try again. '  
-                    //. '<pre>' . print_r($model, true) . "\n" . print_r($model->getErrors(), true) . '</pre>'
-                );
-                Yii::trace('actionOrderPrewirekit(): Order did not validate. Refreshing record now. ' . 
-                    print_r([
-                        Yii::$app->request->post('category'), 
-                        Yii::$app->request->post('addRow', 'N/A'), 
-                        Yii::$app->request->post('delRow', 'N/A'),
-                        Yii::$app->request->post(),
-                    ], true), __METHOD__
-                );
-                //return $this->render('order-prewirekit', [
-                //    'model'            => $model,
-                //    'orderItemsModule' => $orderItemsModule,
-                //    'orderItemsStock'  => $orderItemsStock,
-                //    'orderItemsParts'  => $orderItemsParts,
-                //]);
-                return $this->refresh();
-            }
-        } else {
-            // Create new order
-            //Yii::$app->session->setFlash('success', 'New Order. ');
-            Yii::trace('actionOrderPrewirekit(): Creating new order. ' . 
-                print_r([
-                    Yii::$app->request->post('category'), 
-                        Yii::$app->request->post('addRow', 'N/A'), 
-                        Yii::$app->request->post('delRow', 'N/A'),
-                        Yii::$app->request->post(),
-                    ], true), __METHOD__
-            );
-            return $this->render('order-prewirekit', [
-                'model'            => $model,
-                'orderItemsModule' => $orderItemsModule,
-                'orderItemsStock'  => $orderItemsStock,
-                'orderItemsParts'  => $orderItemsParts,
-                //'addRow'           => -1,
-                //'delRow'           => -1,
-            ]);
-        }
     }
     
     private function getProductSupportingTelecoil()

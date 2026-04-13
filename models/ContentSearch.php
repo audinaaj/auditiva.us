@@ -38,8 +38,8 @@ class ContentSearch extends Content
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),  // By default, TimestampBehavior will fill the created_at and updated_at attributes with the current timestamp
-            BlameableBehavior::className(),  // By default, BlameableBehavior will fill the created_by and updated_by attributes with the current user ID
+            TimestampBehavior::class,  // By default, TimestampBehavior will fill the created_at and updated_at attributes with the current timestamp
+            BlameableBehavior::class,  // By default, BlameableBehavior will fill the created_by and updated_by attributes with the current user ID
         ];
     }
 
@@ -97,7 +97,7 @@ class ContentSearch extends Content
         ]);
 
         $query->andFilterWhere(['like', 'content.title', $this->title])
-            ->andFilterWhere(['like', 'LOWER(content_category.alias)', strtolower($this->category)])
+            ->andFilterWhere(['like', 'LOWER(content_category.alias)', strtolower($this->category ?? '')])
             ->andFilterWhere(['like', 'tags', $this->tags])
             ->andFilterWhere(['like', 'intro_text', $this->intro_text])
             ->andFilterWhere(['like', 'full_text', $this->full_text])
@@ -156,7 +156,7 @@ class ContentSearch extends Content
         ]);
 
         $query->andFilterWhere(['like', 'content.title',   $this->title])
-            ->andFilterWhere(['like', 'LOWER(content_category.alias)', strtolower($this->category)])
+            ->andFilterWhere(['like', 'LOWER(content_category.alias)', strtolower($this->category ?? '')])
             ->andFilterWhere(['like', 'tags',              $this->tags])
             ->andFilterWhere(['like', 'intro_text',        $this->intro_text])
             ->andFilterWhere(['like', 'full_text',         $this->full_text])
@@ -215,7 +215,7 @@ class ContentSearch extends Content
         ]);
 
         $query->andFilterWhere(['like', 'content.title',   $this->title])
-            ->andFilterWhere(['like', 'LOWER(content_category.alias)', strtolower($this->category)])
+            ->andFilterWhere(['like', 'LOWER(content_category.alias)', strtolower($this->category ?? '')])
             ->andFilterWhere(['like', 'tags',              $this->tags])
             ->andFilterWhere(['like', 'intro_text',        $this->intro_text])
             ->andFilterWhere(['like', 'full_text',         $this->full_text])

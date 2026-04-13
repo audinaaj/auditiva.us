@@ -9,34 +9,9 @@ $btnFullWidth = 'btn-block';  // full width
 $this->title = 'Admin';
 $this->params['breadcrumbs'][] = $this->title;
 
-//------------------------------------------------------------
-// Define winModalMediaGallery (Bootstrap Modal Window)
-//------------------------------------------------------------
-$winModal  = '<!-- Modal -->';
-$winModal .= '<div class="modal fade" id="winModalMediaGallery" tabindex="-1" role="dialog" aria-labelledby="winModalMediaGalleryLabel">';
-$winModal .= '<div class="modal-dialog" role="document" style="width: 1010px;">';
-$winModal .= '    <div class="modal-content">';
-$winModal .= '    <div class="modal-header">';
-$winModal .= '        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-$winModal .= '        <h4 class="modal-title" id="winModalMediaGalleryLabel">Media Gallery</h4>';
-$winModal .= '    </div>';
-$winModal .= '    <div class="modal-body" style="padding: 0px; margin: 0px; width: 1000px;">';
-$winModal .= '       <iframe id="idGallery" width="1000" height="620" src="'. Yii::$app->urlManager->createUrl('') .'filemanager/dialog.php?type=2&field_id=content-intro_image&fldr=&relative_url=1" frameborder="0" style="overflow: scroll; overflow-x: hidden; overflow-y: scroll; "></iframe>';
-$winModal .= '    </div>';
-$winModal .= '    <div class="modal-footer">';
-$winModal .= '        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
-$winModal .= '    </div>';
-$winModal .= '    </div>';
-$winModal .= '</div>';
-$winModal .= '</div>';
-echo $winModal;
-
 ?>
 <div class="site-index">
-
     <h1><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> System Administration</h1>
-    
-    <?= app\widgets\Alert::widget() ?>
 
     <div class="body-content">
 
@@ -159,20 +134,17 @@ echo $winModal;
             <div class="col-lg-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                      <h3 class="panel-title"><h3><i class="glyphicon glyphicon-picture d-icon" aria-hidden="true"></i> Media Gallery</h3>
-                      <p>Manage images, videos and documents.</p></h3>
+                      <h3 class="panel-title"></h3><h3><i class="glyphicon glyphicon-picture d-icon" aria-hidden="true"></i> Media Gallery</h3>
+                      <p>Manage images, videos and documents.</p>
                     </div>
                     <div class="panel-body">
-                        <button id="btnIntroImg" type="button" class="btn btn-default" 
-                            data-toggle="modal" 
-                            data-target="#winModalMediaGallery" 
-                            data-field="content-intro_image">
-                                <i class="glyphicon glyphicon-dashboard d-icon"></i> Manage
-                        </button>
+                        <?= Html::a('<i class="glyphicon glyphicon-dashboard d-icon"></i>' . ' Manage', 
+                             ['/s3manager'], ['class'=>'btn btn-default', 'target' => '_self']) 
+                        ?>
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-lg-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">

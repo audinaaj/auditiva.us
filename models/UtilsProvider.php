@@ -1639,31 +1639,29 @@ class UtilsProvider extends Model
         </script>
     <?php
     }
-    
-    // Requires GTranslate flag images to be copied to [app]/web/img/flags folder
     public static function getGoogleTranslateDropdownV1LocalResources()
     { ?>
         <!-- GTranslate: https://gtranslate.io/ -->
         <a href="#" onclick="doGTranslate('en|en');return false;" title="English" class="gflag nturl" style="background-position:-0px -0px;">
-        <img src="<?= Yii::getAlias("@web"); ?>/img/flags/blank.png" height="16" width="16" alt="English" /></a>
+        <img src="https://cdn.auditiva.us/frontpage/flags/blank.png" height="16" width="16" alt="English" /></a>
         <a href="#" onclick="doGTranslate('en|fr');return false;" title="French" class="gflag nturl" style="background-position:-200px -100px;">
-        <img src="<?= Yii::getAlias("@web"); ?>/img/flags/blank.png" height="16" width="16" alt="French" /></a>
+        <img src="https://cdn.auditiva.us/frontpage/flags/blank.png" height="16" width="16" alt="French" /></a>
         <a href="#" onclick="doGTranslate('en|de');return false;" title="German" class="gflag nturl" style="background-position:-300px -100px;">
-        <img src="<?= Yii::getAlias("@web"); ?>/img/flags/blank.png" height="16" width="16" alt="German" /></a>
+        <img src="https://cdn.auditiva.us/frontpage/flags/blank.png" height="16" width="16" alt="German" /></a>
         <a href="#" onclick="doGTranslate('en|it');return false;" title="Italian" class="gflag nturl" style="background-position:-600px -100px;">
-        <img src="<?= Yii::getAlias("@web"); ?>/img/flags/blank.png" height="16" width="16" alt="Italian" /></a>
+        <img src="https://cdn.auditiva.us/frontpage/flags/blank.png" height="16" width="16" alt="Italian" /></a>
         <a href="#" onclick="doGTranslate('en|pt');return false;" title="Portuguese" class="gflag nturl" style="background-position:-300px -200px;">
-        <img src="<?= Yii::getAlias("@web"); ?>/img/flags/blank.png" height="16" width="16" alt="Portuguese" /></a>
+        <img src="https://cdn.auditiva.us/frontpage/flags/blank.png" height="16" width="16" alt="Portuguese" /></a>
         <a href="#" onclick="doGTranslate('en|ru');return false;" title="Russian" class="gflag nturl" style="background-position:-500px -200px;">
-        <img src="<?= Yii::getAlias("@web"); ?>/img/flags/blank.png" height="16" width="16" alt="Russian" /></a>
+        <img src="https://cdn.auditiva.us/frontpage/flags/blank.png" height="16" width="16" alt="Russian" /></a>
         <a href="#" onclick="doGTranslate('en|es');return false;" title="Spanish" class="gflag nturl" style="background-position:-600px -200px;">
-        <img src="<?= Yii::getAlias("@web"); ?>/img/flags/blank.png" height="16" width="16" alt="Spanish" /></a>
+        <img src="https://cdn.auditiva.us/frontpage/flags/blank.png" height="16" width="16" alt="Spanish" /></a>
 
         <style type="text/css">
         <!--
-        a.gflag {vertical-align:middle;font-size:16px;padding:1px 0;background-repeat:no-repeat;background-image:url(<?= Yii::getAlias("@web"); ?>/img/flags/16.png);}
+        a.gflag {vertical-align:middle;font-size:16px;padding:1px 0;background-repeat:no-repeat;background-image:url(https://cdn.auditiva.us/frontpage/flags/16.png);}
         a.gflag img {border:0;}
-        a.gflag:hover {background-image:url(<?= Yii::getAlias("@web"); ?>/img/flags/16a.png);}
+        a.gflag:hover {background-image:url(https://cdn.auditiva.us/frontpage/flags/16a.png);}
         #goog-gt-tt {display:none !important;}
         .goog-te-banner-frame {display:none !important;}
         .goog-te-menu-value:hover {text-decoration:none !important;}

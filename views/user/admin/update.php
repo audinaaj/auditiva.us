@@ -18,9 +18,6 @@ $this->params['breadcrumbs'][] = ['label' => "{$model->first_name} {$model->last
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="user-update">
-
-    <?= \app\widgets\Alert::widget() ?>
-    
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [

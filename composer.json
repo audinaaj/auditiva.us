@@ -14,36 +14,50 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=8.3.0",
         "yiisoft/yii2": "~2.0.15",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "yiisoft/yii2-symfonymailer": "~3.0.0",
+        "symfony/microsoft-graph-mailer": "~8.0.0",
         "yiisoft/yii2-jui": "*",
-        "letyii/yii2-tinymce": "dev-master",
+        "letyii/yii2-tinymce": "*",
+        "tinymce/tinymce": "~5",
         "himiklab/yii2-recaptcha-widget": "*",
-        "authorizenet/authorizenet": "~1.9.6"
+        "bower-asset/jquery": ">=1.11.0",
+        "bower-asset/jquery-ui": ">=1.11.0",
+        "bower-asset/jquery.inputmask": "*",
+        "bower-asset/punycode": "*",
+        "bower-asset/yii2-pjax": "*",
+        "tecnickcom/tcpdf": "~6.11.2",
+        "skylineos/yii2-s3manager": "~1.0",
+        "bp-sys/yii2-aws-s3": "~2.0",
+        "yiisoft/yii2-debug": "~2.1.0"
     },
     "require-dev": {
-        "yiisoft/yii2-debug": "~2.0.0",
-        "yiisoft/yii2-gii": "~2.0.0",
-        "yiisoft/yii2-faker": "~2.0.0",
-
-        "codeception/base": "^2.2.3",
-        "codeception/verify": "~0.3.1",
-        "codeception/specify": "~0.4.3"
     },
     "config": {
         "process-timeout": 1800,
         "fxp-asset":{
             "enabled": false
+        },
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        },
+        "audit": {
+            "ignore": [
+                "PKSA-kxv7-w7hg-zj9k",
+                "PKSA-g43k-cp2d-8zny",
+                "PKSA-s5r2-shvb-ydth",
+                "PKSA-hdg2-6rxt-d4qn",
+                "PKSA-mymm-sn83-mbb2",
+                "PKSA-m1dk-8wwc-991j",
+                "PKSA-49mb-wskm-8m9m",
+                "PKSA-t9cj-9h2r-fkgh",
+                "PKSA-s6b9-gg3t-crbs",
+                "PKSA-prcy-kppw-cnxf",
+                "PKSA-gy5q-j464-j41z"
+            ]
         }
-    },
-    "provide": {
-        "bower-asset/jquery": "*",
-        "bower-asset/jquery-ui": "*",
-        "bower-asset/jquery.inputmask": "*",
-        "bower-asset/punycode": "*",
-        "bower-asset/yii2-pjax": "*"
     },
     "scripts": {
         "post-create-project-cmd": [
@@ -65,6 +79,10 @@
         }
     },
     "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/audinaaj/yii2-s3manager.git"
+        },
         {
             "type": "composer",
             "url": "https://asset-packagist.org"

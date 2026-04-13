@@ -14,9 +14,6 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="app-setting-index">
-
-    <?= \app\widgets\Alert::widget() ?>
-    
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

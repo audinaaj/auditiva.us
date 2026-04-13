@@ -1,9 +1,9 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\captcha\Captcha;
 use yii\helpers\Url;
 use app\models\UtilsProvider;
+use himiklab\yii2\recaptcha\ReCaptcha;
 
 /* @var $this yii\web\View */
 $this->title = 'Find a Professional';
@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
 
 <div class="consumer-find-professional">
     <h1><?= Html::encode($this->title) ?></h1>
-    <img src="<?= Yii::$app->homeUrl; ?>img/consumers/banner-find-professional.jpg" class="img-responsive" align="center" width="1140">
+    <img src="https://cdn.auditiva.us/consumers/banner-find-professional.jpg'" class="img-responsive" align="center" width="1140">
 
     <p>&nbsp;</p>
     <p>
@@ -54,9 +54,13 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                     'Need location to purchase hearing aid / accessory' => 'I am looking for a location where I can purchase an '. Yii::$app->params['companyNameShort'] . ' hearing instrument or accessory.'
                 ]) ?>
                 <?= $form->field($model, 'productSerialNumbers')->label('Product Serial Numbers (if available)') ?>
-                <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
+                
+                <?php 
+                    // Regenerate new captcha after each refresh.
+                    $this->context->createAction('captcha')->getVerifyCode(true); 
+                    echo $form->field($model, 'verifyCode')->widget(ReCaptcha::class)->label(false);
+                ?>
+
                 <div class="form-group">
                     <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
                 </div>

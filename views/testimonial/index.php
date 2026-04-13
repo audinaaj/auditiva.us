@@ -12,11 +12,8 @@ if (!empty($parent_breadcrumb_label) && !empty($parent_breadcrumb_route)) {
 $this->params['breadcrumbs'][] = Html::encode($this->title);
 ?>
 <div class="site-testimonials">
-
-    <?= \app\widgets\Alert::widget() ?>
-    
     <h1><?= $this->title; ?></h1>
-    <img src="<?= Yii::$app->homeUrl; ?>img/aboutus/about-people-bw.png" class="img-responsive" align="center" width="1140">
+    <img src="https://cdn.auditiva.us/professionals/about-people-bw.png" class="img-responsive" align="center" width="1140">
 
     <p>&nbsp;</p>
     <p>&nbsp;</p>

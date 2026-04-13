@@ -18,7 +18,7 @@ use yii\jui\DatePicker;
 
     <div class="col-md-8"><br />
 
-        <?= $form->field($model, 'intro_text')->label('Text')->widget(letyii\tinymce\Tinymce::className(), [
+        <?= $form->field($model, 'intro_text')->label('Text')->widget(letyii\tinymce\Tinymce::class, [
             'options' => [
                 'id' => 'idIntroText',
             ],
@@ -76,7 +76,7 @@ use yii\jui\DatePicker;
     
     <?= $form->field($model,'publish_up', [
             'template' => '{label}<div class="input-group"><span class="input-group-addon glyphicon glyphicon-calendar" aria-hidden="true" onclick="document.getElementById(\'content-publish_up\').select();"></span>{input}</div>'
-        ])->widget(\yii\jui\DatePicker::className(), [
+        ])->widget(\yii\jui\DatePicker::class, [
         'dateFormat' => 'php:Y-m-d',  // 'php:Y-m-d' is the only supported format
         'value' => ($model->isNewRecord ? date("Y-m-d") : $model->publish_up),
         'clientOptions' => [  // Options for JQuery UI widget
@@ -104,7 +104,7 @@ use yii\jui\DatePicker;
     
     <?= $form->field($model,'publish_down', [
             'template' => '{label}<div class="input-group"><span class="input-group-addon glyphicon glyphicon-calendar" aria-hidden="true" onclick="document.getElementById(\'content-publish_down\').select();"></span>{input}</div>'
-        ])->widget(\yii\jui\DatePicker::className(), [
+        ])->widget(\yii\jui\DatePicker::class, [
         'dateFormat' => 'php:Y-m-d',  // 'php:Y-m-d' is the only supported format
         'value' => ($model->isNewRecord ? date("Y-m-d") : $model->publish_down),
         'clientOptions' => [  // Options for JQuery UI widget
@@ -146,55 +146,5 @@ use yii\jui\DatePicker;
     <?php ActiveForm::end(); ?>
 
 </div>
-
-<?php
-function getJsFilemanager()
-{
-    $jsBlock = '
-        // DOM document ready
-        $( document ).ready(function() {
-            //-------------------------------------------
-            // Define modal window show.bs.modal event
-            //-------------------------------------------
-            $("#winModalMediaGallery").on("show.bs.modal", function(event) {
-                var button    = $(event.relatedTarget);     // Button that triggered the modal
-                var fieldName = button.data("field");       // Extract info from data-* attributes
-                //console.log("show.bs.modal(): field: " + fieldName);
-                
-                // Update the modal window content. We will use jQuery here, 
-                // but you could use a data binding library or other methods instead.
-                //var modal = $(this);
-                //modal.find(".modal-title").text("New message to " + fieldName);
-                //modal.find(".modal-body input").val(fieldName);
-                
-                // Update Gallery URL with correct target field_id.
-                // This is an optional feature, only required when using 
-                // multiple input image fields reusing same Bootstrap modal window.
-                var url = "'. Yii::$app->homeUrl . 'filemanager/dialog.php?type=2&field_id=" + fieldName + "&fldr=&relative_url=1";
-                $("#idGallery").attr("src", url);  // update Filemanager URL
-                //console.log("show.bs.modal(): Gallery src: " + modal.find("#idGallery").attr("src"));
-            });
-        });
-        
-        function responsive_filemanager_callback(field_id)
-        { 
-            // Get URL of selected image (which was stored in specified field)
-            var url = jQuery("#"+field_id).val();
-            //console.log("responsive_filemanager_callback(): Updated field [" + field_id + "] with [" + url + "]"); 
-            
-            //----------------------------
-            // Do some work here
-            //----------------------------
-            //jQuery("#"+field_id).val("../../../frontend/web/media/" + url);          // prepend gallery base URL to file URL
-            //jQuery("#"+field_id).val("' . Yii::$app->urlManager->createUrl('') .'media/" + url);          // prepend gallery base URL to file URL
-            //console.log("responsive_filemanager_callback(): Updated field [" + field_id + "] with [" + url + "]"); 
-            
-            $("#preview-"+field_id).attr("src", "' . Yii::$app->urlManager->createUrl('') . 'media/" + jQuery("#"+field_id).val()).show();  // preview image
-            $("#winModalMediaGallery").modal("toggle");                              // close window
-        } 
-    ';
-        
-    return $jsBlock;
-}
 
 ?>

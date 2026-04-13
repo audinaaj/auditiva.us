@@ -27,6 +27,7 @@ class AppAsset extends AssetBundle
         'lib/jquery-jvectormap-2.0.1.min.js',
         'lib/jquery-jvectormap-world-mill-en.js',
         'lib/lightbox2/js/lightbox.min.js',
+        'lib/clipboard.js'
 
     ];
     public $depends = [

@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
 <div class="site-software">
        
     <h1><?= $this->title; ?></h1>
-    <img src="<?= Yii::$app->homeUrl; ?>img/professionals/product-overview-chart-lg.jpg" class="img-responsive" align="center" width="1140">
+    <img src="https://cdn.auditiva.us/professionals/product-overview-chart-lg.jpg" class="img-responsive" align="center" width="1140">
     
     <h3>Product Features</h3>
     

@@ -1,0 +1,10 @@
+data-init/
+vendor/
+runtime/
+
+.env
+
+dockerfile
+dockerfile_caddy
+docker-compose.yml
+Caddyfile

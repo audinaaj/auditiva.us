@@ -34,17 +34,18 @@ $this->params['breadcrumbs'][] = $this->title;
         
         <div class="form-group">
             <div class="col-md-offset-1 col-md-11" style="color:#999;">
-                Forgot your password? <?= Html::a(Yii::t('app', 'Reset Password'), ['user/request-password-reset']) ?>. <br>
-                <?php if (!Yii::$app->params['isSignupApprovalRequired']): ?>
-                    Don't have an account? <?= Html::a(Yii::t('app', 'Signup'), ['user/signup']) ?>.
-                <?php endif; ?>
-            </div>
-        
-            <div class="col-md-offset-1 col-md-11">
                 <?= Html::submitButton(Yii::t('app', 'Login'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
             </div>
         </div>
-
     <?php ActiveForm::end(); ?>
+
+    <p>
+        By logging in you are consenting to our use of cookies in accordance with our <?=Html::a("privacy policy", ['site/privacy'])?>.
+    </p>
+
+    <p style="color:#999;">
+        Forgot your password? <?= Html::a(Yii::t('app', 'Reset Password'), ['user/request-password-reset']) ?>. <br>
+        Don't have an account? <?= Html::a(Yii::t('app', 'Signup'), ['user/signup']) ?>.
+    </p>
 
 </div>

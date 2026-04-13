@@ -17,9 +17,6 @@ if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-create">
-
-    <?= Alert::widget() ?>
-    
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
