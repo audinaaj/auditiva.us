@@ -20,7 +20,7 @@ services:
       retries: 10
 
   php:
-    image: auditivaus-php:latest
+    image: ghcr.io/audinaaj/auditiva.us:latest
     depends_on:
       auditiva-db:
         condition: service_healthy
