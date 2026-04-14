@@ -1,7 +1,7 @@
 FROM yiisoftware/yii2-php:8.4-apache
 
 LABEL org.opencontainers.image.authors="ajdavis@audina.net"
-LABEL org.opencontainers.image.version="0.5.0"
+LABEL org.opencontainers.image.version="0.5.1"
 LABEL org.opencontainers.image.title="Auditiva.us"
 LABEL org.opencontainers.image.url="https://auditiva.us"
 LABEL org.opencontainers.image.source="https://github.com/audinaaj/auditiva.us"

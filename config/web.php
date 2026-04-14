@@ -102,7 +102,7 @@ $config = [
         ],
         's3' => [
             'class' => 'bpsys\yii2\aws\s3\Service',
-            'credentials' => [ // Aws\Credentials\CredentialsInterface|array|callable
+            'credentials' => [
                 'key' => $params['s3.key'],
                 'secret' => $params['s3.secret'],
             ],
@@ -116,7 +116,6 @@ $config = [
     'modules' => [
         's3manager' => [
             'class' => 'skylineos\yii\s3manager\Module',
-            // All settings can be configured on the fly regardless of usage type (fileinput, standalone manager, tinymce plugin)
             'configuration' => [ 
                 'bucket'   => 'auditiva',
                 'version'  => 'latest',
@@ -127,6 +126,14 @@ $config = [
                 'credentials' => [
                     'key'    => $params['s3.key'],
                     'secret' => $params['s3.secret'],
+                ],
+            ],
+            'accessRules' => [
+                [
+                    'allow' => true,
+                    'matchCallback' => function ($rule, $action) {
+                         return \app\models\User::isCurrentUserAdmin();
+                    },
                 ],
             ]
         ],
