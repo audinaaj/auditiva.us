@@ -104,7 +104,9 @@ class UserController extends Controller
     {
         // Only allow to view your own user profile
         if ((Yii::$app->user->getId() == $id) || User::isCurrentUserAdmin() ) {
-            return $this->render('admin/view', [
+            $viewFile = User::isCurrentUserAdmin() ? 'admin/view': 'view';
+
+            return $this->render($viewFile, [
                 'model' => $this->findModel($id),
             ]);
         } else {
