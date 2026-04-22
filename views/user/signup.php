@@ -2,6 +2,8 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
+use himiklab\yii2\recaptcha\ReCaptcha;
+
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \app\models\SignupForm */
@@ -38,34 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-4">
                 <?= $form->field($model, 'first_name') ?>
                 <?= $form->field($model, 'last_name') ?>
-                <?php //echo $form->field($model, 'job_title')->dropDownList(
-                      //    ['Owner'=>'Owner', 
-                      //     'Office Manager'=>'Office Manager', 
-                      //     'Employee'=>'Employee', 
-                      //     'Other'=>'Other'],
-                      //    ['prompt'=>'--Select One--']    // options
-                      //) ?>
-                <?php //echo $form->field($model, 'account_number')
-                      //    ->textInput(['maxlength' => true, 'placeholder' => 'AA9999 (Leave empty if not known)'])
-                      //    ->label(Yii::$app->params['companyNameShort'] . ' Account Number')
-                      //?>
-                <?php //echo $form->field($model, 'receive_newsletter')->checkbox() . Yii::t('app', "Signup for our Newsletter to stay informed on the latest products, the hottest deals, and our special sales."); ?>
+                <?= $form->field($model, 'verifyCode')->widget(ReCaptcha::class)->label(false); ?>
                 
-            </div>
-            <div class="col-lg-4">
-                <?php //echo $form->field($model, 'company_name') ?>
-                <?php //echo $form->field($model, 'address1')->label('Address (line 1)') ?>
-                <?php //echo $form->field($model, 'address2')->label('Address (line 2)') ?>
-                <?php //echo $form->field($model, 'city') ?>
-                <?php //echo $form->field($model, 'state_prov')->label('State / Province')->dropDownList(
-                      //  \app\models\UtilsProvider::$states,
-                      //  [ 'prompt' => '--Select One--' ]
-                      //) ?>
-                <?php //echo $form->field($model, 'postal_code')->label('ZIP / Postal Code') ?>
-                <?php //echo $form->field($model, 'country')->dropDownList(
-                      //  \app\models\UtilsProvider::$countryNames,
-                      //  [ 'prompt' => '--Select One--' ]
-                      //) ?>
             </div>
             <div class="form-group col-lg-12">
                 <?= Html::submitButton(Yii::t('app', 'Signup'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
