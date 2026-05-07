@@ -48,17 +48,12 @@ switch(Yii::$app->params['siteLayout']) {
     default:
         $bgStyle              = 'background-color: #ddd;';  // gray
         $bgStyle              = 'background-color: #d4cbbe;';  // lightbrow
-        //$logoBannerStyle      = 'background-color: white; box-shadow: 0px 20px 30px -5px rgba(50, 50, 50, 0.94);';
         $logoBannerStyle      = 'background-color: white; box-shadow: 0px 10px 15px 0px rgba(50, 50, 50, 0.94);';
-        //$contentNavbarStyle   = 'background-color: white; box-shadow: 0px 10px 30px -5px rgba(50, 50, 50, 0.94);';
         $contentNavbarStyle   = 'background-color: white; box-shadow: 0px 10px 15px 0px rgba(50, 50, 50, 0.94);';  // dark gray
         $contentNavbarClass   = 'container wrap';
         $contentStyle         = 'background-color: white; margin-top: -80px;';
         $contentClass         = 'container wrap';
-        //$footerStyle          = 'background-color: #f5f5f5; border-top: 1px solid #ddd; padding-top: 20px; box-shadow: 0px 60px 30px -5px rgba(50, 50, 50, 0.94);';
-        //$footerStyle          = 'background-color: #f5f5f5; border-top: 1px solid #ddd; padding-top: 20px; box-shadow: 0px 70px 15px 0px rgba(50, 50, 50, 0.94);';
         $footerStyle          = 'background-color: #f5f5f5; border-top: 1px solid #ddd; padding-top: 20px; box-shadow: 0px 70px 15px 0px rgba(50, 50, 50, 0.94);';
-        //$footerStyle          = 'background-color: #6a736a; border-top: 1px solid #ddd; padding-top: 20px; box-shadow: 0px 70px 15px 0px rgba(50, 50, 50, 0.94);';
         $footerClass          = 'container';
         $footerContainerStyle = 'margin: 10px;';
         break;
@@ -78,37 +73,11 @@ switch(Yii::$app->params['siteLayout']) {
     <link rel="shortcut icon" href="<?= Yii::$app->homeUrl; ?>favicon.ico" type="image/x-icon" />
 </head>
 <body style="<?= $bgStyle ?>">
-    
-    <!--[if lt IE 9]>
-        <script src="<?= Yii::$app->homeUrl; ?>lib/jquery-1.12.0.min.js"></script>
-        <script src="<?= Yii::$app->homeUrl; ?>js/bootstrap.js"></script>
-        <div class="alert alert-danger" role="alert">
-            <h1>YOUR BROWSER IS OUT-OF-DATE</h1>
-            <p>PLEASE UPGRADE TO <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">INTERNET EXPLORER 9</a> OR NEWER, <br>
-            OR USE <a href="https://www.mozilla.org/firefox">FIREFOX</a> OR <a href="https://www.google.com/chrome/browser/">CHROME</a> 
-            TO VIEW THE FULL CONTENT OF THIS SITE.
-            </p>
-        </div>
-    <![endif]-->
-    <!--[if gte IE 9 | (!IE)]><!-->
-        
-    <!--<![endif]-->
-
-    <?php
-        //echo '<pre>';
-        //var_dump(Yii::$app->user);
-        //if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin())
-        //{
-        //    echo "ADMIN USER";
-        //    var_dump(Yii::$app->user->identity);
-        //}            
-        //echo '/<pre>';
-    ?>
     <?php $this->beginBody() ?>
     
     <!-- Logo -->
     <div class="container" style="<?= $logoBannerStyle ?>">
-      <img src="http://cdn.auditiva.us/frontpage/logo.png" style="margin: 10px" valign="left">
+      <img src="https://cdn.auditiva.us/frontpage/logo.png" style="margin: 10px" valign="left">
       <p class="pull-right" style="margin-top: 5px; margin-right: 20px;">
             <?php UtilsProvider::getGoogleTranslateDropdown(); ?>&nbsp;&nbsp;  
       </p>
@@ -238,7 +207,7 @@ switch(Yii::$app->params['siteLayout']) {
             | <?= Html::a('Privacy Policy', urldecode(Url::toRoute(['site/privacy'])) ) ?>
             <?= (!empty(Yii::$app->params['urlWebmail'])        ? "| <a href='". Yii::$app->params['urlWebmail']."' target='_blank'>WebMail</a>" : '') ?> </small>
             <?= (!empty(Yii::$app->params['urlSocialFacebook']) ? "| &nbsp;&nbsp;<a class='facebook' href='". Yii::$app->params['urlSocialFacebook']."' target='_blank'><img src='https://cdn.auditiva.us/frontpage/social-facebook.png'></a>": '' ) ?>
-            <?= (!empty(Yii::$app->params['urlSocialYoutube'])  ? "<a class='youtube' href='". Yii::$app->params['urlSocialYoutube']."' target='_blank'><img src='https://cdn.auditiva.us/frontpage/social-youtube.png'></a>": '' ) ?>
+            <?= (!empty(Yii::$app->params['urlSocialYoutube'])  ? "| <a class='youtube' href='". Yii::$app->params['urlSocialYoutube']."' target='_blank'><img src='https://cdn.auditiva.us/frontpage/social-youtube.png'></a>": '' ) ?>
         </p>
         </div>
     </footer>
