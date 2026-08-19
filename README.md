@@ -78,3 +78,9 @@ Website Admin -> Dashboard -> Tools -> Backup Database
 3. cp /backups/latest_dump.sql data-init/init.sql
 4. docker-compose up -d php
 ```
+
+## Deployment
+
+### Requirements
+
+All fields withing .env.example must be filled out, and the file renamed to .env

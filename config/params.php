@@ -20,7 +20,7 @@ $params = [
     'urlSocialTwitter'              => '',
     'user.passwordResetTokenExpire' => 3600,
     'isSignupAllowed'               => false, // allows user to signup
-    'isSignupApprovalRequired'    => true,  // requires sending email to admin to request signup approval
+    'isSignupApprovalRequired'      => true,  // requires sending email to admin to request signup approval
     'timezone'                      => 'America/New_York',  // Must be a valid PHP timezone.  See: http://php.net/manual/en/timezones.php
     'siteLayout'                    => 'default',  // ['full', 'default_white', 'default_gray', 'default']
     
@@ -32,6 +32,9 @@ $params = [
     'mail.username'   => getenv('MAIL_USERNAME'),
     'mail.password'   => getenv('MAIL_PASSWORD'),
     'mail.server'     => getenv('MAIL_SERVER'),
+    'mail.tenantId'   => getenv('MAIL_TENANT_ID'),  // Microsoft Graph API Tenant ID
+    'mail.clientId'   => getenv('MAIL_CLIENT_ID'),  // Microsoft Graph API Client ID
+    'mail.clientSecret' => getenv('MAIL_SECRET'),  // Microsoft Graph API Client
 
     's3.key' => getenv('S3_KEY'),
     's3.secret' => getenv('S3_SECRET'),

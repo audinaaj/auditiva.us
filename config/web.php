@@ -45,26 +45,17 @@ $config = [
         ],
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
+            'transportFactory' => new \Symfony\Component\Mailer\Transport([
+                // add our microsoftgraph+api bridge as a transport by inject it's transportFactory
+                new \Symfony\Component\Mailer\Bridge\MicrosoftGraph\Transport\MicrosoftGraphTransportFactory(null, \Symfony\Component\HttpClient\HttpClient::create()),
+                ...\Symfony\Component\Mailer\Transport::getDefaultFactories(),
+            ]),
             'transport' => [
-                // 'scheme' => 'smtps',
-                // 'require_tls' => true,
-                // 'host'       => 'smtp.office365.com',
-                // 'username'   => $params['mail.username'],
-                // 'password'   => $params['mail.password'],
-                // 'port' => 587,
-                'dsn' => 'smtp://'.$params['mail.username'].':'.$params['mail.password'].'@smtp.office365.com:587',
-                //'dsn' => 'microsoftgraph+api://CLIENT_APP_ID:CLIENT_APP_SECRET@default?tenantId=TENANT_ID',
-                //'dsn' => 'microsoftgraph+api://'.$params['mail.clientId'].':'.$params['mail.clientSecret'].'@default?tenantId='.$params['mail.tenantId'],
+                //'dsn' => 'smtp://'.$params['mail.username'].':'.$params['mail.password'].'@smtp.office365.com:587',
+                'dsn' => 'microsoftgraph+api://'.$params['mail.clientId'].':'.$params['mail.clientSecret'].'@default?tenantId='.$params['mail.tenantId'],
             ],
-
-            // Directory that contains the view files 
-            // for composing mail messages. Defaults to '@app/mail'
             'viewPath' => '@app/mail',
-
-            // Send all mail messages to a file by default. 
-            // The messages get stored locally under '@app/runtime/mail'
             'useFileTransport' => false,
-            //'fileTransportPath' => '@runtime/mail',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
