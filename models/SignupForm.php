@@ -4,7 +4,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\helpers\StringHelper;
-use himiklab\yii2\recaptcha\ReCaptchaValidator;
+use luyadev\recaptcha\ReCaptchaValidator2;
 
 use app\models\User;
 /**
@@ -18,7 +18,7 @@ class SignupForm extends Model
     public $last_name;
     public $email;
     public $phone;
-    public $verifyCode;  // reCaptcha
+    public $verifyCode;  // captcha
     //public $address1;
     //public $address2;
     //public $city;
@@ -37,31 +37,19 @@ class SignupForm extends Model
     {
         return [
             ['username', 'filter', 'filter' => 'trim'],
-            ['username', 'required'],
             ['username', 'unique', 'targetClass' => '\app\models\User', 'message' => Yii::t('app', 'This username has already been taken.')],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'filter', 'filter' => 'trim'],
-            ['email', 'required'],
             ['email', 'email'],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => Yii::t('app', 'This email address has already been taken.')],
 
-            ['password', 'required'],
             ['password', 'string', 'min' => 6],
             
-            [[
-                'first_name', 'last_name', 'phone', 
-                //'address1', 'address2', 'city', 'state_prov', 'postal_code', 'country', 
-                //'company_name', 'job_title', 'account_number',
-            ], 'string', 'max' => 255],
-            [[
-                'first_name', 'last_name', 'phone', 
-                //'address1', 'city', 'state_prov', 'postal_code', 'country', 
-                //'job_title',
-            ], 'required'],
-            
-            //['receive_newsletter', 'safe']
-            ['verifyCode', ReCaptchaValidator::class, 'uncheckedMessage' => 'The verification code is incorrect.'],  // reCaptcha
+            [['first_name', 'last_name', 'phone'], 'string', 'max' => 255],
+            [['first_name', 'last_name', 'phone', 'username', 'email', 'password'], 'required'],
+
+            ['verifyCode', ReCaptchaValidator2::class, 'uncheckedMessage' => 'The verification code is incorrect.'],
         ];
     }
 

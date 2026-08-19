@@ -4,7 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
-use himiklab\yii2\recaptcha\ReCaptchaValidator;
+use luyadev\recaptcha\ReCaptchaValidator2;
 
 /**
  * ContactForm is the model behind the contact form.
@@ -20,8 +20,8 @@ class FindProfessionalForm extends ContactForm
     public $zipCode;
     public $country;
     public $isProductUser;          // Do you currently wear hearing aids?  Yes/No
-    public $productInterests;       // What are the products in which you are interested in? (choose all that apply): Hearing Aids/Bluetooth�/Other 
-    public $helpType;               // How may we help you? I am looking for a location that can repair my hearing instrument. /  I am looking for a location where I can purchase your product or accessory.
+    public $productInterests;       // What are the products in which you are interested in? (choose all that apply): Hearing Aids/Bluetooth/Other 
+    public $helpType;               // repair location / purchase location
     public $productSerialNumbers;   // Product Serial Numbers (if available)
     
     /**
@@ -32,12 +32,12 @@ class FindProfessionalForm extends ContactForm
         return [
             // name, email, subject and body are required
             //[['firstName', 'lastName', 'email', 'subject', 'body'], 'required'],
-            [['firstName', 'lastName', 'email'], 'required'],
+            [['firstName', 'lastName', 'email', 'verifyCode'], 'required'],
             [['telephone', 'city', 'state', 'zipCode', 'country', 'isProductUser', 'productSerialNumbers'], 'string',  'max' => 255],
             [['productInterests', 'helpType'], 'safe'],
             // email has to be a valid email address
             ['email', 'email'],
-            ['verifyCode', ReCaptchaValidator::class, 'uncheckedMessage' => 'The verification code is incorrect.'],  // Google reCaptcha
+            ['verifyCode', ReCaptchaValidator2::class, 'uncheckedMessage' => 'The verification code is incorrect.'],
         ];
     }
 

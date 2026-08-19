@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-use himiklab\yii2\recaptcha\ReCaptcha;
+use luyadev\recaptcha\ReCaptcha2;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-4">
                 <?= $form->field($model, 'first_name') ?>
                 <?= $form->field($model, 'last_name') ?>
-                <?= $form->field($model, 'verifyCode')->widget(ReCaptcha::class)->label(false); ?>
+                <?= $form->field($model, 'verifyCode')->widget(ReCaptcha2::class)->label(false); ?>
                 
             </div>
             <div class="form-group col-lg-12">

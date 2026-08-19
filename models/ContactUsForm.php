@@ -4,7 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
-use himiklab\yii2\recaptcha\ReCaptchaValidator;
+use luyadev\recaptcha\ReCaptchaValidator2;
 
 use app\models\SpamFilter;
 
@@ -31,12 +31,12 @@ class ContactUsForm extends ContactForm
     {
         return [
             // name, email, subject and body are required
-            [['firstName', 'lastName', 'email', 'subject', 'body'], 'required'],
+            [['firstName', 'lastName', 'email', 'subject', 'body','verifyCode'], 'required'],
             [['telephone', 'city', 'state', 'zipCode', 'country', 'productSerialNumbers'], 'string',  'max' => 255],
             [['helpCategory'], 'safe'],
             // email has to be a valid email address
             ['email', 'email'],
-            ['verifyCode', ReCaptchaValidator::class, 'uncheckedMessage' => 'The verification code is incorrect.'],  // Google reCaptcha
+            ['verifyCode', ReCaptchaValidator2::class, 'uncheckedMessage' => 'The verification code is incorrect.'],
         ];
     }
 

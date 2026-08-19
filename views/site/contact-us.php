@@ -1,9 +1,8 @@
 <?php
 use yii\bootstrap\ActiveForm;
-use yii\captcha\Captcha;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use himiklab\yii2\recaptcha\ReCaptcha;
+use luyadev\recaptcha\ReCaptcha2;
 
 use app\models\UtilsProvider;
 
@@ -50,20 +49,8 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                 ]) ?>
                 <?= $form->field($model, 'body')->textArea(['rows' => 6]) ?>                
                 <?= $form->field($model, 'productSerialNumbers')->label('Product Serial Numbers (if available)') ?>
-                <?php 
-                    // To regenerate new captcha after each refresh, call getVerifyCode(). 
-                    // See: http://www.yiiframework.com/forum/index.php/topic/17638-captcha-code-not-changing/.
-                    $this->context->createAction('captcha')->getVerifyCode(true); 
-                ?>
-                
-                <?php 
-                    // Using default Yii2 captcha field
-                    //echo $form->field($model, 'verifyCode')->widget(Captcha::class, [
-                    //    'captchaAction' => 'site/captcha',  // redirect to correct controller where captcha is defined
-                    //    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                    //]) 
-                ?>
-                <?= $form->field($model, 'verifyCode')->widget(ReCaptcha::class)->label(false); ?>
+
+                <?= $form->field($model, 'verifyCode')->widget(ReCaptcha2::class)->label(false); ?>
 
                 <div class="form-group">
                     <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>

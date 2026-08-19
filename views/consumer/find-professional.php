@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use app\models\UtilsProvider;
-use himiklab\yii2\recaptcha\ReCaptcha;
+use luyadev\recaptcha\ReCaptcha2;
 
 /* @var $this yii\web\View */
 $this->title = 'Find a Professional';
@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                 <?php 
                     // Regenerate new captcha after each refresh.
                     $this->context->createAction('captcha')->getVerifyCode(true); 
-                    echo $form->field($model, 'verifyCode')->widget(ReCaptcha::class)->label(false);
+                    echo $form->field($model, 'verifyCode')->widget(ReCaptcha2::class)->label(false);
                 ?>
 
                 <div class="form-group">

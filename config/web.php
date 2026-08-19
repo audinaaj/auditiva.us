@@ -95,10 +95,9 @@ $config = [
            'defaultTimeZone' => 'America/New_York'
         ],
         'reCaptcha' => [
-            'name'    => 'reCaptcha',
-            'class'   => 'himiklab\yii2\recaptcha\ReCaptcha',
-            'siteKey' => $params['recaptchaSiteKeyv2'],
-            'secret'  => $params['recaptchaSecretv2'],
+            'class'   => 'luyadev\recaptcha\ReCaptchaConfig',
+            'siteKeyV2' => $params['recaptchaSiteKeyv2'],
+            'secretV2'  => $params['recaptchaSecretv2'],
         ],
         's3' => [
             'class' => 'bpsys\yii2\aws\s3\Service',
