@@ -4,6 +4,8 @@ services:
     command:
       - --log_bin_trust_function_creators=1
       - --default-time-zone=America/New_York
+      - --skip-mysqlx
+      - --skip-performance-schema
     environment:
       TZ: America/New_York
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
