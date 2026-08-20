@@ -3,22 +3,19 @@ set -e
 
 # Wait for database to be ready
 echo "Waiting for database connection..."
-# Spit out the details of the host/db connection for debugging purposes
-echo "DB_HOST: $DB_HOST / DB_NAME: $DB_NAME / DB_USER: $DB_USER"
 
 attempt=0
-until mysql -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" --skip-ssl-verify-server-cert -e "SELECT 1"; do
+until mysql -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" --skip-ssl-verify-server-cert -e "SELECT 1" > /dev/null 2>&1; do
   attempt=$((attempt+1))
   echo "Database is unavailable (attempt $attempt) - sleeping"
   if [ $attempt -gt 5 ]; then
     echo "ERROR: Could not connect to database after $attempt attempts"
-    mysql -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" --skip-ssl-verify-server-cert -e "SELECT 1"
+    mysql -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" --skip-ssl-verify-server-cert -e "SELECT 1" > /dev/null 2>&1
   fi
   sleep 3
 done
 
-echo "Database is up - running migrations"
-php /app/yii migrate/up --interactive=0
+echo "Database is up."
 
 # Apply init.sql if present and not already applied (hash-based tracking)
 INIT_DUMP_PATH="${INIT_DUMP_PATH:-/data-init/init.sql}"
@@ -42,5 +39,8 @@ if [ -f "$INIT_DUMP_PATH" ]; then
   fi
 fi
 
-echo "Starting Apache..."
+echo "Running database migrations."
+php /app/yii migrate/up --interactive=0
+
+echo "Starting Apache"
 exec "$@"
