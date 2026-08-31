@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Tabs;
 use yii\jui\DatePicker;
-use skylineos\yii\s3manager\widgets\{FileInput, MediaManagerModal};
+use skylineos\yii\s3manager\widgets\{TinyMce, FileInput, MediaManagerModal};
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Content */
@@ -23,11 +23,11 @@ use skylineos\yii\s3manager\widgets\{FileInput, MediaManagerModal};
     //--------------------
     $tabContent = '<div class="col-md-10"><br />';
 
-    $tabContent .= $form->field($model, 'intro_text')->widget(letyii\tinymce\Tinymce::class, [
+    $tabContent .= $form->field($model, 'intro_text')->widget(TinyMce::class, [
         'options' => [
             'id' => 'idIntroText',
         ],
-        'configs' => [ // Read more: http://www.tinymce.com/wiki.php/Configuration
+        'clientOptions' => [ // Read more: http://www.tinymce.com/wiki.php/Configuration
             //'plugins' => 'advlist anchor autolink autoresize autosave bbcode charmap code 
             //             colorpicker compat3x contextmenu directionality emoticons example 
             //             example_dependency fullpage fullscreen hr image insertdatetime layer 
@@ -56,18 +56,17 @@ use skylineos\yii\s3manager\widgets\{FileInput, MediaManagerModal};
         ],
     ]); 
 
-    $tabContent .= $form->field($model, 'full_text')->widget(letyii\tinymce\Tinymce::class, [
+    $tabContent .= $form->field($model, 'full_text')->widget(TinyMce::class, [
         'options' => [
             'id' => 'idFullText',
         ],
-        'configs' => [ // Read more: http://www.tinymce.com/wiki.php/Configuration
+        'clientOptions' => [ // Read more: http://www.tinymce.com/wiki.php/Configuration
             //'plugins' => 'advlist anchor autolink autoresize autosave bbcode charmap code 
             //             colorpicker compat3x contextmenu directionality emoticons example 
             //             example_dependency fullpage fullscreen hr image imagetools insertdatetime layer 
             //             legacyoutput link lists importcss media nonbreaking noneditable 
             //             pagebreak paste preview print save searchreplace spellchecker 
             //             tabfocus table template textcolor textpattern visualblocks visualchars wordcount',
-            //'plugins' => 'code image link media table hr spellchecker imagetools responsivefilemanager', // full list: http://www.tinymce.com/wiki.php/Plugins
             'plugins' => 'code image link media table hr imagetools lists', // full list: http://www.tinymce.com/wiki.php/Plugins
             'templates' => [ 
                 ['title' => 'Template 1', 'description' => 'Basic Template', 'content' => '<b>Basic Template</b>'], 
@@ -89,27 +88,9 @@ use skylineos\yii\s3manager\widgets\{FileInput, MediaManagerModal};
             //        'margin' => '0 10px 0 10px'
             //    ]]
             //],
-            // ResponsiveFileManager plugin settings:
-            //'filemanager_title'         => 'Media File Manager',
-            //'filemanager_access_key'    => 'myPrivateKey',
-            //'external_filemanager_path' => '/acme/site/backend/web/filemanager/',
-            //'external_filemanager_path' =>  Yii::$app->urlManager->createUrl('') . 'filemanager/',
-            //'external_filemanager_path' =>  Yii::$app->urlManager->createUrl('') . 'filemanager/',
-            'external_plugins'          => [
-                //'filemanager'           => '/acme/site/backend/web/filemanager/plugin.min.js',
-                //'filemanager'           => Yii::$app->urlManager->createUrl('') . 'filemanager/plugin.min.js',
-                //'filemanager'           => Yii::$app->urlManager->createUrl('') . 'filemanager/plugin.min.js',
-                //'responsivefilemanager' => '/acme/site/vendor/letyii/yii2-tinymce/tinymce/plugins/responsivefilemanager/plugin.min.js',
-                //'responsivefilemanager' => str_replace('/frontend/web/', '', str_replace('/backend/web/', '', Yii::$app->homeUrl)) . '/vendor/letyii/yii2-tinymce/tinymce/plugins/responsivefilemanager/plugin.min.js',
-                //'responsivefilemanager' => Yii::$app->urlManager->createUrl('') . '../../vendor/letyii/yii2-tinymce/tinymce/plugins/responsivefilemanager/plugin.min.js',
-                //'responsivefilemanager' => Yii::$app->urlManager->createUrl('') . 'filemanager/plugin.min.js',
-            ],
-            //'external_plugins'          => ['responsivefilemanager' => '/acme/site/vendor/letyii/yii2-tinymce/tinymce/plugins/responsivefilemanager/plugin.min.js'],
-            //'external_plugins'          => ['filemanager' => '/acme/site/backend/web/filemanager/plugin.min.js'],
             // Other:
             'browser_spellcheck' => true,
-            //'toolbar' => 'responsivefilemanager undo redo | styleselect | removeformat bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media code',
-            'toolbar' => 'filemanager undo redo | styleselect | removeformat bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code',
+            'toolbar' => 'undo redo | styleselect | removeformat bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code',
             //'menubar'=> 'tools table view insert edit format',
             'menu' => [ // this is the complete default configuration
                 'file'   => ['title' => 'File',   'items' => 'newdocument'],
@@ -166,7 +147,6 @@ use skylineos\yii\s3manager\widgets\{FileInput, MediaManagerModal};
     echo FileInput::widget(['model' => $model, 'attribute' => 'intro_image']);
     $tabImages .= ob_get_clean();
 
-    //$tabImages .= '<button id="btnIntroImg" type="button" class="btn btn-primary" data-toggle="modal" data-target="#winModalMediaGallery" data-field="content-intro_image">Select</button>';
     $tabImages .= '  </span>'; 
 
     $tabImages .= '</div>'; // end inputgroup

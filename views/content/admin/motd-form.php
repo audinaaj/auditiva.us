@@ -3,8 +3,7 @@
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\bootstrap\Tabs;
-use yii\jui\DatePicker;
+use skylineos\yii\s3manager\widgets\{TinyMce, FileInput, MediaManagerModal};
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Content */
@@ -18,11 +17,12 @@ use yii\jui\DatePicker;
 
     <div class="col-md-8"><br />
 
-        <?= $form->field($model, 'intro_text')->label('Text')->widget(letyii\tinymce\Tinymce::class, [
+        <?= $form->field($model, 'intro_text')->label('Text')->widget(TinyMce::class, [
             'options' => [
                 'id' => 'idIntroText',
+                'rows' => 16,
             ],
-            'configs' => [ // Read more: http://www.tinymce.com/wiki.php/Configuration
+            'clientOptions' => [ // Read more: http://www.tinymce.com/wiki.php/Configuration
                 //'plugins' => 'advlist anchor autolink autoresize autosave bbcode charmap code 
                 //             colorpicker compat3x contextmenu directionality emoticons example 
                 //             example_dependency fullpage fullscreen hr image insertdatetime layer 
@@ -145,6 +145,5 @@ use yii\jui\DatePicker;
 
     <?php ActiveForm::end(); ?>
 
+    <?= MediaManagerModal::widget() ?>
 </div>
-
-?>

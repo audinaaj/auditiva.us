@@ -294,7 +294,7 @@ class SiteController extends \yii\web\Controller
     
     public function actionMediaGallery()
     {
-        return $this->render('media-gallery');
+        return $this->redirect(['/s3manager']);
     }
     
     public function actionMessage($type, $title, $message, $button_name='', $button_url='')

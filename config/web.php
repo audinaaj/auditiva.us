@@ -123,17 +123,13 @@ $config = [
                 [
                     'allow' => true,
                     'matchCallback' => function ($rule, $action) {
-                         return \app\models\User::isCurrentUserAdmin();
+                        return \app\models\User::isCurrentUserAdmin();
                     },
                 ],
             ]
         ],
-    ],
-    'container' => [
-        'definitions' => [
-            EsmtpTransportFactory::class => [
-                'class' => Symfony\Component\Mailer\Bridge\MicrosoftGraph\Transport\MicrosoftGraphTransportFactory::class,
-            ]
+        'gridview' => [
+            'class' => '\kartik\grid\Module'
         ],
     ],
     'params' => $params,

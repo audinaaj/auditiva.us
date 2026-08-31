@@ -27,3 +27,5 @@ data-init/
 /config/*-local.php
 .env
 .docker-init-hash
+/web/thumbs
+/web/uploads

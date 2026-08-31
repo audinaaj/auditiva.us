@@ -21,11 +21,11 @@ use yii\bootstrap\Tabs;
     
     <?= $form->field($model, 'tags')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'intro_text')->widget(letyii\tinymce\Tinymce::class, [
+    <?= $form->field($model, 'intro_text')->widget(dosamigos\tinymce\TinyMce::class, [
         'options' => [
             'id' => 'testid',
         ],
-        'configs' => [ // Read more: http://www.tinymce.com/wiki.php/Configuration
+        'clientOptions' => [ // Read more: http://www.tinymce.com/wiki.php/Configuration
             //'plugins' => 'advlist anchor autolink autoresize autosave bbcode charmap code 
             //             colorpicker compat3x contextmenu directionality emoticons example 
             //             example_dependency fullpage fullscreen hr image insertdatetime layer 
@@ -62,11 +62,11 @@ use yii\bootstrap\Tabs;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'full_text')->widget(letyii\tinymce\Tinymce::class, [
+    <?= $form->field($model, 'full_text')->widget(dosamigos\tinymce\TinyMce::class, [
             'options' => [
                 'id' => 'testid',
             ],
-            'configs' => [ // Read more: http://www.tinymce.com/wiki.php/Configuration
+            'clientOptions' => [ // Read more: http://www.tinymce.com/wiki.php/Configuration
                 'height' => 300
                 ],
         ]); ?>
