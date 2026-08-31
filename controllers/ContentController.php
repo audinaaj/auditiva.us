@@ -407,8 +407,8 @@ class ContentController extends Controller
             return $this->redirect(['motd-view', 'id' => $model->id]);
         } else {
             // set default values before rendering
-            if (empty($model->category_id)) $model->category_id = 4; // 4 = News
-            if (empty($model->type_id))     $model->category_id = 8; // 8 = Message of the Day
+            if (empty($model->category_id)) $model->category_id = 1; // 1 = Uncategorized
+            if (empty($model->content_type_id)) $model->content_type_id = 8; // 8 = Message of the Day
             if (empty($model->show_hits))   $model->show_hits   = 0;
             if (empty($model->show_rating)) $model->show_rating = 0;
             if (empty($model->featured))    $model->featured    = 0;
