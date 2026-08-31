@@ -26,8 +26,9 @@ class CdnFormatter extends Formatter
             return $url;
         }
 
-        // If it's an S3 URL, extract the path and prepend CDN domain
-        if (preg_match('#^https?://[^/]+/[^/]+/(.+)$#', $url, $matches)) {
+        // If it's a DigitalOcean Spaces URL with auditiva, extract the path and prepend CDN domain
+        if (preg_match('#^https?://[a-z]{3}\d\.auditiva(?:\.cdn)?\.digitaloceanspaces\.com/(.+)$#', $url, $matches) ||
+            preg_match('#^https?://[a-z]{3}\d(?:\.cdn)?\.digitaloceanspaces\.com/auditiva/(.+)$#', $url, $matches)) {
             return $cdnDomain . '/' . $matches[1];
         }
 
