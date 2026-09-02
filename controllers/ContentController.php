@@ -311,7 +311,7 @@ class ContentController extends Controller
             if (empty($model->ordering))    $model->ordering    = 0;
             if (empty($model->created_by))  $model->created_by = Yii::$app->user->id;
             
-            return $this->render('carousel-create', [
+            return $this->render('admin/carousel-create', [
                 'model' => $model,
             ]);
         }
