@@ -7,14 +7,13 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\filters\auth\HttpBearerAuth;
-use yii\filters\auth\CompositeAuth;
 
 use app\models\ContactForm;
 use app\models\ContactUsForm;
 use app\models\Content;
 use app\models\LoginForm;
 use app\models\User;
+use app\models\UtilsData;
 
 class SiteController extends \yii\web\Controller
 {
@@ -24,29 +23,6 @@ class SiteController extends \yii\web\Controller
     public function behaviors()
     {
         return [
-            'authenticator' => [
-                'class' => CompositeAuth::class,
-                'authMethods' => [
-                    HttpBearerAuth::class,
-                ],
-                'only' => ['backup-database'],
-            ],
-            //'access' => [
-            //    'class' => AccessControl::class,
-            //    'only' => ['logout'],
-            //    'rules' => [
-            //        [
-            //            'actions' => [],
-            //            'allow' => true,
-            //            'roles' => ['?'],  // ? = Guest user
-            //        ],
-            //        [
-            //            'actions' => ['logout'],
-            //            'allow' => true,
-            //            'roles' => ['@'],  // @ = Authenticated users
-            //        ],
-            //    ],
-            //],
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
@@ -319,6 +295,20 @@ class SiteController extends \yii\web\Controller
         ]);
     }
     
+    /**
+     * Dumps the MySQL database (UI endpoint).
+     * Requires admin session authentication via AccessControl.
+     * User must be logged in and have admin role.
+     *
+     * @param string $tables Comma separated list of tables you want to download, or '*' if you want to download them all.
+     */
+    public function actionBackupDatabase($tables = '*')
+    {
+        $backup = UtilsData::generateDatabaseBackup($tables);
+        $filename = $backup['databaseName'] . '-backup-' . date('Y-m-d_H-i-s') . '.sql';
+        Yii::$app->response->sendContentAsFile($backup['sql'], $filename, ['mimeType' => 'text/x-sql']);
+    }
+    
     private function sendMessage($srcMail, $srcName, $dstEmail, $subject, $textBody)
     {
         return Yii::$app->mailer->compose()
@@ -330,120 +320,4 @@ class SiteController extends \yii\web\Controller
                 ->send();
     }
     
-    /** 
-     *  Get host name or database name from database connection string in 
-     *  Yii::$app->db->dsn:
-     *   [dsn] => 'mysql:host=localhost;dbname=acme_mydatabase'
-     *  Usage:
-     *    $db = Yii::$app->getDb();
-     *   $dbName = $this->getDsnAttribute('dbname', $db->dsn);
-     */
-    private function getDsnAttribute($name, $dsn)
-    {
-        if (preg_match('/' . $name . '=([^;]*)/', $dsn, $match)) {
-            return $match[1];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-     * Generate database backup SQL dump.
-     * Private helper method used by both UI and API backup actions.
-     *
-     * @param string $tables Comma separated list of tables or '*' for all
-     * @return array Array with 'sql', 'databaseName', and 'timestamp' keys
-     * @throws \Exception
-     */
-    private function generateDatabaseBackup($tables = '*')
-    {
-        $output = '';
-
-        $db = Yii::$app->getDb();
-        $databaseName = $this->getDsnAttribute('dbname', $db->dsn);
-
-        // Do a short header with charset declaration
-        $output .= '-- Database: `' . $databaseName . '`' . "\n";
-        $output .= '-- Generation time: ' . date('D jS M Y H:i:s') . "\n\n\n";
-        $output .= "/*!40101 SET NAMES utf8mb4 */;\n";
-        $output .= 'SET FOREIGN_KEY_CHECKS=0;' . "\n\n";
-
-        if ($tables == '*') {
-            $tables = array();
-            $result = $db->createCommand('SHOW TABLES')->queryAll();
-            foreach($result as $resultKey => $resultValue) {
-                $tables[] = $resultValue['Tables_in_'.$databaseName];
-            }
-        } else {
-            $tables = is_array($tables) ? $tables : explode(',', $tables);
-        }
-
-        // Run through all the tables
-        foreach ($tables as $table) {
-            $tableData = $db->createCommand('SELECT * FROM ' . $table)->queryAll();
-
-            $output .= 'DROP TABLE IF EXISTS ' . $table . ';';
-            $createTableResult = $db->createCommand('SHOW CREATE TABLE ' . $table)->queryAll();
-            $createTableEntry = current($createTableResult);
-            $output .= "\n\n" . $createTableEntry['Create Table'] . ";\n\n";
-
-            // Output the table data
-            foreach($tableData as $tableDataIndex => $tableDataDetails) {
-                $output .= 'INSERT INTO ' . $table . ' VALUES(';
-            
-                foreach($tableDataDetails as $dataKey => $dataValue) {
-                    if(is_null($dataValue)) {
-                        $escapedDataValue = 'NULL';
-                    } elseif (in_array($dataValue, ['0000-00-00 00:00:00', '0000-00-00'])) {
-                        // Convert zero dates to NULL to comply with strict mode
-                        $escapedDataValue = 'NULL';
-                    } else {
-                        // Convert the encoding
-                        //$escapedDataValue = mb_convert_encoding( $dataValue, "UTF-8", "ISO-8859-1" );
-                        $escapedDataValue = $dataValue;  // no char conversion (keep it as UTF-8)
-            
-                        // Escape any apostrophes using the datasource of the model.
-                        $escapedDataValue = str_replace("'", "\'", $escapedDataValue);  // escape apostrophes
-                        //if (stripos($escapedDataValue, ' ') !== false) {
-                        //    $escapedDataValue = "'" . $escapedDataValue . "'";  // quote string if spaces found
-                        //}
-                        //if (!is_numeric($escapedDataValue)) {
-                        //    $escapedDataValue = "'" . $escapedDataValue . "'";  // quote string if non-numeric
-                        //}
-                        $escapedDataValue = "'" . $escapedDataValue . "'";        // quote string for all fields without NULL
-                    }
-            
-                    $tableDataDetails[$dataKey] = $escapedDataValue;
-                }
-                $output .= implode(',', $tableDataDetails);
-            
-                $output .= ");\n";
-            }
-
-            $output .= "\n\n\n";
-        }
-
-        $output .= 'SET FOREIGN_KEY_CHECKS=1;' . "\n\n";
-
-        return [
-            'sql' => $output,
-            'databaseName' => $databaseName,
-            'timestamp' => date('Y-m-d H:i:s'),
-        ];
-    }
-
-    /**
-     * Dumps the MySQL database that this controller's model is attached to.
-     * This action will serve the sql file as a download so that the user can save the backup to their local computer.
-     *
-     * @param string $tables Comma separated list of tables you want to download, or '*' if you want to download them all.
-     */
-    public function actionBackupDatabase($tables = '*')
-    {
-        $backup = $this->generateDatabaseBackup($tables);
-        $filename = $backup['databaseName'] . '-backup-' . date('Y-m-d_H-i-s') . '.sql';
-        Yii::$app->response->sendContentAsFile($backup['sql'], $filename, ['mimeType' => 'text/x-sql']);
-    }
-
-
 }

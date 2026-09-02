@@ -72,7 +72,6 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName'  => false,
             'rules' => [
-                'GET api/backup-database' => 'site/backup-database',
             ],
         ],
         'assetManager' => [

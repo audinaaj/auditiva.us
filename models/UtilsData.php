@@ -397,4 +397,106 @@ class UtilsData extends Model
               
         return $success;
     }
+    
+    ///----------------------------------------------------------------------------------------
+    /// <summary>
+    /// Description: Extract attribute value from database connection string DSN.
+    /// Usage:
+    ///     $dbName = UtilsData::getDsnAttribute('dbname', $db->dsn);
+    /// Params: 
+    ///    $name  The attribute name to extract (e.g., 'dbname', 'host')
+    ///    $dsn   The DSN connection string from Yii::$app->db->dsn
+    /// </summary>
+    ///----------------------------------------------------------------------------------------
+    public static function getDsnAttribute($name, $dsn)
+    {
+        if (preg_match('/' . $name . '=([^;]*)/', $dsn, $match)) {
+            return $match[1];
+        } else {
+            return null;
+        }
+    }
+    
+    ///----------------------------------------------------------------------------------------
+    /// <summary>
+    /// Description: Generate database backup SQL dump.
+    /// Usage:
+    ///     $backup = UtilsData::generateDatabaseBackup('*');  // all tables
+    ///     // or
+    ///     $backup = UtilsData::generateDatabaseBackup('users,posts,comments');  // specific tables
+    /// Params: 
+    ///    $tables  Comma separated list of tables, or '*' for all tables
+    /// Returns:
+    ///    Array with keys: 'sql' (SQL dump content), 'databaseName', 'timestamp'
+    /// </summary>
+    ///----------------------------------------------------------------------------------------
+    public static function generateDatabaseBackup($tables = '*')
+    {
+        $output = '';
+
+        $db = Yii::$app->getDb();
+        $databaseName = self::getDsnAttribute('dbname', $db->dsn);
+
+        // Do a short header with charset declaration
+        $output .= '-- Database: `' . $databaseName . '`' . "\n";
+        $output .= '-- Generation time: ' . date('D jS M Y H:i:s') . "\n\n\n";
+        $output .= "/*!40101 SET NAMES utf8mb4 */;\n";
+        $output .= 'SET FOREIGN_KEY_CHECKS=0;' . "\n\n";
+
+        if ($tables == '*') {
+            $tables = array();
+            $result = $db->createCommand('SHOW TABLES')->queryAll();
+            foreach($result as $resultKey => $resultValue) {
+                $tables[] = $resultValue['Tables_in_'.$databaseName];
+            }
+        } else {
+            $tables = is_array($tables) ? $tables : explode(',', $tables);
+        }
+
+        // Run through all the tables
+        foreach ($tables as $table) {
+            $tableData = $db->createCommand('SELECT * FROM ' . $table)->queryAll();
+
+            $output .= 'DROP TABLE IF EXISTS ' . $table . ';';
+            $createTableResult = $db->createCommand('SHOW CREATE TABLE ' . $table)->queryAll();
+            $createTableEntry = current($createTableResult);
+            $output .= "\n\n" . $createTableEntry['Create Table'] . ";\n\n";
+
+            // Output the table data
+            foreach($tableData as $tableDataIndex => $tableDataDetails) {
+                $output .= 'INSERT INTO ' . $table . ' VALUES(';
+            
+                foreach($tableDataDetails as $dataKey => $dataValue) {
+                    if(is_null($dataValue)) {
+                        $escapedDataValue = 'NULL';
+                    } elseif (in_array($dataValue, ['0000-00-00 00:00:00', '0000-00-00'])) {
+                        // Convert zero dates to NULL to comply with strict mode
+                        $escapedDataValue = 'NULL';
+                    } else {
+                        // Convert the encoding
+                        $escapedDataValue = $dataValue;  // no char conversion (keep it as UTF-8)
+            
+                        // Escape any apostrophes using the datasource of the model.
+                        $escapedDataValue = str_replace("'", "\'", $escapedDataValue);  // escape apostrophes
+                        $escapedDataValue = "'" . $escapedDataValue . "'";        // quote string for all fields without NULL
+                    }
+            
+                    $tableDataDetails[$dataKey] = $escapedDataValue;
+                }
+                $output .= implode(',', $tableDataDetails);
+            
+                $output .= ");\n";
+            }
+
+            $output .= "\n\n\n";
+        }
+
+        $output .= 'SET FOREIGN_KEY_CHECKS=1;' . "\n\n";
+
+        return [
+            'sql' => $output,
+            'databaseName' => $databaseName,
+            'timestamp' => date('Y-m-d H:i:s'),
+        ];
+    }
 }
