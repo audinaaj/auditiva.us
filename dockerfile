@@ -1,10 +1,11 @@
 FROM yiisoftware/yii2-php:8.4-apache
 
 LABEL org.opencontainers.image.authors="ajdavis@audina.net"
-LABEL org.opencontainers.image.version="0.9.1"
+LABEL org.opencontainers.image.version="0.9.2"
 LABEL org.opencontainers.image.title="Auditiva.us"
 LABEL org.opencontainers.image.url="https://auditiva.us"
 LABEL org.opencontainers.image.source="https://github.com/audinaaj/auditiva.us"
+LABEL org.opencontainers.image.description="Auditiva.us is a web application for promoting and supporting Auditiva products."
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ='America/New_York'
