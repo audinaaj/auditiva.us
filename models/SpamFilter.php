@@ -65,7 +65,7 @@ class SpamFilter extends \yii\db\ActiveRecord
         if (!empty($spam_filters)) {
             // Extract spam keywords from spam filters
             foreach($spam_filters as $filter) {
-                $spam_keywords = array_merge( $spam_keywords, explode("," , $filter['keywords']) );
+                $spam_keywords = array_merge($spam_keywords, array_filter(explode("," , $filter['keywords'])));
             }
         } else {
             // Generate default spam keyword list, since we did not find any spam filters
