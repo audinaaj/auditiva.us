@@ -52,7 +52,7 @@ class PasswordResetRequestForm extends Model
                 \Yii::trace('User saved with new password reset token', __METHOD__);
                 return \Yii::$app->mailer->compose('passwordResetToken', ['user' => $user])
                     //->setFrom([\Yii::$app->params['adminEmail'] => \Yii::$app->name . ' robot'])
-                    ->setFrom([\Yii::$app->params['adminEmail'] => \Yii::$app->params['companyName']])
+                    ->setFrom([\Yii::$app->params['mail.username'] => \Yii::$app->params['companyName']])
                     ->setTo($this->email)
                     ->setBcc([\Yii::$app->params['debugEmail'] => 'Debug Email'])
                     //->setSubject('Password reset for ' . \Yii::$app->name)

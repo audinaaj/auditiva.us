@@ -235,7 +235,7 @@ class UserController extends Controller
                     $useHtmlTemplate = true;
                     if (!empty($useHtmlTemplate) && $useHtmlTemplate) {
                         $email = Yii::$app->mailer->compose('signupActivationApproved', ['user' => $model])  // html template
-                            ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']])
+                            ->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']])
                             ->setTo($model->email)
                             ->setBcc([
                                 Yii::$app->params['adminEmail'] =>  Yii::t('app', '{companyName} Support', ['companyName' => Yii::$app->params['companyNameShort']]), 
@@ -246,7 +246,7 @@ class UserController extends Controller
                         $email->send();
                     } else {
                         $email = Yii::$app->mailer->compose()    // plain text template
-                            ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']])
+                            ->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']])
                             ->setTo($model->email)
                             ->setBcc([
                                 Yii::$app->params['adminEmail'] => Yii::t('app', '{companyName} Support', ['companyName' => Yii::$app->params['companyNameShort']]), 
@@ -375,7 +375,7 @@ class UserController extends Controller
                         $useHtmlTemplate = true;
                         if (!empty($useHtmlTemplate) && $useHtmlTemplate) {
                             $email = Yii::$app->mailer->compose('signupActivationRequest', ['user' => $user, 'token' => $activationToken])  // html template
-                                ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']])
+                                ->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']])
                                 ->setTo(Yii::$app->params['adminEmail'])
                                 ->setBcc([Yii::$app->params['debugEmail'] => 'Debug Email'])
                                 ->setSubject(Yii::t('app', 'New website user') . ' ('. Yii::t('app', 'approval request') . ')');
@@ -409,7 +409,7 @@ class UserController extends Controller
                                 Html::a(Yii::t('app', 'Ban'), $banLink) . " ]";
 
                             $email = Yii::$app->mailer->compose()    // plain text template
-                                ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']])
+                                ->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']])
                                 ->setTo(Yii::$app->params['adminEmail'])
                                 ->setBcc([Yii::$app->params['debugEmail'] => 'Debug Email'])
                                 ->setSubject(Yii::t('app', 'New website user') . ' ('. Yii::t('app', 'approval request') . ')')

@@ -215,7 +215,7 @@ class Payment extends \yii\db\ActiveRecord
             // Send with HTML template
             //--------------------------------
             $isMessageSent = Yii::$app->mailer->compose('payment', ['model' => $this])
-                ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']])
+                ->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']])
                 ->setTo($dstEmail)
                 ->setBcc([
                     Yii::$app->params['adminEmail'] => Yii::$app->params['companyNameShort'] . ' Support',
@@ -263,11 +263,11 @@ class Payment extends \yii\db\ActiveRecord
             if (Yii::$app->user->isGuest) {
                 // Format: email or [email => name]
                 // Note: User-entered email not supported in some servers.
-                $message->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']]);
+                $message->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']]);
             } else {
                 // Format: email or [email => name]
                 // Note: User-entered email not supported in some servers.
-                $message->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']]);
+                $message->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']]);
             }
             $isMessageSent = $message->setTo($dstEmail)
                 ->setBcc([

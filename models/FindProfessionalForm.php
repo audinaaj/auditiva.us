@@ -58,7 +58,7 @@ class FindProfessionalForm extends ContactForm
             // Send with HTML template
             //--------------------------------
             $isMessageSent = Yii::$app->mailer->compose('findProfessional', ['form' => $this])
-                ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']])
+                ->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']])
                 ->setTo($dstEmail)
                 ->setBcc([
                     Yii::$app->params['adminEmail'] => Yii::$app->params['companyNameShort'] . ' Support', 
@@ -103,13 +103,13 @@ class FindProfessionalForm extends ContactForm
                 // Format: email or [email => name] 
                 //$message->setFrom([$this->email => $this->name]);
                 //$message->setFrom([$this->email => $this->firstName . ' ' . $this->lastName]);  // user-entered email not supported in some servers
-                $message->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']]);         
+                $message->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']]);         
             } else {
                 // Format: email or [email => name] 
                 //$message->setFrom(Yii::$app->user->identity->email);
                 //$message->setFrom([Yii::$app->user->identity->email => $this->firstName . ' ' . $this->lastName]);
                 //$message->setFrom([$this->email => $this->firstName . ' ' . $this->lastName]);  // user-entered email not supported in some servers
-                $message->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->params['companyName']]);
+                $message->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']]);
             }
             $isMessageSent = $message->setTo($dstEmail)
                 ->setBcc([
