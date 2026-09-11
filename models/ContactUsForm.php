@@ -9,13 +9,15 @@ use luyadev\recaptcha\ReCaptchaValidator2;
 use app\models\SpamFilter;
 
 /**
- * ContactUsForm is the model behind the contact form.
+ * ContactUsForm is the model behind the contact us form.
  */
-class ContactUsForm extends ContactForm
+class ContactUsForm extends Model
 {
     public $firstName;
     public $lastName;
     public $email;
+    public $subject;
+    public $body;
     public $telephone;
     public $city;
     public $state;
@@ -23,6 +25,7 @@ class ContactUsForm extends ContactForm
     public $country;
     public $helpCategory;
     public $productSerialNumbers;   // Product Serial Numbers (if available)
+    public $verifyCode;
     
     /**
      * @inheritdoc

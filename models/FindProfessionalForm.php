@@ -7,13 +7,14 @@ use yii\base\Model;
 use luyadev\recaptcha\ReCaptchaValidator2;
 
 /**
- * ContactForm is the model behind the contact form.
+ * FindProfessionalForm is the model behind the find professional form.
  */
-class FindProfessionalForm extends ContactForm
+class FindProfessionalForm extends Model
 {
     public $firstName;
     public $lastName;
     public $email;
+    public $verifyCode;
     public $telephone;
     public $city;
     public $state;
@@ -30,8 +31,6 @@ class FindProfessionalForm extends ContactForm
     public function rules()
     {
         return [
-            // name, email, subject and body are required
-            //[['firstName', 'lastName', 'email', 'subject', 'body'], 'required'],
             [['firstName', 'lastName', 'email', 'verifyCode'], 'required'],
             [['telephone', 'city', 'state', 'zipCode', 'country', 'isProductUser', 'productSerialNumbers'], 'string',  'max' => 255],
             [['productInterests', 'helpType'], 'safe'],
