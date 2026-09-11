@@ -8,7 +8,6 @@ use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 
-use app\models\ContactForm;
 use app\models\ContactUsForm;
 use app\models\Content;
 use app\models\LoginForm;
@@ -178,30 +177,6 @@ class SiteController extends \yii\web\Controller
 
         return $this->goHome();
     }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                //Yii::$app->session->setFlash('contactFormSubmitted');
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending email.');
-            }
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
-    }
     
     public function actionContactUs()
     {
@@ -308,16 +283,4 @@ class SiteController extends \yii\web\Controller
         $filename = $backup['databaseName'] . '-backup-' . date('Y-m-d_H-i-s') . '.sql';
         Yii::$app->response->sendContentAsFile($backup['sql'], $filename, ['mimeType' => 'text/x-sql']);
     }
-    
-    private function sendMessage($srcMail, $srcName, $dstEmail, $subject, $textBody)
-    {
-        return Yii::$app->mailer->compose()
-                ->setFrom([$srcMail => $srcName])
-                ->setTo($dstEmail)
-                ->setBcc([Yii::$app->params['debugEmail'] => 'Debug Email'])
-                ->setSubject($subject)
-                ->setTextBody($textBody)
-                ->send();
-    }
-    
 }

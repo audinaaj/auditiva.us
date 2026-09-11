@@ -375,31 +375,6 @@ class UtilsData extends Model
     
     ///----------------------------------------------------------------------------------------
     /// <summary>
-    /// Description: Send email message.
-    /// Usage:
-    ///     DataUtils::sendMessage($srcMail, $srcName, $dstEmail, $subject, $textBody);
-    /// Params: 
-    ///    $srcMail   Sender's email address.
-    ///    $srcName   Sender's name.
-    ///    $dstEmail  Destination email address. 
-    ///    $textBody  Email content.
-    /// </summary>
-    ///----------------------------------------------------------------------------------------
-    public static function sendMessage($srcMail, $srcName, $dstEmail, $subject, $textBody)
-    {
-        $success = Yii::$app->mailer->compose()
-                ->setFrom([$srcMail => $srcName])
-                ->setTo($dstEmail)
-                ->setBcc([Yii::$app->params['debugEmail'] => 'Debug Email'])
-                ->setSubject($subject)
-                ->setTextBody($textBody)
-                ->send();
-              
-        return $success;
-    }
-    
-    ///----------------------------------------------------------------------------------------
-    /// <summary>
     /// Description: Extract attribute value from database connection string DSN.
     /// Usage:
     ///     $dbName = UtilsData::getDsnAttribute('dbname', $db->dsn);
