@@ -45,13 +45,7 @@ $config = [
         ],
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
-            'transportFactory' => new \Symfony\Component\Mailer\Transport([
-                // add our microsoftgraph+api bridge as a transport by inject it's transportFactory
-                new \Symfony\Component\Mailer\Bridge\MicrosoftGraph\Transport\MicrosoftGraphTransportFactory(null, \Symfony\Component\HttpClient\HttpClient::create()),
-                ...\Symfony\Component\Mailer\Transport::getDefaultFactories(),
-            ]),
             'transport' => [
-                //'dsn' => 'smtp://'.$params['mail.username'].':'.$params['mail.password'].'@smtp.office365.com:587',
                 'dsn' => 'microsoftgraph+api://'.$params['mail.clientId'].':'.$params['mail.clientSecret'].'@default?tenantId='.$params['mail.tenantId'],
             ],
             'viewPath' => '@app/mail',
