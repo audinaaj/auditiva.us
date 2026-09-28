@@ -32,8 +32,6 @@ $params = [
 
     // direct smtp credentails (used with SwiftMailer)
     'mail.username'   => getenv('MAIL_USERNAME'),
-    'mail.password'   => getenv('MAIL_PASSWORD'),
-    'mail.server'     => getenv('MAIL_SERVER'),
     'mail.tenantId'   => getenv('MAIL_TENANT_ID'),  // Microsoft Graph API Tenant ID
     'mail.clientId'   => getenv('MAIL_CLIENT_ID'),  // Microsoft Graph API Client ID
     'mail.clientSecret' => getenv('MAIL_SECRET'),  // Microsoft Graph API Client
