@@ -38,3 +38,6 @@ RUN mkdir -p /app/runtime/session /app/runtime/cache \
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost/health || exit 1
