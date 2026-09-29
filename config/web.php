@@ -23,6 +23,14 @@ $config = [
             
             // Required if wanting to hide 'web' folder from url
             'baseUrl' => $baseUrl,
+
+            'trustedHosts' => [
+                '172.17.0.0/16', // Default Docker bridge network
+                '172.18.0.0/16', // Docker compose networks
+            ],
+
+            // Define which headers Yii2 should look at to find the real IP
+            'ipHeaders' => ['X-Forwarded-For', 'X-Real-IP'],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
