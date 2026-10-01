@@ -4,22 +4,23 @@ namespace app\commands;
 
 use Yii;
 use yii\console\Controller;
+use yii\helpers\Console;
 
 class TestController extends Controller
 {
+    public $defaultAction = 'email';
 
-    public function actionEmail($email = 'ajdavis@audina.net')
+    public function actionEmail($fromEmail = 'smtp@auditiva.us')
     {
         $email = Yii::$app->mailer->compose()
-            ->setFrom(Yii::$app->params['mail.username'])
-            ->setReplyTo('info@auditiva.us')
-            ->setTo($email)
+            ->setSender(Yii::$app->params['mail.username'])
+            ->setFrom([$fromEmail => Yii::$app->params['companyName']])
+            ->setTo('ajdavis@auditiva.us')
             ->setSubject('Auditiva.us mail test ' . date('Y-m-d H:i:s'))
-            ->setTextBody('This is a test email sent from the command line using the configured mailer.');
+            ->setTextBody('This is a test sent from the command line using the configured mailer.');
 
         // output email to console for testing
-        $email_as_string = $email->toString();
-        echo($email_as_string);
+        Console::output($email->toString() . "\n");
 
         $email->send();
     }
