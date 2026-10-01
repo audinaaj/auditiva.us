@@ -14,7 +14,9 @@ class m260928_120000_remove_payments extends Migration
 {
     public function up()
     {
-        $this->dropTable('payments');
+        if ($this->db->schema->getTableSchema('payments', true) !== null) {
+            $this->dropTable('payments');
+        }
     }
 
     public function down()

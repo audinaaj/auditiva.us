@@ -78,20 +78,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                      <h3 class="panel-title"><h3><i class="glyphicon glyphicon-usd d-icon" aria-hidden="true"></i> Payments</h3>
-                      <p>Manage payments by users.</p></h3>
-                    </div>
-                    <div class="panel-body">
-                        <?= Html::a('<i class="glyphicon glyphicon-dashboard d-icon" aria-hidden="true"></i>' . ' Manage &raquo;',  
-                            ['payment/admin-index'], ['class'=>'btn btn-default']) 
-                        ?>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
                       <h3 class="panel-title"><h3><i class="glyphicon glyphicon-th-list d-icon" aria-hidden="true"></i> Settings</h3>
                       <p>Manage application settings.</p></h3>
                     </div>
