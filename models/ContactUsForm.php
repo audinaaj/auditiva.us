@@ -71,12 +71,13 @@ class ContactUsForm extends Model
             // Send with HTML template
             //--------------------------------
             $isMessageSent = Yii::$app->mailer->compose('contactUs', ['form' => $this, 'message' => $origMessage])
-                ->setFrom(Yii::$app->params['mail.username'])
-                ->setTo( ($isSpam ? Yii::$app->params['debugEmail'] : $dstEmail) )  
-                ->setBcc([
-                    Yii::$app->params['adminEmail'] => Yii::$app->params['companyNameShort'] . ' Support', 
-                    Yii::$app->params['debugEmail'] => 'Debug Email'
-                ])
+                ->setSender(Yii::$app->params['mail.username'])
+                ->setFrom([Yii::$app->params['companyEmail'] => Yii::$app->params['companyName']])
+                ->setTo( ($isSpam ? Yii::$app->params['debugEmail'] : $dstEmail) )
+                // ->setBcc([
+                //     Yii::$app->params['adminEmail'] => Yii::$app->params['companyNameShort'] . ' Support', 
+                //     Yii::$app->params['debugEmail'] => 'Debug Email'
+                // ])
                 ->setSubject($this->subject)
                 ->send();
         } else {
@@ -107,20 +108,10 @@ class ContactUsForm extends Model
             $this->body .= "Serial Numbers: {$this->productSerialNumbers}\n";
             $this->body .= "IP Address: ".Yii::$app->request->userIP."\n";
 
-            $message = Yii::$app->mailer->compose();
-            
-            if (Yii::$app->user->isGuest) {
-                // Format: email or [email => name] 
-                //$message->setFrom([$this->email => $this->name]);
-                //$message->setFrom([$this->email => $this->firstName . ' ' . $this->lastName]);  // user-entered email not supported in some servers
-                $message->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']]);  
-            } else {
-                // Format: email or [email => name] 
-                //$message->setFrom(Yii::$app->user->identity->email);
-                //$message->setFrom([Yii::$app->user->identity->email => $this->firstName . ' ' . $this->lastName]);
-                //$message->setFrom([$this->email => $this->firstName . ' ' . $this->lastName]);  // user-entered email not supported in some servers
-                $message->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']]);  
-            }
+            $message = Yii::$app->mailer->compose()
+                ->setSender(Yii::$app->params['mail.username'])
+                ->setFrom([Yii::$app->params['companyEmail'] => Yii::$app->params['companyName']]);
+
             $isMessageSent = $message->setTo( ($isSpam ? Yii::$app->params['debugEmail'] : $dstEmail) ) 
                 ->setBcc([
                     Yii::$app->params['adminEmail'] => Yii::$app->params['companyNameShort'] . ' Support', 

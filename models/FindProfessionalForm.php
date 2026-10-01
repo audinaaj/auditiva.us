@@ -57,7 +57,8 @@ class FindProfessionalForm extends Model
             // Send with HTML template
             //--------------------------------
             $isMessageSent = Yii::$app->mailer->compose('findProfessional', ['form' => $this])
-                ->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']])
+                ->setSender(Yii::$app->params['mail.username'])
+                ->setFrom([Yii::$app->params['companyEmail'] => Yii::$app->params['companyName']])
                 ->setTo($dstEmail)
                 ->setBcc([
                     Yii::$app->params['adminEmail'] => Yii::$app->params['companyNameShort'] . ' Support', 
@@ -96,20 +97,10 @@ class FindProfessionalForm extends Model
             $this->body .= "\n";
             $this->body .= "Serial Numbers: {$this->productSerialNumbers} \n";
 
-            $message = Yii::$app->mailer->compose();
+            $message = Yii::$app->mailer->compose()
+                ->setSender(Yii::$app->params['mail.username'])
+                ->setFrom([Yii::$app->params['companyEmail'] => Yii::$app->params['companyName']]);
             
-            if (Yii::$app->user->isGuest) {
-                // Format: email or [email => name] 
-                //$message->setFrom([$this->email => $this->name]);
-                //$message->setFrom([$this->email => $this->firstName . ' ' . $this->lastName]);  // user-entered email not supported in some servers
-                $message->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']]);         
-            } else {
-                // Format: email or [email => name] 
-                //$message->setFrom(Yii::$app->user->identity->email);
-                //$message->setFrom([Yii::$app->user->identity->email => $this->firstName . ' ' . $this->lastName]);
-                //$message->setFrom([$this->email => $this->firstName . ' ' . $this->lastName]);  // user-entered email not supported in some servers
-                $message->setFrom([Yii::$app->params['mail.username'] => Yii::$app->params['companyName']]);
-            }
             $isMessageSent = $message->setTo($dstEmail)
                 ->setBcc([
                     Yii::$app->params['adminEmail'] => Yii::$app->params['companyNameShort'] . ' Support', 
