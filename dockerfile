@@ -32,9 +32,10 @@ RUN composer install --no-dev --prefer-dist --optimize-autoloader --no-interacti
 # Copy application files
 COPY . /app
 
-# Create / set permissions for runtime and assets directories
-RUN mkdir -p /app/runtime/session /app/runtime/cache \
-    && chmod -R 777 /app/runtime /app/web/assets \
+# Create / set permissions for runtime, assets, and thumbs directories
+RUN mkdir -p /app/runtime/session /app/runtime/cache /app/web/thumbs /app/web/assets \
+    && chown -R www-data:www-data /app/runtime /app/web/assets /app/web/thumbs \
+    && chmod -R 755 /app/runtime /app/web/assets /app/web/thumbs \
     && chmod +x /app/docker-entrypoint.sh
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
