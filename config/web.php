@@ -53,6 +53,10 @@ $config = [
         ],
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
+            'transportFactory' => new \Symfony\Component\Mailer\Transport([
+                new \Symfony\Component\Mailer\Bridge\MicrosoftGraph\Transport\MicrosoftGraphTransportFactory(null, \Symfony\Component\HttpClient\HttpClient::create()),
+                ...\Symfony\Component\Mailer\Transport::getDefaultFactories(),
+            ]),
             'transport' => [
                 'dsn' => 'microsoftgraph+api://'.$params['mail.clientId'].':'.$params['mail.clientSecret'].'@default?tenantId='.$params['mail.tenantId'],
             ],
