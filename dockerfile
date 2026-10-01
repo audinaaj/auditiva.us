@@ -1,4 +1,4 @@
-FROM yiisoftware/yii2-php:8.4-apache
+FROM yiisoftware/yii2-php:8.5-apache
 
 LABEL org.opencontainers.image.authors="ajdavis@audina.net"
 LABEL org.opencontainers.image.version="0.9.5"
@@ -24,6 +24,7 @@ RUN apt-get purge -y g++ \
 WORKDIR /app
 
 # Copy composer files and install dependencies
+RUN git config --global url."https://github.com/audinaaj/yii2-s3manager.git".insteadOf git@github.com:audinaaj/yii2-s3manager.git
 COPY composer.json ./
 RUN composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction \
     && composer clear-cache
