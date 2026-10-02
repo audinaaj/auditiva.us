@@ -147,7 +147,20 @@ if (YII_DEBUG) {
         'class' => 'yii\debug\Module',
         'enableDebugLogs' => true,
         'allowedIPs' => $params['debug.allowedIPs'], // this doesn't work well with docker
-        //'allowedIPs' => ['*'], // allow all IPs to access debug module, since we are using docker and IPs can be dynamic
+        'panels' => [
+            'user' => [
+                'class'=>'yii\debug\panels\UserPanel',
+                'ruleUserSwitch' => [
+                    'allow' => true,
+                    'matchCallback' => function ($rule, $action) {
+                        /* @var $panel \yii\debug\panels\UserPanel */
+                        $panel = Yii::$app->getModule('debug')->panels['user'];
+                        $mainUser = $panel->userSwitch->getMainUser();
+                        return $mainUser->identity->isAdmin();
+                    }
+                ]
+            ]
+        ],
     ];
 
     // $config['bootstrap'][] = 'gii';
