@@ -3,6 +3,7 @@ $params = [
     'appId'                         => 'app-auditiva',
     'appName'                       => 'Auditiva Website',
     'appNameShort'                  => 'Auditiva',
+
     'companyName'                   => 'Auditiva, Inc.',
     'companyNameShort'              => 'Auditiva',
     'companyAddress'                => '165 E. Wildmere Ave, Longwood, FL 32750, United States',
@@ -13,7 +14,6 @@ $params = [
     
     'companyEmail'                  => getenv('COMPANY_EMAIL'),
     'adminEmail'                    => getenv('ADMIN_EMAIL'),
-    'supportEmail'                  => getenv('SUPPORT_EMAIL'),
     'debugEmail'                    => getenv('DEBUG_EMAIL'),
 
     'urlWebmail'                    => '',
@@ -21,7 +21,7 @@ $params = [
     'urlSocialYoutube'              => 'https://www.youtube.com/channel/UCDnwW290SWy-PXE3O0bkG7A',
     'urlSocialTwitter'              => '',
     'user.passwordResetTokenExpire' => 14400, // 4 hours
-    'isSignupAllowed'               => false, // allows user to signup
+    'isSignupAllowed'               => true, // allows user to signup
     'isSignupApprovalRequired'      => true,  // requires sending email to admin to request signup approval
     'timezone'                      => 'America/New_York',  // Must be a valid PHP timezone.  See: http://php.net/manual/en/timezones.php
     'siteLayout'                    => 'default',  // ['full', 'default_white', 'default_gray', 'default']
