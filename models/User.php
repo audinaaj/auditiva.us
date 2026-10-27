@@ -183,7 +183,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function findByUser($username) 
     {
         //return self::findOne()->where(["username" => $username, 'status' => self::STATUS_ACTIVE]);  // fails tests when user not active
-        return self::findOne()->where(["username" => $username]);
+        return self::find()->where(["username" => $username])->one();
     }
     
     /**
@@ -196,7 +196,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         //$user = isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
         $user = self::find()->where(["id" => $id])->one();
-        if (count($user) > 0)  {
+        if (!empty($user))  {
             return $user->username;
         } else {
             return 'N/A';
