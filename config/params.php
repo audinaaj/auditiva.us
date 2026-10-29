@@ -26,7 +26,7 @@ $params = [
     'timezone'                      => 'America/New_York',  // Must be a valid PHP timezone.  See: http://php.net/manual/en/timezones.php
     'siteLayout'                    => 'default',  // ['full', 'default_white', 'default_gray', 'default']
     
-    'cookieKey' => getenv('COOOKIE_KEY') ,
+    'cookieKey' => getenv('COOKIE_KEY') ,
     'recaptchaSiteKeyv2' => getenv('RECAPTCHA_SITE_KEY'),
     'recaptchaSecretv2' => getenv('RECAPTCHA_SECRET'),
 
